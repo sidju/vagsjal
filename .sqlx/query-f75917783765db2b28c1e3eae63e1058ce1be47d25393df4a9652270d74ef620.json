@@ -1,0 +1,50 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n          SELECT session_id, user_id, email, role AS \"role!:Role\"\n          FROM Sessions\n          JOIN Users ON Users.id = Sessions.user_id\n          WHERE session_id = $1\n        ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "session_id",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 1,
+        "name": "user_id",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 2,
+        "name": "email",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 3,
+        "name": "role!:Role",
+        "type_info": {
+          "Custom": {
+            "name": "roles_t",
+            "kind": {
+              "Enum": [
+                "user",
+                "gm"
+              ]
+            }
+          }
+        }
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Text"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "f75917783765db2b28c1e3eae63e1058ce1be47d25393df4a9652270d74ef620"
+}

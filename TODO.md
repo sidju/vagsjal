@@ -1,0 +1,5 @@
+# TODOs
+
+- Change the post-login redirect to send to homepage
+  (or possibly do that only on first registration, since the current one fails
+  in an odd way on first registration (since that presents more google pages))

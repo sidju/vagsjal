@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Characters{% endblock %}
+
+{% block body %}
+  <p>Hello {{email}}!</p>
+
+  <ul>
+  {% for (c,stats,powers,influences) in character_stats %}
+    <li><a href="{{c.vampire_id}}/">
+      <table>
+        <tr>
+          <th>{{ c.name }}</th>
+        </tr>
+        <tr>
+          <td>Apparent age (years)</td>
+          <td>{{ c.apparent_age }}</td>
+        </tr>
+        <tr>
+          <td>Date embraced</td>
+          <td>{{ c.date_embraced }}</td>
+        </tr>
+        <tr>
+          <td>Time spent in torpor</td>
+          <td>{{ c.torpor_time.months }} months, {{ c.torpor_time.days }} days</td>
+        </tr>
+        <tr>
+          <td>Clan</td>
+          <td>{{ c.clan_name }}</td>
+        </tr>
+        {% for s in stats %}
+        <tr>
+          <td>{{ s.name }}</td>
+          {% if s.pending_review %}
+          <td><i>{{ s.value }}</i></td>
+          {% else %}
+          <td>{{ s.value }}</td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+        <tr>
+          <th>Powers</th>
+        </tr>
+        {% for d in powers %}
+        <tr>
+          <td>{{ d.name }}</td>
+          {% if d.pending_review %}
+          <td><i>{{ d.value }}</i></td>
+          {% else %}
+          <td>{{ d.value }}</td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+        <tr>
+          <th>Influences</th>
+        </tr>
+        {% for i in influences %}
+        <tr>
+          <td>{{ i.name }}</td>
+          {% if i.pending_review %}
+          <td><i>{{ i.value }}</i></td>
+          {% else %}
+          <td>{{ i.value }}</td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+        <tr>
+          <th>Remaining XP</th>
+        </tr>
+        <tr>
+          <td>{{ c.remaining_xp }}</td>
+        </tr>
+      </table>
+    </a></li>
+  {% endfor %}
+  </ul>
+
+{% endblock %}

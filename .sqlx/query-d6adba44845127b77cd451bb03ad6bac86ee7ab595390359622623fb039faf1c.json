@@ -1,0 +1,34 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\nSELECT \"name!\", \"value!\", \"pending_review!\"\nFROM CharacterPowers\nWHERE character = $1\n      ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "name!",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 1,
+        "name": "value!",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 2,
+        "name": "pending_review!",
+        "type_info": "Bool"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int8"
+      ]
+    },
+    "nullable": [
+      true,
+      true,
+      true
+    ]
+  },
+  "hash": "d6adba44845127b77cd451bb03ad6bac86ee7ab595390359622623fb039faf1c"
+}
