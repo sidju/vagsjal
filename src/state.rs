@@ -60,8 +60,8 @@ pub async fn init_state() -> &'static State {
     .expect("OIDC_REDIRECT_URI must be present in environment or .env file")
   ;
   oidc_redirect_url.push_str("/post-login");
-  let admin_gmail = var("ADMIN_GMAIL")
-    .expect("ADMIN_GMAIL must be present in environment or .env file")
+  let admin_oidc_subject = var("ADMIN_OIDC_SUBJECT")
+    .expect("ADMIN_OIDC_SUBJECT must be present in environment or .env file")
   ;
 
   // Construct requisite objects
@@ -112,11 +112,11 @@ pub async fn init_state() -> &'static State {
   ;
   sqlx::query!(
     "
-INSERT INTO app_user(user_id, email, role) VALUES(0, $1, 'storyteller')
+INSERT INTO app_user(user_id, oidc_subject, role) VALUES(0, $1, 'storyteller')
   ON CONFLICT (user_id)
-  DO UPDATE SET email = $1, role = 'storyteller' WHERE app_user.user_id = 0
+  DO UPDATE SET oidc_subject = $1, role = 'storyteller' WHERE app_user.user_id = 0
     ",
-    admin_gmail,
+    admin_oidc_subject,
   )
     .execute(&db)
     .await

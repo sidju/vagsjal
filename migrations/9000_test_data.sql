@@ -24,15 +24,47 @@ INSERT INTO influence (name) VALUES
   ('Kultur')
 ;
 
+INSERT INTO stat_xp_cost (stat, xp_cost) VALUES
+  ('HP', 3),
+  ('Physical Ability', 4),
+  ('Mental Ability', 4),
+  ('Organizational Ability', 4)
+;
+
+INSERT INTO influence_xp_cost (influence, xp_cost) VALUES
+  ('Juridik', 4),
+  ('Gatuliv', 4),
+  ('Societet', 4),
+  ('Kultur', 4)
+;
+
+INSERT INTO humanity_xp_cost (change_type, xp_cost) VALUES
+  ('gain', 7),
+  ('loss', 0)
+;
+
+INSERT INTO power_xp_cost (in_clan, level, xp_cost) VALUES
+  (TRUE, 1, 9),
+  (TRUE, 2, 12),
+  (TRUE, 3, 15),
+  (TRUE, 4, 18),
+  (TRUE, 5, 21),
+  (FALSE, 1, 12),
+  (FALSE, 2, 15),
+  (FALSE, 3, 18),
+  (FALSE, 4, 21),
+  (FALSE, 5, 24)
+;
+
 INSERT INTO clan (name, unique_power, power_one, power_two) VALUES
   ('Ventrue',   'Dominate',  'Animalism', 'Presence'),
   ('Nosferatu', 'Obfuscate', 'Animalism', 'Nightmare')
 ;
 
-INSERT INTO app_user (user_id, email, role) VALUES
-  (0, 'dummy',                   'user'),
-  (1, 'storyteller@example.com', 'storyteller'),
-  (2, 'player@example.com',      'user')
+INSERT INTO app_user (user_id, oidc_subject, role) VALUES
+  (0, 'storyteller-subject', 'storyteller'),
+  (1, 'reviewer-subject',    'storyteller'),
+  (2, 'player-subject',      'user')
 ;
 
 INSERT INTO vampire (vampire_id, user_id, active, name, apparent_age, date_embraced, torpor_time, clan_id) VALUES
@@ -91,5 +123,11 @@ INSERT INTO influence_raise_review (influence_raise_id, state, reviewer_id) VALU
   (1, 'approved', 1),
   (2, 'denied',   1)
 ;
+
+-- Reset sequences after explicit ID inserts so BIGSERIAL continues from the right value.
+SELECT setval('humanity_change_humanity_change_id_seq', (SELECT MAX(humanity_change_id) FROM humanity_change));
+SELECT setval('stat_raise_stat_raise_id_seq',           (SELECT MAX(stat_raise_id)       FROM stat_raise));
+SELECT setval('power_raise_power_raise_id_seq',         (SELECT MAX(power_raise_id)       FROM power_raise));
+SELECT setval('influence_raise_influence_raise_id_seq', (SELECT MAX(influence_raise_id)   FROM influence_raise));
 
 COMMIT;

@@ -1,17 +1,62 @@
-/* Offset content a bit from the edges */
-body {
-  margin: 10%;
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
-/* Fix table styling */
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background: #f5f5f5;
+  color: #222;
+}
+
+/* Navigation */
+nav {
+  background: #1a1a2e;
+  padding: 0.6rem 1.5rem;
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+}
+nav a {
+  color: #ccc;
+  text-decoration: none;
+}
+nav a:hover {
+  color: #fff;
+}
+nav .nav-title {
+  color: #fff;
+  font-weight: bold;
+  margin-right: auto;
+}
+
+/* Main content area */
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
 table, th, td {
-  border: 1px solid;
-  margin: 1m;
+  border: 1px solid #ccc;
+}
+th, td {
+  padding: 0.3rem 0.6rem;
+  text-align: left;
 }
 tr:nth-child(even) {
   background-color: #eeeeee;
 }
-table {
-  border-collapse: collapse;
-  width: 100%;
+
+/* Stat/power/influence name–value tables: pin the value column to a fixed
+   width so the split aligns across adjacent tables on the same page. */
+table.stat-table td:last-child,
+table.stat-table th:last-child {
+  width: 4.5em;
+  text-align: center;
 }

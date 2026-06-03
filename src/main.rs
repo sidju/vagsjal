@@ -75,7 +75,7 @@ async fn database_cleaner(
   loop {
     interval.tick().await;
     // Sessions
-    match sqlx::query("DELETE FROM session WHERE valid_until < NOW()")
+    match sqlx::query!("DELETE FROM session WHERE valid_until < NOW()")
       .execute(&state.db)
       .await
     {
@@ -83,7 +83,7 @@ async fn database_cleaner(
       Err(e) => { eprintln!("Error when cleaning outdated sessions\n  error: {e}"); },
     }
     // Login processes older than 5 minutes are invalid anyways
-    match sqlx::query("DELETE FROM login_process WHERE creation_time < NOW() - INTERVAL '5 minutes'")
+    match sqlx::query!("DELETE FROM login_process WHERE creation_time < NOW() - INTERVAL '5 minutes'")
       .execute(&state.db)
       .await
     {

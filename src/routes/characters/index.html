@@ -3,12 +3,12 @@
 {% block title %}Characters{% endblock %}
 
 {% block body %}
-  <p>Hello {{email}}!</p>
+  <p>Hello user {{user_id}}!</p>
 
   <ul>
   {% for (c,stats,powers,influences) in character_stats %}
     <li><a href="{{c.vampire_id}}/">
-      <table>
+      <table class="stat-table">
         <tr>
           <th>{{ c.name }}</th>
         </tr>

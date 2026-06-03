@@ -1,28 +1,160 @@
 use super::*;
 
-use serde::{Serialize, Deserialize};
-use askama::Template;
+use openidconnect::{ClaimsVerificationError, OAuth2TokenResponse, TokenResponse};
+use serde::{Deserialize, Serialize};
 
-#[derive(Template)]
-#[template(path = "login_redirect.html")]
-struct LoginRedirect<'a>{
-  url: &'a str,
+pub const SESSION_COOKIE_NAME: &str = "__Host-session_token";
+pub const REFRESH_COOKIE_NAME: &str = "__Host-refresh_token";
+const SESSION_COOKIE_MAX_AGE_SECONDS: i64 = 60 * 60;
+const REFRESH_COOKIE_MAX_AGE_SECONDS: i64 = 60 * 60 * 24 * 30;
+
+#[derive(Deserialize, Serialize)]
+struct PostLoginQueryData {
+  code: String,
+  state: String,
+}
+
+#[derive(sqlx::Type, Debug)]
+#[sqlx(rename_all = "lowercase")]
+pub enum Role {
+  User,
+  Storyteller,
+}
+impl Role {
+  pub fn is_storyteller(&self) -> bool {
+    matches!(self, Role::Storyteller)
+  }
+}
+
+#[derive(sqlx::FromRow, Debug)]
+pub struct SessionData {
+  pub user_id: i64,
+  pub role: Role,
+}
+
+pub struct AuthResult {
+  pub session: Option<SessionData>,
+  pub set_cookies: Vec<HeaderValue>,
+}
+
+fn format_cookie(name: &str, value: &str, max_age_seconds: i64) -> Result<HeaderValue, Error> {
+  HeaderValue::try_from(format!(
+    "{name}={value}; Path=/; Max-Age={max_age_seconds}; Secure; HttpOnly; SameSite=Strict"
+  )).map_err(Into::into)
+}
+fn format_clear_cookie(name: &str) -> Result<HeaderValue, Error> {
+  HeaderValue::try_from(format!(
+    "{name}=; Path=/; Max-Age=0; Secure; HttpOnly; SameSite=Strict"
+  )).map_err(Into::into)
+}
+pub fn clear_auth_cookies() -> Result<Vec<HeaderValue>, Error> {
+  Ok(vec![
+    format_clear_cookie(SESSION_COOKIE_NAME)?,
+    format_clear_cookie(REFRESH_COOKIE_NAME)?,
+  ])
+}
+
+fn allow_any_nonce(_nonce: Option<&openidconnect::Nonce>) -> Result<(), String> {
+  Ok(())
+}
+fn verify_id_token_allow_missing_nonce<'a>(
+  state: &'static State,
+  id_token: &'a openidconnect::core::CoreIdToken,
+) -> Result<
+  &'a openidconnect::IdTokenClaims<
+    openidconnect::EmptyAdditionalClaims,
+    openidconnect::core::CoreGenderClaim,
+  >,
+  ClaimsVerificationError,
+> {
+  id_token.claims(&state.oidc_client.id_token_verifier(), allow_any_nonce)
+}
+async fn session_for_subject(
+  state: &'static State,
+  oidc_subject: &str,
+) -> Result<Option<SessionData>, Error> {
+  let row = sqlx::query!(
+    "
+SELECT user_id, role AS \"role!:Role\"
+FROM app_user
+WHERE oidc_subject = $1
+    ",
+    oidc_subject,
+  )
+    .fetch_optional(&state.db)
+    .await
+    .map_err(Error::from)
+  ?;
+  Ok(row.map(|r| SessionData {
+    user_id: r.user_id,
+    role: r.role,
+  }))
+}
+async fn refresh_session_from_cookie(
+  state: &'static State,
+  refresh_token_raw: &str,
+) -> Result<Option<(SessionData, Vec<HeaderValue>)>, Error> {
+  let token_response = match state.oidc_client
+    .exchange_refresh_token(&openidconnect::RefreshToken::new(refresh_token_raw.to_owned()))
+    .request_async(openidconnect::reqwest::async_http_client)
+    .await
+  {
+    Ok(response) => response,
+    Err(_) => return Ok(None),
+  };
+  let id_token = match token_response.id_token() {
+    Some(token) => token,
+    None => return Ok(None),
+  };
+  let claims = match verify_id_token_allow_missing_nonce(state, id_token) {
+    Ok(claims) => claims,
+    Err(_) => return Ok(None),
+  };
+  let session = match session_for_subject(state, claims.subject().as_str()).await? {
+    Some(session) => session,
+    None => {
+      eprintln!(
+        "Auth refresh rejected: no local account for OIDC subject '{}'",
+        claims.subject().as_str(),
+      );
+      return Ok(None);
+    },
+  };
+  let refresh_token = token_response
+    .refresh_token()
+    .map(|t| t.secret().to_owned())
+    .unwrap_or_else(|| refresh_token_raw.to_owned())
+  ;
+  Ok(Some((
+    session,
+    vec![
+      format_cookie(
+        SESSION_COOKIE_NAME,
+        &id_token.to_string(),
+        SESSION_COOKIE_MAX_AGE_SECONDS,
+      )?,
+      format_cookie(
+        REFRESH_COOKIE_NAME,
+        &refresh_token,
+        REFRESH_COOKIE_MAX_AGE_SECONDS,
+      )?,
+    ],
+  )))
 }
 
 pub async fn start_oidc_login_flow(
   state: &'static State,
 ) -> Result<Response, Error> {
-  // Create an authorization URL for this user
   let (authorize_url, csrf_state, nonce) = state.oidc_client
     .authorize_url(
       openidconnect::AuthenticationFlow::<openidconnect::core::CoreResponseType>::AuthorizationCode,
       openidconnect::CsrfToken::new_random,
       openidconnect::Nonce::new_random,
     )
-    .add_scope(openidconnect::Scope::new("https://www.googleapis.com/auth/userinfo.email".to_string()))
+    .add_extra_param("access_type", "offline")
+    .add_extra_param("prompt", "consent")
     .url()
   ;
-  // Save all the data we need to keep through the OIDC login process to DB
   sqlx::query!(
     "INSERT INTO login_process(state_id, nonce) VALUES($1, $2)",
     csrf_state.secret(),
@@ -32,187 +164,147 @@ pub async fn start_oidc_login_flow(
     .await
   ?;
 
-  // Redirect the user to that url
-  let res = html(LoginRedirect{url: authorize_url.as_str()}.render()?);
-  let res = add_header(
-    res,
+  add_header(
+    see_other(authorize_url.as_str()),
     hyper::header::CACHE_CONTROL,
     hyper::header::HeaderValue::from_static("no-store"),
-  );
-  let res = set_status(
-    res,
-    // Setting this status reduces risk of browser complaining about
-    // about resubmitting when users get this page on a form submit
-    StatusCode::UNAUTHORIZED,
-  );
-  res
+  )
 }
 
-#[derive(Deserialize, Serialize)]
-struct PostLoginQueryData{
-  code: String,
-  state: String,
-}
-#[derive(sqlx::Type, Debug)]
-#[sqlx(rename_all = "lowercase")]
-pub enum Role {
-  User,
-  Storyteller,
-}
-
-impl Role {
-  pub fn is_storyteller(&self) -> bool {
-    matches!(self, Role::Storyteller)
+pub async fn authenticate_from_cookies(
+  state: &'static State,
+  cookies: &std::collections::HashMap<&str, &str>,
+) -> Result<AuthResult, Error> {
+  let session_cookie = match cookies.get(SESSION_COOKIE_NAME) {
+    Some(cookie) => *cookie,
+    None => {
+      // Session cookie absent (most likely expired and purged by the browser).
+      // Try the refresh cookie before falling back to the login flow.
+      if let Some(refresh_cookie) = cookies.get(REFRESH_COOKIE_NAME) {
+        if let Some((session, set_cookies)) = refresh_session_from_cookie(state, refresh_cookie).await? {
+          return Ok(AuthResult { session: Some(session), set_cookies });
+        }
+        // Refresh present but failed — clear it so the browser doesn't keep sending it.
+        return Ok(AuthResult { session: None, set_cookies: clear_auth_cookies()? });
+      }
+      return Ok(AuthResult { session: None, set_cookies: vec![] });
+    },
+  };
+  let id_token: openidconnect::core::CoreIdToken = match session_cookie.parse() {
+    Ok(token) => token,
+    Err(_) => {
+      return Ok(AuthResult {
+        session: None,
+        set_cookies: clear_auth_cookies()?,
+      });
+    },
+  };
+  let claims = match verify_id_token_allow_missing_nonce(state, &id_token) {
+    Ok(claims) => claims,
+    Err(ClaimsVerificationError::Expired(_)) => {
+      if let Some(refresh_cookie) = cookies.get(REFRESH_COOKIE_NAME) {
+        if let Some((session, set_cookies)) = refresh_session_from_cookie(state, refresh_cookie).await? {
+          return Ok(AuthResult { session: Some(session), set_cookies });
+        }
+      }
+      return Ok(AuthResult {
+        session: None,
+        set_cookies: clear_auth_cookies()?,
+      });
+    },
+    Err(_) => {
+      return Ok(AuthResult {
+        session: None,
+        set_cookies: clear_auth_cookies()?,
+      });
+    },
+  };
+  let session = session_for_subject(state, claims.subject().as_str()).await?;
+  if session.is_none() {
+    eprintln!(
+      "Auth rejected: no local account for OIDC subject '{}'",
+      claims.subject().as_str(),
+    );
+    return Ok(AuthResult {
+      session: None,
+      set_cookies: clear_auth_cookies()?,
+    });
   }
-}
-#[derive(sqlx::FromRow, Debug)]
-pub struct SessionData {
-  pub session_id: String,
-  pub user_id: i64,
-  pub email: String,
-  pub role: Role,
+  Ok(AuthResult {
+    session,
+    set_cookies: vec![],
+  })
 }
 
 pub async fn finish_oidc_login_flow(
   state: &'static State,
   req: Request,
 ) -> Result<Response, Error> {
-  use openidconnect::TokenResponse;
-
-  // Parse out "code" and "state" parameters
   let oidc_response: PostLoginQueryData = parse_query(&req)?;
-  // Get all the data about this login from the database, also deleting it
-  let nonce = sqlx::query!(
-    "SELECT nonce from login_process WHERE state_id = $1",
-    oidc_response.state,
+  let nonce: String = sqlx::query_scalar(
+    "
+DELETE FROM login_process
+WHERE state_id = $1
+  AND creation_time >= NOW() - INTERVAL '5 minutes'
+RETURNING nonce
+    "
   )
+    .bind(oidc_response.state)
     .fetch_optional(&state.db)
-    // Open DB query result to get to Option
     .await?
-    // Make Some into Ok and None into this error.
     .ok_or(ClientError::UnknownOIDCProcess)?
-    // And get the only row out
-    .nonce
   ;
 
-  // If the state was valid we have validated againts CSRF and can request the
-  // real code from our OIDC provider
-  let code = openidconnect::AuthorizationCode::new(oidc_response.code);
   let token_response = state.oidc_client
-    .exchange_code(code)
+    .exchange_code(openidconnect::AuthorizationCode::new(oidc_response.code))
     .request_async(openidconnect::reqwest::async_http_client)
     .await
   ?;
-
-  // Extract the returned ID token from the response
   let id_token = token_response
     .id_token()
     .ok_or(ClientError::OIDCGaveNoToken)?
   ;
-  // Verify this response using the nonce from the DB
-  let id_token_verifier = state.oidc_client.id_token_verifier();
-  let nonce = openidconnect::Nonce::new(nonce);
-  let id_token_claims = id_token
-    // And from the token we get the parts we care about like this
-    // This means we cryptographically verify it before each use
-    .claims(&id_token_verifier, &nonce)? // Errors if auth chain has been tampered with
-  ;
-
-  // Now that we have all we need, verify that the user is registered (and get
-  // their user id for session creation).
-  let email = id_token_claims.email()
-    .ok_or(ClientError::OIDCGaveNoEmail)?
-    .as_str()
-  ;
-  let user_id = sqlx::query!(
-    "SELECT user_id FROM app_user WHERE email = $1",
-    email,
-  )
-    .fetch_optional(&state.db)
-    .await?
-    .ok_or(ClientError::UserNotFound(email.to_owned()))?
-    .user_id
-  ;
-
-  // At this stage we have the user metadata in id_token_claims and have
-  // confirmed the user's identity, so we create a session for them.
-  let session_id = nanoid::nanoid!(32);
-  sqlx::query(
-    "INSERT INTO session(session_id, user_id) VALUES($1, $2)"
-  )
-    .bind(&session_id)
-    .bind(user_id)
-    .execute(&state.db)
-    .await
+  let id_token_claims = id_token.claims(
+    &state.oidc_client.id_token_verifier(),
+    &openidconnect::Nonce::new(nonce),
+  )?;
+  let oidc_subject = id_token_claims.subject().as_str();
+  session_for_subject(state, oidc_subject).await?
+    .ok_or_else(|| {
+      eprintln!(
+        "OIDC login rejected: no local account for OIDC subject '{}'",
+        oidc_subject,
+      );
+      ClientError::UserNotFound(oidc_subject.to_owned())
+    })
   ?;
+  let refresh_token = token_response
+    .refresh_token()
+    .ok_or(ClientError::OIDCGaveNoRefreshToken)?
+    .secret()
+  ;
 
-  // Finally, redirect back to the root of the website with an auth cookie.
   let res = add_header(
     redirect("/"),
     hyper::header::SET_COOKIE,
-    HeaderValue::try_from(format!(
-      "session={}; Secure; HttpOnly; SameSite=Strict",
-      session_id,
-    ))?
+    format_cookie(
+      SESSION_COOKIE_NAME,
+      &id_token.to_string(),
+      SESSION_COOKIE_MAX_AGE_SECONDS,
+    )?,
   );
   let res = add_header(
     res,
-    hyper::header::CACHE_CONTROL,
-    HeaderValue::from_static("no-store")
+    hyper::header::SET_COOKIE,
+    format_cookie(
+      REFRESH_COOKIE_NAME,
+      refresh_token,
+      REFRESH_COOKIE_MAX_AGE_SECONDS,
+    )?,
   );
-  res
-
-  // Might be nice to revoke the token as well
+  add_header(
+    res,
+    hyper::header::CACHE_CONTROL,
+    HeaderValue::from_static("no-store"),
+  )
 }
-  // It seems the token_response.access_token() is one of the main things, which
-  // should be able to be used to prove that you act with the user's permission
-  // or something like that. Seems to be basically the heart of oauth2.
-
-  // Further it seems like the other big thing is the token_response
-  // .extra_fields() (relative to oauth2) .id_token() (openidconnect begins)
-  // .claims() (gets the actual data about the user).
-
-  // But you can also query for user info using the client.user_info() with
-  // the access_token, if a user info endpoint is defined... But that would
-  // re-request the user info on every read instead of keeping it in the JWT
-  // and only requiring decryption/hash validation.
-
-  // All in all it seems that the whole of the token_response is what you are
-  // expected to save in a cookie for the user to auth with, if that is your
-  // client side storage.
-  // A lot of advice about not storing it in a cookie though... And also it
-  // really looks like I'm expected to keep storing the nonce in the db, which
-  // seems like it would invalidate the whole point of storing the data on the
-  // client......
-
-  // I expect there will be some method to create a nonce that is reproducible
-  // for us but not predictable to the user... But that seems like security
-  // through obscurity, unless we have some server-side secret used in that
-  // reproducible nonce creation based on some visible information about the
-  // client... Ugh, encryption and stuff...
-
-
-
-  // After discussion it has been decided to indeed encrypt the cookies with a
-  // global key (and use the authorization_token to verify login validity).
-
-
-  // Chose encryption is aes_gcm_siv, since it is most tolerant to using the
-  // same private key with randomly generated nonces. Even so, the key should
-  // be changed every few million logins/auth-renews.
-
-  // It would probably be good to support having a secondary phasing out key, so
-  // that key changes don't invalidate all logins and instead gradually
-  // reencrypts the auth data to the newer key.
-
-  // The best way to handle the keys would be to keep them in the database and
-  // update a local cache on start, daily, and before trying again when we fail
-  // to decrypt a cookie.
-
-
-
-  // The alternative would be to use OIDC in place of login, but still do our
-  // own session management (perhaps attaching the id_token and/or auth_token
-  // to the session in the session table?).
-
-

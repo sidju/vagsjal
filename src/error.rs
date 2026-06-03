@@ -1,5 +1,6 @@
 // Needed imports
 use crate::Reply;
+use askama::Template;
 use hyper::header::HeaderValue;
 use hyper::{
 //  Request,
@@ -90,18 +91,20 @@ pub enum ClientError {
   // Non-parsing user-caused errors (but probably not intentional)
   UnknownOIDCProcess, // Post-login OIDC handler did not find the OIDC login in DB
   OIDCGaveNoToken, // Unlikely, would probably be error in OIDC provider
-  OIDCGaveNoEmail, // Probably won't happen
+  OIDCGaveNoRefreshToken,
 
   UserNotFound(String), // Suggests contacting the site admin to register an account
+  InvalidBuilderDraft(String),
+}
+#[derive(Template)]
+#[template(path = "error.html")]
+struct ErrorPageTemplate<'a> {
+  status: &'a str,
+  message: &'a str,
 }
 impl Reply for ClientError {
   fn into_response(self) -> Response {
-    let mut re = Response::new(
-      serde_json::to_string(&self)
-        .unwrap() // Only errors if self cannot be represented as json
-        .into()
-    );
-    *re.status_mut() = match self {
+    let status = match &self {
       Self::InternalError => StatusCode::INTERNAL_SERVER_ERROR,
 
       Self::PathNotFound(_) => StatusCode::NOT_FOUND,
@@ -110,11 +113,45 @@ impl Reply for ClientError {
       Self::Forbidden => StatusCode::FORBIDDEN,
 
       // All the remaining should be bad request
-      _ => StatusCode::BAD_REQUEST
+      _ => StatusCode::BAD_REQUEST,
     };
+    let message = match &self {
+      Self::InternalError => "An internal error occurred.".to_owned(),
+      Self::PathNotFound(path) => format!("Path not found: {}", path),
+      Self::MethodNotFound(method) => format!("Method not allowed: {}", method),
+      Self::Unauthorized => "Unauthorized.".to_owned(),
+      Self::Forbidden => "Forbidden.".to_owned(),
+      Self::PathDataBeforeRoot(data) => format!("Path data before root: {}", data),
+      Self::UnreadableHeader(msg) => msg.clone(),
+      Self::UnparseableCookie(msg) => format!("Unparseable cookie: {}", msg),
+      Self::DuplicateCookies { name, value, old_value } => format!(
+        "Duplicate cookie '{}': '{}' conflicts with '{}'",
+        name, value, old_value
+      ),
+      Self::InvalidContentLength(msg) => msg.clone(),
+      Self::InvalidContentType(msg) => msg.clone(),
+      Self::InvalidJson(msg) => msg.clone(),
+      Self::InvalidUrlEncoding(msg) => msg.clone(),
+      Self::InvalidIndexPath(msg) => msg.clone(),
+      Self::AlreadyExists(msg) => msg.clone(),
+      Self::UnknownOIDCProcess => "Unknown OIDC login process.".to_owned(),
+      Self::OIDCGaveNoToken => "OIDC provider did not return an ID token.".to_owned(),
+      Self::OIDCGaveNoRefreshToken => "OIDC provider did not return a refresh token.".to_owned(),
+      Self::UserNotFound(subject) => format!("No account is registered for subject '{}'.", subject),
+      Self::InvalidBuilderDraft(msg) => msg.clone(),
+    };
+    let body = ErrorPageTemplate {
+      status: status.as_str(),
+      message: &message,
+    }
+      .render()
+      .unwrap_or_else(|_| format!("<h1>{}</h1><p>{}</p>", status, message))
+    ;
+    let mut re = Response::new(body.into());
+    *re.status_mut() = status;
     re.headers_mut().insert(
       "Content-Type",
-      HeaderValue::from_static("application/json; charset=utf-8"),
+      HeaderValue::from_static("text/html; charset=utf-8"),
     );
     re
   }
@@ -193,6 +230,9 @@ impl Error {
       "Expected {}, received {}",
       parsed, expected
     )).into()
+  }
+  pub fn invalid_builder_draft(message: &str) -> Self {
+    ClientError::InvalidBuilderDraft(message.to_owned()).into()
   }
 }
 

@@ -1,7 +1,7 @@
 use super::*;
 
 // Opening a specific character id is for using XP (and storytellers can approve XP use)
-//mod id;
+mod id;
 
 #[derive(Debug)]
 struct Character {
@@ -22,7 +22,7 @@ struct Stat {
 #[derive(Template)]
 #[template(path = "characters/index.html")]
 struct Index {
-  email: String,
+  user_id: i64,
   character_stats: Vec<(
     Character,
     // Split into stats, powers, influences
@@ -32,7 +32,6 @@ struct Index {
 
 async fn index(
   state: &'static State,
-  req: Request,
   session: SessionData,
 ) -> Result<Response, Error> {
   // Storytellers see all characters; users see only their own
@@ -98,7 +97,7 @@ WHERE vampire_id = $1
 
   // Render and return
   html(Index{
-    email: session.email,
+    user_id: session.user_id,
     character_stats,
   }.render()?)
 }
@@ -114,12 +113,11 @@ pub async fn route(
     Some("") => {
       verify_path_end(&path_vec, &req)?;
       match req.method() {
-        &Method::GET => index(state, req, session).await,
+        &Method::GET => index(state, session).await,
         _ => Err(Error::method_not_found(&req)),
       }
     },
     // Parse the path into an integer id and keep routing
-//    Some(id) => id::route(state, req, path_vec, session, id.parse()?).await,
-    Some(_) => todo!(),
+    Some(id) => id::route(state, req, path_vec, session, id.parse()?).await,
   }
 }

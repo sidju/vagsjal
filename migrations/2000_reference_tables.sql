@@ -18,6 +18,33 @@ name VARCHAR(64) PRIMARY KEY,
 description VARCHAR NOT NULL DEFAULT ''
 );
 
+CREATE TABLE stat_xp_cost (
+stat VARCHAR(64) PRIMARY KEY,
+xp_cost INT CHECK (xp_cost >= 0) NOT NULL,
+
+FOREIGN KEY (stat) REFERENCES stat
+);
+
+CREATE TABLE influence_xp_cost (
+influence VARCHAR(64) PRIMARY KEY,
+xp_cost INT CHECK (xp_cost >= 0) NOT NULL,
+
+FOREIGN KEY (influence) REFERENCES influence
+);
+
+CREATE TABLE humanity_xp_cost (
+change_type VARCHAR(64) PRIMARY KEY,
+xp_cost INT CHECK (xp_cost >= 0) NOT NULL
+);
+
+CREATE TABLE power_xp_cost (
+in_clan BOOL NOT NULL,
+level INT CHECK (level > 0) NOT NULL,
+xp_cost INT CHECK (xp_cost >= 0) NOT NULL,
+
+PRIMARY KEY (in_clan, level)
+);
+
 CREATE TABLE clan (
 clan_id BIGSERIAL PRIMARY KEY NOT NULL,
 name VARCHAR(64) UNIQUE NOT NULL,

@@ -189,27 +189,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "bookkeep-web"
-version = "0.1.0"
-dependencies = [
- "askama",
- "dotenvy",
- "futures",
- "http-body-util",
- "hyper 1.7.0",
- "hyper-util",
- "nanoid",
- "openidconnect",
- "reqwest",
- "serde",
- "serde_json",
- "serde_urlencoded",
- "sqlx",
- "time",
- "tokio",
-]
-
-[[package]]
 name = "bumpalo"
 version = "3.19.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2638,6 +2617,27 @@ dependencies = [
  "once_cell",
  "rustix",
  "windows-sys 0.61.1",
+]
+
+[[package]]
+name = "the-nightly-grind"
+version = "0.1.0"
+dependencies = [
+ "askama",
+ "dotenvy",
+ "futures",
+ "http-body-util",
+ "hyper 1.7.0",
+ "hyper-util",
+ "nanoid",
+ "openidconnect",
+ "reqwest",
+ "serde",
+ "serde_json",
+ "serde_urlencoded",
+ "sqlx",
+ "time",
+ "tokio",
 ]
 
 [[package]]

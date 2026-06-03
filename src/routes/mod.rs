@@ -1,7 +1,6 @@
 use hyper::header::HeaderValue;
 use hyper::{Method, StatusCode};
 use askama::Template;
-use serde::Deserialize;
 use time::Date;
 
 use crate::{
@@ -52,24 +51,9 @@ pub async fn route(
 
   // The actual routing
   let cookies = parse_cookies(&req)?;
-  let session = match cookies.get("session") {
-    Some(id) => {
-      sqlx::query_as!(SessionData,
-        "
-          SELECT session_id, user_id, email, role AS \"role!:Role\"
-          FROM session
-          JOIN app_user USING (user_id)
-          WHERE session_id = $1
-        ",
-        id,
-      )
-        .fetch_optional(&state.db)
-        .await?
-    },
-    None => None,
-  };
-
-  match path_vec.pop().as_deref() {
+  let auth = authenticate_from_cookies(state, &cookies).await?;
+  let session = auth.session;
+  let mut response = match path_vec.pop().as_deref() {
     // Means a missing trailing slash, redirect to with slash
     None => permanent_redirect(&format!("{}/", req.uri().path())),
     Some("") => {
@@ -109,5 +93,9 @@ pub async fn route(
       css(CSS)
     },
     _ => Err(Error::path_not_found(&req)),
+  };
+  for cookie in auth.set_cookies {
+    response = add_header(response, hyper::header::SET_COOKIE, cookie);
   }
+  response
 }

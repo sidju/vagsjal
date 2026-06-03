@@ -8,23 +8,23 @@ CREATE VIEW xp_remaining AS
 	) UNION ALL (
 		SELECT humanity_change.vampire_id, (-xp_cost) AS amount
 		FROM humanity_change
-		JOIN humanity_change_review USING (humanity_change_id)
-		WHERE humanity_change_review.state != 'denied'
+		LEFT JOIN humanity_change_review USING (humanity_change_id)
+		WHERE humanity_change_review.state IS NULL OR humanity_change_review.state != 'denied'
 	) UNION ALL (
 		SELECT influence_raise.vampire_id, (-xp_cost) AS amount
 		FROM influence_raise
-		JOIN influence_raise_review USING (influence_raise_id)
-		WHERE influence_raise_review.state != 'denied'
+		LEFT JOIN influence_raise_review USING (influence_raise_id)
+		WHERE influence_raise_review.state IS NULL OR influence_raise_review.state != 'denied'
 	) UNION ALL (
 		SELECT power_raise.vampire_id, (-xp_cost) AS amount
 		FROM power_raise
-		JOIN power_raise_review USING (power_raise_id)
-		WHERE power_raise_review.state != 'denied'
+		LEFT JOIN power_raise_review USING (power_raise_id)
+		WHERE power_raise_review.state IS NULL OR power_raise_review.state != 'denied'
 	) UNION ALL (
 		SELECT stat_raise.vampire_id, (-xp_cost) AS amount
 		FROM stat_raise
-		JOIN stat_raise_review USING (stat_raise_id)
-		WHERE stat_raise_review.state != 'denied'
+		LEFT JOIN stat_raise_review USING (stat_raise_id)
+		WHERE stat_raise_review.state IS NULL OR stat_raise_review.state != 'denied'
 	)) GROUP BY vampire_id
 ;
 
