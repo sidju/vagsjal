@@ -1,43 +1,5 @@
 BEGIN;
 
-INSERT INTO stat (name, description) VALUES
-  ('HP',                     'How much damage you can take before falling in combat. Base value is Blood Potency * 6 + 6.'),
-  ('Physical Ability',       'Your ability to overcome physical challenges and fight.'),
-  ('Mental Ability',         'Your ability to resist mental manipulation and inflict it on others.'),
-  ('Organizational Ability', 'Your ability to keep track of and maintain investments.')
-;
-
-INSERT INTO power (name, description) VALUES
-  ('Animalism', 'Powers to manipulate beasts, both mundane and kindred.'),
-  ('Auspex',    'Powers to see and show truth.'),
-  ('Dominate',  'Powers to control minds and even memories.'),
-  ('Presence',  'Powers to control emotions.'),
-  ('Obfuscate', 'Powers to control the perception of others.'),
-  ('Nightmare', 'Powers to show people what they fear.'),
-  ('Protean',   'Powers to change shape.')
-;
-
-INSERT INTO influence (name) VALUES
-  ('Juridik'),
-  ('Gatuliv'),
-  ('Societet'),
-  ('Kultur')
-;
-
-INSERT INTO stat_xp_cost (stat, xp_cost) VALUES
-  ('HP', 3),
-  ('Physical Ability', 4),
-  ('Mental Ability', 4),
-  ('Organizational Ability', 4)
-;
-
-INSERT INTO influence_xp_cost (influence, xp_cost) VALUES
-  ('Juridik', 4),
-  ('Gatuliv', 4),
-  ('Societet', 4),
-  ('Kultur', 4)
-;
-
 INSERT INTO humanity_xp_cost (change_type, xp_cost) VALUES
   ('gain', 7),
   ('loss', 0)
@@ -54,11 +16,6 @@ INSERT INTO power_xp_cost (in_clan, level, xp_cost) VALUES
   (FALSE, 3, 18),
   (FALSE, 4, 21),
   (FALSE, 5, 24)
-;
-
-INSERT INTO clan (name, unique_power, power_one, power_two) VALUES
-  ('Ventrue',   'Dominate',  'Animalism', 'Presence'),
-  ('Nosferatu', 'Obfuscate', 'Animalism', 'Nightmare')
 ;
 
 INSERT INTO app_user (user_id, name, oidc_subject, role) VALUES
