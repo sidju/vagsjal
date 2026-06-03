@@ -17,9 +17,28 @@
         </div>
       </div>
     </nav>
-    <div class="page-back">
-      <a href="../">Back</a>
-    </div>
+    <div class="page-paths" id="page-paths" aria-label="Breadcrumb"></div>
+    <script>
+      (() => {
+        const container = document.getElementById('page-paths');
+        if (!container) return;
+
+        const parts = window.location.pathname.split('/').filter(Boolean);
+        if (parts.length === 0) return;
+
+        const links = [{ href: '/', label: 'Home' }];
+        let path = '/';
+        for (let i = 0; i < parts.length - 1; i++) {
+          path += `${parts[i]}/`;
+          const label = decodeURIComponent(parts[i])
+            .replace(/[-_]+/g, ' ')
+            .replace(/\b\w/g, (c) => c.toUpperCase());
+          links.push({ href: path, label });
+        }
+
+        container.innerHTML = links.map(({ href, label }) => `<a href="${href}">${label}</a>`).join(' <span>/</span> ');
+      })();
+    </script>
     <main>
       {% block body %}Placeholder content{% endblock %}
     </main>

@@ -42,23 +42,50 @@ nav .nav-title {
   font-weight: bold;
 }
 
-.page-back {
+.page-paths {
   max-width: 900px;
   margin: 0 auto;
   padding: 0.5rem 1rem 0;
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  align-items: center;
 }
-.page-back a,
-.page-back a:visited {
+.page-paths a,
+.page-paths a:visited {
+  color: #2c4a7a;
+  text-decoration: underline;
+}
+.page-paths a:hover {
+  color: #17345e;
+}
+.page-paths span {
+  color: #777;
+}
+
+.metadata-header {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0 0 0.75rem;
+}
+.edit-button,
+.edit-button:visited {
   display: inline-block;
-  padding: 0.35rem 0.7rem;
-  border: 1px solid #bbb;
-  border-radius: 0.35rem;
+  padding: 0.25rem 0.6rem;
+  border: 1px solid #999;
+  border-radius: 0.3rem;
   background: #fff;
-  color: #333;
+  color: inherit;
   text-decoration: none;
 }
-.page-back a:hover {
+.edit-button:hover {
   background: #f0f0f0;
+}
+
+.character-link,
+.character-link:visited {
+  color: inherit;
+  text-decoration: none;
 }
 
 /* Main content area */

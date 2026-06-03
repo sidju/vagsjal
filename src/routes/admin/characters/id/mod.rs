@@ -2,16 +2,21 @@ use super::*;
 use serde::Deserialize;
 use time::Date;
 
+mod edit;
+
 #[derive(sqlx::FromRow, Debug)]
 struct CharacterRow {
   vampire_id: i64,
   user_id: i64,
+  owner_name: String,
   active: bool,
   name: String,
   apparent_age: i32,
   date_embraced: Date,
   torpor_time: sqlx::postgres::types::PgInterval,
   clan_id: i64,
+  clan_name: String,
+  remaining_xp: i64,
 }
 
 #[derive(sqlx::FromRow, Debug)]
@@ -33,6 +38,14 @@ struct PendingUsageRow {
   name: String,
   increase: i32,
   xp_cost: i32,
+  created_at: String,
+}
+
+#[derive(sqlx::FromRow, Debug)]
+struct SummaryStat {
+  name: String,
+  value: i64,
+  pending_review: bool,
 }
 
 #[derive(Deserialize)]
@@ -55,8 +68,9 @@ struct CharacterForm {
 #[template(path = "admin/characters/id/index.html")]
 struct Index {
   character: CharacterRow,
-  clans: Vec<ClanRow>,
-  users: Vec<UserRow>,
+  stats: Vec<SummaryStat>,
+  powers: Vec<SummaryStat>,
+  influences: Vec<SummaryStat>,
   pending: Vec<PendingUsageRow>,
   show_admin_link: bool,
 }
@@ -71,8 +85,22 @@ async fn get_character(state: &'static State, vampire_id: i64) -> Result<Charact
   sqlx::query_as!(
     CharacterRow,
     r#"
-    SELECT vampire_id, user_id, active, name, apparent_age, date_embraced, torpor_time, clan_id
+    SELECT
+      vampire.vampire_id,
+      vampire.user_id,
+      app_user.name AS owner_name,
+      vampire.active,
+      vampire.name,
+      vampire.apparent_age,
+      vampire.date_embraced,
+      vampire.torpor_time,
+      vampire.clan_id,
+      clan.name AS clan_name,
+      COALESCE(xp_remaining.amount, 0) AS "remaining_xp!"
     FROM vampire
+    JOIN app_user USING (user_id)
+    JOIN clan USING (clan_id)
+    LEFT JOIN xp_remaining USING (vampire_id)
     WHERE vampire_id = $1
     "#,
     vampire_id,
@@ -82,28 +110,61 @@ async fn get_character(state: &'static State, vampire_id: i64) -> Result<Charact
     .map_err(Error::from)
 }
 
-async fn fetch_options(state: &'static State) -> Result<(Vec<ClanRow>, Vec<UserRow>), Error> {
-  let clans = sqlx::query_as!(
-    ClanRow,
-    r#"
-    SELECT clan_id, name
-    FROM clan
-    ORDER BY name
-    "#
-  )
-    .fetch_all(&state.db)
-    .await?;
-  let users = sqlx::query_as!(
-    UserRow,
-    r#"
-    SELECT user_id, name
-    FROM app_user
-    ORDER BY user_id
-    "#
-  )
-    .fetch_all(&state.db)
-    .await?;
-  Ok((clans, users))
+async fn fetch_stats(
+    state: &'static State,
+    vampire_id: i64,
+) -> Result<Vec<SummaryStat>, Error> {
+    let stats = sqlx::query_as!(
+      SummaryStat,
+      r#"
+      SELECT "name!" AS "name!", "value!" AS "value!", "pending_review!" AS "pending_review!"
+      FROM vampire_stat
+      WHERE vampire_id = $1
+      ORDER BY "name!"
+      "#,
+      vampire_id,
+    )
+      .fetch_all(&state.db)
+      .await?;
+    Ok(stats)
+}
+
+async fn fetch_powers(
+    state: &'static State,
+    vampire_id: i64,
+) -> Result<Vec<SummaryStat>, Error> {
+    let powers = sqlx::query_as!(
+      SummaryStat,
+      r#"
+      SELECT "name!" AS "name!", "value!" AS "value!", "pending_review!" AS "pending_review!"
+      FROM vampire_power
+      WHERE vampire_id = $1
+      ORDER BY "name!"
+      "#,
+      vampire_id,
+    )
+      .fetch_all(&state.db)
+      .await?;
+    Ok(powers)
+}
+
+async fn fetch_influences(
+    state: &'static State,
+    vampire_id: i64,
+) -> Result<Vec<SummaryStat>, Error> {
+    let influences = sqlx::query_as!(
+      SummaryStat,
+      r#"
+      SELECT "name!" AS "name!", "value!" AS "value!", "pending_review!" AS "pending_review!"
+      FROM vampire_influence
+      WHERE vampire_id = $1
+      ORDER BY "name!"
+      "#,
+      vampire_id,
+    )
+      .fetch_all(&state.db)
+      .await?;
+    Ok(influences)
 }
 
 async fn fetch_pending_usage(state: &'static State, vampire_id: i64) -> Result<Vec<PendingUsageRow>, Error> {
@@ -114,11 +175,12 @@ async fn fetch_pending_usage(state: &'static State, vampire_id: i64) -> Result<V
       stat_raise.stat_raise_id AS "usage_id!",
       stat_raise.stat AS "name!",
       stat_raise.increase AS "increase!",
-      stat_raise.xp_cost AS "xp_cost!"
+      stat_raise.xp_cost AS "xp_cost!",
+      to_char(stat_raise.creation_time, 'YYYY-MM-DD HH24:MI:SS') AS "created_at!"
     FROM stat_raise
     LEFT JOIN stat_raise_review USING (stat_raise_id)
     WHERE stat_raise.vampire_id = $1 AND stat_raise_review.state IS NULL
-    ORDER BY stat_raise.stat_raise_id
+    ORDER BY stat_raise.creation_time, stat_raise.stat_raise_id
     "#,
     vampire_id,
   )
@@ -131,11 +193,12 @@ async fn fetch_pending_usage(state: &'static State, vampire_id: i64) -> Result<V
       power_raise.power_raise_id AS "usage_id!",
       power_raise.power AS "name!",
       power_raise.increase AS "increase!",
-      power_raise.xp_cost AS "xp_cost!"
+      power_raise.xp_cost AS "xp_cost!",
+      to_char(power_raise.creation_time, 'YYYY-MM-DD HH24:MI:SS') AS "created_at!"
     FROM power_raise
     LEFT JOIN power_raise_review USING (power_raise_id)
     WHERE power_raise.vampire_id = $1 AND power_raise_review.state IS NULL
-    ORDER BY power_raise.power_raise_id
+    ORDER BY power_raise.creation_time, power_raise.power_raise_id
     "#,
     vampire_id,
   )
@@ -148,11 +211,12 @@ async fn fetch_pending_usage(state: &'static State, vampire_id: i64) -> Result<V
       influence_raise.influence_raise_id AS "usage_id!",
       influence_raise.influence AS "name!",
       influence_raise.increase AS "increase!",
-      influence_raise.xp_cost AS "xp_cost!"
+      influence_raise.xp_cost AS "xp_cost!",
+      to_char(influence_raise.creation_time, 'YYYY-MM-DD HH24:MI:SS') AS "created_at!"
     FROM influence_raise
     LEFT JOIN influence_raise_review USING (influence_raise_id)
     WHERE influence_raise.vampire_id = $1 AND influence_raise_review.state IS NULL
-    ORDER BY influence_raise.influence_raise_id
+    ORDER BY influence_raise.creation_time, influence_raise.influence_raise_id
     "#,
     vampire_id,
   )
@@ -165,34 +229,38 @@ async fn fetch_pending_usage(state: &'static State, vampire_id: i64) -> Result<V
       humanity_change.humanity_change_id AS "usage_id!",
       humanity_change.note AS "name!",
       ABS(humanity_change.change)::INT AS "increase!",
-      humanity_change.xp_cost AS "xp_cost!"
+      humanity_change.xp_cost AS "xp_cost!",
+      to_char(humanity_change.creation_time, 'YYYY-MM-DD HH24:MI:SS') AS "created_at!"
     FROM humanity_change
     LEFT JOIN humanity_change_review USING (humanity_change_id)
     WHERE humanity_change.vampire_id = $1 AND humanity_change_review.state IS NULL
-    ORDER BY humanity_change.humanity_change_id
+    ORDER BY humanity_change.creation_time, humanity_change.humanity_change_id
     "#,
     vampire_id,
   )
     .fetch_all(&state.db)
     .await?;
   Ok(stat_rows.into_iter()
-    .map(|r| PendingUsageRow { kind: r.kind, usage_id: r.usage_id, name: r.name, increase: r.increase, xp_cost: r.xp_cost })
-    .chain(power_rows.into_iter().map(|r| PendingUsageRow { kind: r.kind, usage_id: r.usage_id, name: r.name, increase: r.increase, xp_cost: r.xp_cost }))
-    .chain(influence_rows.into_iter().map(|r| PendingUsageRow { kind: r.kind, usage_id: r.usage_id, name: r.name, increase: r.increase, xp_cost: r.xp_cost }))
-    .chain(humanity_rows.into_iter().map(|r| PendingUsageRow { kind: r.kind, usage_id: r.usage_id, name: r.name, increase: r.increase, xp_cost: r.xp_cost }))
+    .map(|r| PendingUsageRow { kind: r.kind, usage_id: r.usage_id, name: r.name, increase: r.increase, xp_cost: r.xp_cost, created_at: r.created_at })
+    .chain(power_rows.into_iter().map(|r| PendingUsageRow { kind: r.kind, usage_id: r.usage_id, name: r.name, increase: r.increase, xp_cost: r.xp_cost, created_at: r.created_at }))
+    .chain(influence_rows.into_iter().map(|r| PendingUsageRow { kind: r.kind, usage_id: r.usage_id, name: r.name, increase: r.increase, xp_cost: r.xp_cost, created_at: r.created_at }))
+    .chain(humanity_rows.into_iter().map(|r| PendingUsageRow { kind: r.kind, usage_id: r.usage_id, name: r.name, increase: r.increase, xp_cost: r.xp_cost, created_at: r.created_at }))
     .collect())
 }
 
 async fn index_get(state: &'static State, vampire_id: i64) -> Result<Response, Error> {
-  let (character, (clans, users), pending) = tokio::try_join!(
+  let (character, stats, powers, influences, pending) = tokio::try_join!(
     get_character(state, vampire_id),
-    fetch_options(state),
+    fetch_stats(state, vampire_id),
+    fetch_powers(state, vampire_id),
+    fetch_influences(state, vampire_id),
     fetch_pending_usage(state, vampire_id),
   )?;
   html(Index {
     character,
-    clans,
-    users,
+    stats,
+    powers,
+    influences,
     pending,
     show_admin_link: true,
   }.render()?)
@@ -343,6 +411,7 @@ pub async fn route(
       &Method::POST => index_post(state, session, req, vampire_id).await,
       _ => Err(Error::method_not_found(&req)),
     },
+    Some("edit") => edit::route(state, session, req, path_vec, vampire_id).await,
     _ => Err(Error::path_not_found(&req)),
   }
 }

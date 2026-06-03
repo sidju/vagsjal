@@ -125,6 +125,8 @@ INSERT INTO influence_raise_review (influence_raise_id, state, reviewer_id) VALU
 ;
 
 -- Reset sequences after explicit ID inserts so BIGSERIAL continues from the right value.
+SELECT setval('app_user_user_id_seq',                 (SELECT MAX(user_id)           FROM app_user));
+SELECT setval('vampire_vampire_id_seq',               (SELECT MAX(vampire_id)        FROM vampire));
 SELECT setval('humanity_change_humanity_change_id_seq', (SELECT MAX(humanity_change_id) FROM humanity_change));
 SELECT setval('stat_raise_stat_raise_id_seq',           (SELECT MAX(stat_raise_id)       FROM stat_raise));
 SELECT setval('power_raise_power_raise_id_seq',         (SELECT MAX(power_raise_id)       FROM power_raise));

@@ -8,7 +8,7 @@
   {% else %}
   <ul>
   {% for (c,stats,powers,influences) in character_stats %}
-    <li><a href="{{c.vampire_id}}/">
+    <li><a class="character-link" href="{{c.vampire_id}}/">
       <table class="stat-table{% if !c.active %} inactive{% endif %}">
         <tr>
           <th>{{ c.name }}</th>
@@ -66,10 +66,7 @@
         </tr>
         {% endfor %}
         <tr>
-          <th>Remaining XP</th>
-        </tr>
-        <tr>
-          <td>{{ c.remaining_xp }}</td>
+          <th>Remaining XP</th><th>{{ c.remaining_xp }}</th>
         </tr>
       </table>
     </a></li>
