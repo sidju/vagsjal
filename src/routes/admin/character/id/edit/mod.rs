@@ -7,18 +7,22 @@ struct Index {
   clans: Vec<ClanRow>,
   users: Vec<UserRow>,
   show_admin_link: bool,
+  oldest_active: Option<OldestActiveCharacter>,
 }
 
-async fn index_get(state: &'static State, vampire_id: i64) -> Result<Response, Error> {
+async fn index_get(state: &'static State, session: &SessionData, vampire_id: i64) -> Result<Response, Error> {
   let (character, (clans, users)) = tokio::try_join!(
     get_character(state, vampire_id),
     fetch_options(state),
   )?;
+  let oldest_active = fetch_oldest_active(state, session.user_id).await?;
+
   html(Index {
     character,
     clans,
     users,
     show_admin_link: true,
+    oldest_active,
   }.render()?)
 }
 
@@ -57,7 +61,7 @@ async fn index_post(
 
 pub async fn route(
   state: &'static State,
-  _session: SessionData,
+  session: SessionData,
   req: Request,
   mut path_vec: Vec<String>,
   vampire_id: i64,
@@ -65,7 +69,7 @@ pub async fn route(
   match path_vec.pop().as_deref() {
     None => permanent_redirect(&format!("{}/", req.uri().path())),
     Some("") => match req.method() {
-      &Method::GET => index_get(state, vampire_id).await,
+      &Method::GET => index_get(state, &session, vampire_id).await,
       &Method::POST => index_post(state, vampire_id, req).await,
       _ => Err(Error::method_not_found(&req)),
     },

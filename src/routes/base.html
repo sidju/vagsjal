@@ -11,6 +11,11 @@
         <span class="nav-title">VägSjäl: Regentens Rekviem</span>
         <div class="nav-links">
           <a href="/">Hem</a>
+          {% if let Some(character) = oldest_active %}
+          <a href="/character/{{ character.vampire_id }}/">{{ character.name }}</a>
+          {% else %}
+          <a href="/character/">Karaktärsblad</a>
+          {% endif %}
           {% if show_admin_link %}
           <a href="/admin/">Admin</a>
           {% endif %}
@@ -24,7 +29,7 @@
         if (!container) return;
 
         const labels = {
-          'character': 'Karaktärer',
+          'character': 'Karaktärsblad',
           'admin': 'Admin',
           'user': 'Användare',
           'edit': 'Redigera',

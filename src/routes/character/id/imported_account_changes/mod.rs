@@ -23,6 +23,7 @@ struct Index {
   imported_account_changes: Vec<ImportedAccountChange>,
   accounts_by_type: std::collections::HashMap<String, Vec<Account>>,
   show_admin_link: bool,
+  oldest_active: Option<OldestActiveCharacter>,
 }
 async fn index(
   state: &'static State,
@@ -67,11 +68,14 @@ WHERE Accounts.bookkeeping_id = $1
     }
   }
 
+  let oldest_active = fetch_oldest_active(state, session.user_id).await?;
+
   html(Index{
     bookkeeping_name: bookkeeping.name,
     imported_account_changes,
     accounts_by_type,
     show_admin_link: session.role.is_storyteller(),
+    oldest_active,
   }.render()?)
 }
 

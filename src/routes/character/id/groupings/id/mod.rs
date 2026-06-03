@@ -34,6 +34,7 @@ struct Index {
   transactions: Vec<TransactionSummary>,
   created: Created,
   show_admin_link: bool,
+  oldest_active: Option<OldestActiveCharacter>,
 }
 // Give a summary over the grouping, just like for bookkeepings above
 async fn index(
@@ -73,7 +74,8 @@ ORDER BY Transactions.day
     .fetch_all(&state.db)
     .await?
   ;
-  println!("{t:?}");
+  let oldest_active = fetch_oldest_active(state, session.user_id).await?;
+
   html(Index{
     name: grouping.name,
     bookkeeping_name: bookkeeping.name,
@@ -81,6 +83,7 @@ ORDER BY Transactions.day
     transactions: t,
     created: query,
     show_admin_link: session.role.is_storyteller(),
+    oldest_active,
   }.render()?)
 }
 

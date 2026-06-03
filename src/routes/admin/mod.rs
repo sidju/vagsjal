@@ -7,11 +7,15 @@ mod user;
 #[template(path = "admin/index.html")]
 struct Index {
   show_admin_link: bool,
+  oldest_active: Option<OldestActiveCharacter>,
 }
 
-async fn index() -> Result<Response, Error> {
+async fn index(state: &'static State, session: &SessionData) -> Result<Response, Error> {
+  let oldest_active = fetch_oldest_active(state, session.user_id).await?;
+
   html(Index {
     show_admin_link: true,
+    oldest_active,
   }.render()?)
 }
 
@@ -28,9 +32,9 @@ pub async fn route(
     None => permanent_redirect(&format!("{}/", req.uri().path())),
     Some("") => {
       verify_method_path_end(&path_vec, &req, &Method::GET)?;
-      index().await
+      index(state, &session).await
     },
-    Some("user") => user::route(state, req, path_vec).await,
+    Some("user") => user::route(state, session, req, path_vec).await,
     Some("character") => character::route(state, session, req, path_vec).await,
     _ => Err(Error::path_not_found(&req)),
   }

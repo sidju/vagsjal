@@ -15,9 +15,10 @@ struct UserRow {
 struct Index {
   users: Vec<UserRow>,
   show_admin_link: bool,
+  oldest_active: Option<OldestActiveCharacter>,
 }
 
-async fn index(state: &'static State) -> Result<Response, Error> {
+async fn index(state: &'static State, session: &SessionData) -> Result<Response, Error> {
   let users = sqlx::query_as!(
     UserRow,
     r#"
@@ -28,14 +29,18 @@ async fn index(state: &'static State) -> Result<Response, Error> {
   )
     .fetch_all(&state.db)
     .await?;
+  let oldest_active = fetch_oldest_active(state, session.user_id).await?;
+
   html(Index {
     users,
     show_admin_link: true,
+    oldest_active,
   }.render()?)
 }
 
 pub async fn route(
   state: &'static State,
+  session: SessionData,
   req: Request,
   mut path_vec: Vec<String>,
 ) -> Result<Response, Error> {
@@ -43,8 +48,8 @@ pub async fn route(
     None => permanent_redirect(&format!("{}/", req.uri().path())),
     Some("") => {
       verify_method_path_end(&path_vec, &req, &Method::GET)?;
-      index(state).await
+      index(state, &session).await
     },
-    Some(id) => id::route(state, req, path_vec, id.parse()?).await,
+    Some(id) => id::route(state, session, req, path_vec, id.parse()?).await,
   }
 }

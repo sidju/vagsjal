@@ -26,4 +26,23 @@ amount INT CHECK (amount > 0) NOT NULL,
 FOREIGN KEY (vampire_id) REFERENCES vampire ON DELETE CASCADE
 );
 
+CREATE FUNCTION insert_vampire_base_xp()
+RETURNS TRIGGER AS $$
+DECLARE
+  years_awake INT;
+BEGIN
+  years_awake := FLOOR(
+    EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - NEW.date_embraced::TIMESTAMPTZ - NEW.torpor_time))
+    / (86400.0 * 365.25)
+  )::INT;
+  INSERT INTO xp (vampire_id, amount) VALUES (NEW.vampire_id, 24 + 2 * years_awake);
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER trigger_vampire_insert_base_xp
+  AFTER INSERT ON vampire
+  FOR EACH ROW
+  EXECUTE FUNCTION insert_vampire_base_xp();
+
 COMMIT;

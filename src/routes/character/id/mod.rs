@@ -93,6 +93,7 @@ struct Index {
   initial_data_json: String,
   saved: bool,
   show_admin_link: bool,
+  oldest_active: Option<OldestActiveCharacter>,
 }
 
 async fn get_character(
@@ -324,6 +325,8 @@ async fn index_get(
       influences: influence_options,
     },
   })?.replace("</", r"<\/");
+  let oldest_active = fetch_oldest_active(state, session.user_id).await?;
+
   html(Index {
     character,
     stats,
@@ -332,6 +335,7 @@ async fn index_get(
     initial_data_json,
     saved: query.saved == Some(1),
     show_admin_link: session.role.is_storyteller(),
+    oldest_active,
   }.render()?)
 }
 async fn index_post(

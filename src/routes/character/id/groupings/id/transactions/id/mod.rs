@@ -28,6 +28,7 @@ struct Index {
   account_changes: Vec<AccountChange>,
   created: Created,
   show_admin_link: bool,
+  oldest_active: Option<OldestActiveCharacter>,
 }
 #[derive(Debug, Deserialize)]
 struct Created {
@@ -83,6 +84,8 @@ WHERE Accounts.bookkeeping_id = $1
     }
   }
 
+  let oldest_active = fetch_oldest_active(state, session.user_id).await?;
+
   html(Index{
     bookkeeping_name: bookkeeping.name,
     grouping_name: grouping.name,
@@ -93,6 +96,7 @@ WHERE Accounts.bookkeeping_id = $1
     created,
     accounts_by_type,
     show_admin_link: session.role.is_storyteller(),
+    oldest_active,
   }.render()?)
 }
 pub async fn route(

@@ -72,10 +72,6 @@ INSERT INTO vampire (vampire_id, user_id, active, name, apparent_age, date_embra
   (2, 2, TRUE, 'Jane Doe',   28, '1985-06-15', '5 years', 2)
 ;
 
-INSERT INTO xp (vampire_id, amount) VALUES
-  (1, 48),
-  (2, 36)
-;
 
 
 -- Humanity (character creation baseline, both approved; third pending)

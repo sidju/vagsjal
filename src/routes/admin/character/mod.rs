@@ -32,15 +32,19 @@ struct UserRow {
 
 #[derive(Deserialize)]
 struct CharacterForm {
-  action: String,
+  action: Option<String>,
   user_id: Option<i64>,
   name: Option<String>,
   apparent_age: Option<i32>,
   date_embraced: Option<String>,
+  torpor_years: Option<i32>,
   torpor_months: Option<i32>,
   torpor_days: Option<i32>,
   clan_id: Option<i64>,
   active: Option<String>,
+  review_kind: Option<String>,
+  usage_id: Option<i64>,
+  decision: Option<String>,
 }
 
 #[derive(Template)]
@@ -50,6 +54,7 @@ struct Index {
   clans: Vec<ClanRow>,
   users: Vec<UserRow>,
   show_admin_link: bool,
+  oldest_active: Option<OldestActiveCharacter>,
 }
 
 fn parse_date(date: &str) -> Result<Date, Error> {
@@ -105,26 +110,29 @@ async fn fetch_index_data(state: &'static State) -> Result<(Vec<CharacterRow>, V
   Ok((characters, clans, users))
 }
 
-async fn index_get(state: &'static State) -> Result<Response, Error> {
+async fn index_get(state: &'static State, session: &SessionData) -> Result<Response, Error> {
   let (characters, clans, users) = fetch_index_data(state).await?;
+  let oldest_active = fetch_oldest_active(state, session.user_id).await?;
+
   html(Index {
     characters,
     clans,
     users,
     show_admin_link: true,
+    oldest_active,
   }.render()?)
 }
 
 async fn index_post(state: &'static State, mut req: Request) -> Result<Response, Error> {
   let form: CharacterForm = parse_body_urlencoded(&mut req, state.max_content_len).await?;
-  match form.action.as_str() {
+  match form.action.as_deref().unwrap_or("") {
     "create" => {
       let user_id = form.user_id.ok_or_else(|| Error::invalid_builder_draft("Missing user_id"))?;
       let name = form.name.ok_or_else(|| Error::invalid_builder_draft("Missing name"))?;
       let apparent_age = form.apparent_age.ok_or_else(|| Error::invalid_builder_draft("Missing apparent_age"))?;
       let date_embraced = parse_date(form.date_embraced.as_deref().ok_or_else(|| Error::invalid_builder_draft("Missing date_embraced"))?)?;
       let torpor_time = sqlx::postgres::types::PgInterval {
-        months: form.torpor_months.unwrap_or(0),
+        months: form.torpor_years.unwrap_or(0) * 12 + form.torpor_months.unwrap_or(0),
         days: form.torpor_days.unwrap_or(0),
         microseconds: 0,
       };
@@ -160,7 +168,7 @@ pub async fn route(
   match path_vec.pop().as_deref() {
     None => permanent_redirect(&format!("{}/", req.uri().path())),
     Some("") => match req.method() {
-      &Method::GET => index_get(state).await,
+      &Method::GET => index_get(state, &session).await,
       &Method::POST => index_post(state, req).await,
       _ => Err(Error::method_not_found(&req)),
     },

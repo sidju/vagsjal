@@ -17,6 +17,31 @@ use utils::*;
 mod auth;
 use auth::*;
 
+#[derive(Debug)]
+pub struct OldestActiveCharacter {
+  pub vampire_id: i64,
+  pub name: String,
+}
+
+pub async fn fetch_oldest_active(
+  state: &'static State,
+  user_id: i64,
+) -> Result<Option<OldestActiveCharacter>, Error> {
+  Ok(sqlx::query_as!(
+    OldestActiveCharacter,
+    r#"
+SELECT vampire_id, name
+FROM vampire
+WHERE user_id = $1 AND active = true
+ORDER BY vampire_id
+LIMIT 1
+    "#,
+    user_id,
+  )
+    .fetch_optional(&state.db)
+    .await?)
+}
+
 // And the actual route modules
 mod admin;
 mod character;
@@ -27,6 +52,7 @@ const CSS: &'static str = include_str!("styles.css");
 #[template(path = "index.html")]
 struct Index{
   show_admin_link: bool,
+  oldest_active: Option<OldestActiveCharacter>,
 }
 
 pub async fn route(
@@ -63,15 +89,15 @@ pub async fn route(
       // utility function for simple paths
       verify_method_path_end(&path_vec, &req, &Method::GET)?;
 
- //     let character_data = match session {
- //       // TODO, make use of the data if it exists
- //       Some(sess_data) => todo!(),
- //       None => None,
- //     };
+      let oldest_active = match session {
+        Some(ref s) => fetch_oldest_active(state, s.user_id).await?,
+        None => None,
+      };
 
       // Utility function to build html response around given str
       html(Index{
         show_admin_link: session.as_ref().map(|s| s.role.is_storyteller()).unwrap_or(false),
+        oldest_active,
       }.render()?)
     },
 //    Some("login") => {

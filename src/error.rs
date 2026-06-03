@@ -1,5 +1,6 @@
 // Needed imports
 use crate::Reply;
+use crate::routes::OldestActiveCharacter;
 use askama::Template;
 use hyper::header::HeaderValue;
 use hyper::{
@@ -102,6 +103,7 @@ struct ErrorPageTemplate<'a> {
   status: &'a str,
   message: &'a str,
   show_admin_link: bool,
+  oldest_active: Option<OldestActiveCharacter>,
 }
 impl Reply for ClientError {
   fn into_response(self) -> Response {
@@ -145,6 +147,7 @@ impl Reply for ClientError {
       status: status.as_str(),
       message: &message,
       show_admin_link: false,
+      oldest_active: None,
     }
       .render()
       .unwrap_or_else(|_| format!("<h1>{}</h1><p>{}</p>", status, message))

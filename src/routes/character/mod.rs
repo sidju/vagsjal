@@ -29,6 +29,7 @@ struct Index {
     Vec<Stat>, Vec<Stat>, Vec<Stat>
   )>,
   show_admin_link: bool,
+  oldest_active: Option<OldestActiveCharacter>,
 }
 
 async fn index(
@@ -96,10 +97,13 @@ WHERE vampire_id = $1
     character_stats.push((c,stats,powers,influences));
   }
 
+  let oldest_active = fetch_oldest_active(state, session.user_id).await?;
+
   // Render and return
   html(Index{
     character_stats,
     show_admin_link: session.role.is_storyteller(),
+    oldest_active,
   }.render()?)
 }
 pub async fn route(
