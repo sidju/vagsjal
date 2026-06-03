@@ -16,7 +16,7 @@ Link to other wiki pages using standard markdown links:
 Use #hashtags to categorise pages. A page can have multiple tags:
 
 ```
-#rules #house-rules #setting
+#regler #husregler #världen
 ```
 
 Tags automatically become links to a category page listing all pages with that tag. See [categories](categories.md) for more.
