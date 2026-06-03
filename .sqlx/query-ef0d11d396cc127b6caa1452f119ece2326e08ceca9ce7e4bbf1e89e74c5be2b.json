@@ -1,0 +1,32 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "SELECT in_clan, level, xp_cost FROM power_xp_cost",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "in_clan",
+        "type_info": "Bool"
+      },
+      {
+        "ordinal": 1,
+        "name": "level",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 2,
+        "name": "xp_cost",
+        "type_info": "Int4"
+      }
+    ],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": [
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "ef0d11d396cc127b6caa1452f119ece2326e08ceca9ce7e4bbf1e89e74c5be2b"
+}

@@ -3,75 +3,171 @@
 {% block title %}Karaktärer{% endblock %}
 
 {% block body %}
-  {% if character_stats.len() == 0 %}
-    <p>Du har inga karaktärer, prata med en berättare för att skapa en.</p>
-  {% else %}
-  <ul>
-  {% for (c,stats,powers,influences) in character_stats %}
-    <li><a class="character-link" href="{{c.vampire_id}}/">
-      <table class="stat-table{% if !c.active %} inactive{% endif %}">
-        <tr>
-          <th>{{ c.name }}</th>
-        </tr>
-        <tr>
-          <td>Uppenbar ålder (år)</td>
-          <td>{{ c.apparent_age }}</td>
-        </tr>
-        <tr>
-          <td>Datum för omfamning</td>
-          <td>{{ c.date_embraced }}</td>
-        </tr>
-        <tr>
-          <td>Tid i torpor</td>
-          <td>{{ c.torpor_time.months }} månader, {{ c.torpor_time.days }} dagar</td>
-        </tr>
-        <tr>
-          <td>Klankrets</td>
-          <td>{{ c.clan_name }}</td>
-        </tr>
-        {% for s in stats %}
-        <tr>
-          <td>{{ s.name }}</td>
-          {% if s.pending_review %}
-          <td><i>{{ s.value }}</i></td>
-          {% else %}
-          <td>{{ s.value }}</td>
+  {% if saved %}<p><b>Karaktär skapad! Väntar på godkännande från spelledare.</b></p>{% endif %}
+
+  {% if active_chars.len() > 0 %}
+    <h2>Aktiva karaktärer</h2>
+    <ul>
+    {% for (c,stats,powers,influences) in active_chars %}
+      <li>
+        <table class="stat-table">
+          <tr>
+            <th><a class="character-link" href="{{c.vampire_id}}/">{{ c.name }}</a></th>
+          </tr>
+          <tr>
+            <td>Mänsklig ålder (år)</td>
+            <td>{{ c.apparent_age }}</td>
+          </tr>
+          <tr>
+            <td><a href="/wiki/omfamning/">Omfamningsdatum</a></td>
+            <td>{{ c.date_embraced }}</td>
+          </tr>
+          <tr>
+            <td><a href="/wiki/torpor/">Tid i torpor</a></td>
+            <td>{{ c.torpor_time.months }} månader, {{ c.torpor_time.days }} dagar</td>
+          </tr>
+          <tr>
+            <td><a href="/wiki/klan/">Klan</a></td>
+            <td><a href="/wiki/{{ c.clan_name | lower }}/">{{ c.clan_name }}</a></td>
+          </tr>
+          {% if let Some(url) = c.character_description_url %}
+          <tr>
+            <td>Karaktärsbeskrivning</td>
+            <td><a href="{{ url }}">Länk</a></td>
+          </tr>
           {% endif %}
-        </tr>
-        {% endfor %}
-        <tr>
-          <th>Krafter</th>
-        </tr>
-        {% for d in powers %}
-        <tr>
-          <td>{{ d.name }}</td>
-          {% if d.pending_review %}
-          <td><i>{{ d.value }}</i></td>
-          {% else %}
-          <td>{{ d.value }}</td>
-          {% endif %}
-        </tr>
-        {% endfor %}
-        <tr>
-          <th>Inflytanden</th>
-        </tr>
-        {% for i in influences %}
-        <tr>
-          <td>{{ i.name }}</td>
-          {% if i.pending_review %}
-          <td><i>{{ i.value }}</i></td>
-          {% else %}
-          <td>{{ i.value }}</td>
-          {% endif %}
-        </tr>
-        {% endfor %}
-        <tr>
-          <th>Återstående XP</th><th>{{ c.remaining_xp }}</th>
-        </tr>
-      </table>
-    </a></li>
-  {% endfor %}
-  </ul>
+          {% for s in stats %}
+          <tr>
+            <td><a href="/wiki/{{ s.name | lower }}/">{{ s.name }}</a></td>
+            {% if s.pending_review %}
+            <td><i>{{ s.value }}</i></td>
+            {% else %}
+            <td>{{ s.value }}</td>
+            {% endif %}
+          </tr>
+          {% endfor %}
+          <tr>
+            <th>Krafter</th>
+          </tr>
+          {% for d in powers %}
+          <tr>
+            <td><a href="/wiki/{{ d.name | lower }}/">{{ d.name }}</a></td>
+            {% if d.pending_review %}
+            <td><i>{{ d.value }}</i></td>
+            {% else %}
+            <td>{{ d.value }}</td>
+            {% endif %}
+          </tr>
+          {% endfor %}
+          <tr>
+            <th>Inflytanden</th>
+          </tr>
+          {% for i in influences %}
+          <tr>
+            <td><a href="/wiki/{{ i.name | lower }}/">{{ i.name }}</a></td>
+            {% if i.pending_review %}
+            <td><i>{{ i.value }}</i></td>
+            {% else %}
+            <td>{{ i.value }}</td>
+            {% endif %}
+          </tr>
+          {% endfor %}
+          <tr>
+            <th>Återstående XP</th><th>{{ c.remaining_xp }}</th>
+          </tr>
+        </table>
+      </li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+
+  {% if show_form %}
+    <h2>Skapa karaktär</h2>
+    <p>Fyll i grundläggande information för att skapa en ny karaktär. En spelledare kommer att godkänna den innan den blir aktiv.</p>
+    <form method="post" enctype="application/x-www-form-urlencoded">
+      <p><label>Namn <input name="name" required></label></p>
+      <p><label>Mänsklig ålder <input name="apparent_age" type="number" min="0" required></label></p>
+      <p><label>Datum för omfamning <input name="date_embraced" type="date" required></label></p>
+      <p><label>Torpor år <input name="torpor_years" type="number" value="0"></label></p>
+      <p><label>Torpor månader <input name="torpor_months" type="number" value="0"></label></p>
+      <p><label>Torpor dagar <input name="torpor_days" type="number" value="0"></label></p>
+      <p>
+        <label>Klan
+          <select name="clan_id" required>
+            <option value="">Välj...</option>
+            {% for clan in clans %}
+            <option value="{{ clan.clan_id }}">{{ clan.name }}</option>
+            {% endfor %}
+          </select>
+        </label>
+      </p>
+      <p><label>Länk till karaktärsbeskrivning <input name="character_description_url" type="url" placeholder="https://docs.google.com/..."></label></p>
+      <button type="submit">Skapa</button>
+    </form>
+  {% endif %}
+
+  {% if draft_chars.len() > 0 %}
+    {% if active_chars.len() > 0 %}
+    <h2>Väntar på godkännande</h2>
+    {% endif %}
+    <ul>
+    {% for (c,stats,powers,influences) in draft_chars %}
+      <li>
+        <table class="stat-table draft">
+          <tr>
+            <th><a class="character-link" href="{{c.vampire_id}}/">{{ c.name }}</a></th>
+          </tr>
+          <tr>
+            <td>Mänsklig ålder (år)</td>
+            <td>{{ c.apparent_age }}</td>
+          </tr>
+          <tr>
+            <td><a href="/wiki/omfamning/">Omfamningsdatum</a></td>
+            <td>{{ c.date_embraced }}</td>
+          </tr>
+          <tr>
+            <td><a href="/wiki/torpor/">Tid i torpor</a></td>
+            <td>{{ c.torpor_time.months }} månader, {{ c.torpor_time.days }} dagar</td>
+          </tr>
+          <tr>
+            <td><a href="/wiki/klan/">Klan</a></td>
+            <td><a href="/wiki/{{ c.clan_name | lower }}/">{{ c.clan_name }}</a></td>
+          </tr>
+        </table>
+      </li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+
+  {% if inactive_chars.len() > 0 %}
+    <h2>Inaktiva karaktärer</h2>
+    <ul>
+    {% for (c,stats,powers,influences) in inactive_chars %}
+      <li>
+        <table class="stat-table inactive">
+          <tr>
+            <th><a class="character-link" href="{{c.vampire_id}}/">{{ c.name }}</a></th>
+          </tr>
+          <tr>
+            <td>Mänsklig ålder (år)</td>
+            <td>{{ c.apparent_age }}</td>
+          </tr>
+          <tr>
+            <td><a href="/wiki/omfamning/">Omfamningsdatum</a></td>
+            <td>{{ c.date_embraced }}</td>
+          </tr>
+          <tr>
+            <td><a href="/wiki/torpor/">Tid i torpor</a></td>
+            <td>{{ c.torpor_time.months }} månader, {{ c.torpor_time.days }} dagar</td>
+          </tr>
+          <tr>
+            <td><a href="/wiki/klan/">Klan</a></td>
+            <td><a href="/wiki/{{ c.clan_name | lower }}/">{{ c.clan_name }}</a></td>
+          </tr>
+        </table>
+      </li>
+    {% endfor %}
+    </ul>
   {% endif %}
 
 {% endblock %}

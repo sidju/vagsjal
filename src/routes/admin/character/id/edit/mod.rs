@@ -56,6 +56,7 @@ async fn index_post(
   mut req: Request,
 ) -> Result<Response, Error> {
   let form: CharacterForm = parse_body_urlencoded(&mut req, state.max_content_len).await?;
+  // Pass the form; update_character in the parent module handles the status field
   update_character(state, vampire_id, form).await
 }
 

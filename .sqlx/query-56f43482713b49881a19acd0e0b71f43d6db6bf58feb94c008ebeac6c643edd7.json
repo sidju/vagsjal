@@ -1,0 +1,20 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n    INSERT INTO vampire (user_id, status, name, apparent_age, date_embraced, torpor_time, clan_id, character_description_url)\n    VALUES ($1, 'draft', $2, $3, $4, $5, $6, $7)\n    ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Int8",
+        "Varchar",
+        "Int4",
+        "Date",
+        "Interval",
+        "Int8",
+        "Text"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "56f43482713b49881a19acd0e0b71f43d6db6bf58feb94c008ebeac6c643edd7"
+}

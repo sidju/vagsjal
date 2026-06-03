@@ -1,0 +1,14 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "UPDATE vampire SET status = 'active' WHERE vampire_id = $1 AND status = 'draft'",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Int8"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "5efcb1f73477e653c2f1e675407aee059830773227c20aea074ade2b71e573a5"
+}

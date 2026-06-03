@@ -1,0 +1,29 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\nINSERT INTO app_user(oidc_subject, name, role)\nVALUES ($1, $2, 'user')\nON CONFLICT (oidc_subject)\nDO UPDATE SET name = CASE\n  WHEN app_user.name = '' THEN EXCLUDED.name\n  ELSE app_user.name\nEND\nRETURNING user_id, role AS \"role!:Role\"\n    ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "user_id",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 1,
+        "name": "role!:Role",
+        "type_info": "Varchar"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Varchar",
+        "Varchar"
+      ]
+    },
+    "nullable": [
+      false,
+      false
+    ]
+  },
+  "hash": "fe8c58ad1b5ab93fdfbe92e2c89937828d0ceaa3cc3ab58b6de2f91895f08d9f"
+}

@@ -1,4 +1,5 @@
 use super::*;
+use crate::routes::validate_description_url;
 use time::Date;
 
 mod edit;
@@ -8,7 +9,7 @@ struct CharacterRow {
   vampire_id: i64,
   user_id: i64,
   owner_name: String,
-  active: bool,
+  status: CharacterStatus,
   name: String,
   apparent_age: i32,
   date_embraced: Date,
@@ -16,6 +17,7 @@ struct CharacterRow {
   clan_id: i64,
   clan_name: String,
   remaining_xp: i64,
+  character_description_url: Option<String>,
 }
 
 #[derive(sqlx::FromRow, Debug)]
@@ -74,14 +76,15 @@ async fn get_character(state: &'static State, vampire_id: i64) -> Result<Charact
       vampire.vampire_id,
       vampire.user_id,
       app_user.name AS owner_name,
-      vampire.active,
+      vampire.status AS "status: CharacterStatus",
       vampire.name,
       vampire.apparent_age,
       vampire.date_embraced,
       vampire.torpor_time,
       vampire.clan_id,
       clan.name AS clan_name,
-      COALESCE(xp_remaining.amount, 0) AS "remaining_xp!"
+      COALESCE(xp_remaining.amount, 0) AS "remaining_xp!",
+      vampire.character_description_url AS "character_description_url?"
     FROM vampire
     JOIN app_user USING (user_id)
     JOIN clan USING (clan_id)
@@ -269,27 +272,33 @@ async fn update_character(
     microseconds: 0,
   };
   let clan_id = form.clan_id.ok_or_else(|| Error::invalid_builder_draft("Missing clan_id"))?;
-  let active = form.active.is_some();
+  let status = form.status.as_deref().unwrap_or("draft");
+  let character_description_url = form.character_description_url.map(|u| u.trim().to_string()).filter(|u| !u.is_empty());
+  if let Some(ref url) = character_description_url {
+    validate_description_url(&state.http_client, url).await?;
+  }
   sqlx::query!(
     r#"
     UPDATE vampire
     SET user_id = $2,
-        active = $3,
+        status = $3,
         name = $4,
         apparent_age = $5,
         date_embraced = $6,
         torpor_time = $7,
-        clan_id = $8
+        clan_id = $8,
+        character_description_url = $9
     WHERE vampire_id = $1
     "#,
     vampire_id,
     user_id,
-    active,
+    status,
     name,
     apparent_age,
     date_embraced,
     torpor_time,
     clan_id,
+    character_description_url,
   )
     .execute(&state.db)
     .await?;
@@ -371,6 +380,20 @@ async fn review_pending(
   see_other(&format!("/admin/character/{vampire_id}/"))
 }
 
+async fn approve_draft(
+  state: &'static State,
+  _session: &SessionData,
+  vampire_id: i64,
+) -> Result<Response, Error> {
+  sqlx::query!(
+    "UPDATE vampire SET status = 'active' WHERE vampire_id = $1 AND status = 'draft'",
+    vampire_id,
+  )
+    .execute(&state.db)
+    .await?;
+  see_other(&format!("/admin/character/{vampire_id}/"))
+}
+
 async fn index_post(
   state: &'static State,
   session: SessionData,
@@ -381,6 +404,7 @@ async fn index_post(
   match form.action.as_deref().unwrap_or("review") {
     "update" => update_character(state, vampire_id, form).await,
     "review" => review_pending(state, &session, vampire_id, form).await,
+    "approve" => approve_draft(state, &session, vampire_id).await,
     _ => Err(Error::invalid_builder_draft("Unknown character action")),
   }
 }

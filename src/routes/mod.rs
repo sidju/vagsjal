@@ -1,7 +1,6 @@
 use hyper::header::HeaderValue;
 use hyper::{Method, StatusCode};
 use askama::Template;
-use time::Date;
 
 use crate::{
   State,
@@ -23,6 +22,25 @@ pub struct OldestActiveCharacter {
   pub name: String,
 }
 
+#[derive(sqlx::Type, Debug, PartialEq, Clone)]
+#[sqlx(rename_all = "lowercase", type_name = "VARCHAR")]
+pub enum CharacterStatus {
+  Draft,
+  Active,
+  Inactive,
+}
+impl CharacterStatus {
+  pub fn is_active(&self) -> bool {
+    matches!(self, CharacterStatus::Active)
+  }
+  pub fn is_draft(&self) -> bool {
+    matches!(self, CharacterStatus::Draft)
+  }
+  pub fn is_inactive(&self) -> bool {
+    matches!(self, CharacterStatus::Inactive)
+  }
+}
+
 pub async fn fetch_oldest_active(
   state: &'static State,
   user_id: i64,
@@ -32,7 +50,7 @@ pub async fn fetch_oldest_active(
     r#"
 SELECT vampire_id, name
 FROM vampire
-WHERE user_id = $1 AND active = true
+WHERE user_id = $1 AND status = 'active'
 ORDER BY vampire_id
 LIMIT 1
     "#,
@@ -149,4 +167,28 @@ pub async fn route(
     response = add_header(response, hyper::header::SET_COOKIE, cookie);
   }
   response
+}
+
+pub(crate) async fn validate_description_url(http_client: &reqwest::Client, url: &str) -> Result<(), Error> {
+  if !url.starts_with("https://") {
+    return Err(Error::invalid_builder_draft("URL must use HTTPS"));
+  }
+  let parsed = reqwest::Url::parse(url)
+    .map_err(|e| Error::invalid_builder_draft(&format!("Invalid URL: {e}")))?;
+  if parsed.host_str().is_none() {
+    return Err(Error::invalid_builder_draft("URL must have a host"));
+  }
+  let response = http_client
+    .get(url)
+    .timeout(std::time::Duration::from_secs(10))
+    .send()
+    .await
+    .map_err(|e| Error::invalid_builder_draft(&format!("Could not reach URL: {e}")))?;
+  if !response.status().is_success() {
+    return Err(Error::invalid_builder_draft(&format!(
+      "URL returned status {} — the document may not be publicly accessible",
+      response.status().as_u16()
+    )));
+  }
+  Ok(())
 }

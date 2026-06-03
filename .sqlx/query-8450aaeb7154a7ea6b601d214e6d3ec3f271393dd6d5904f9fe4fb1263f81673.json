@@ -1,0 +1,34 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\nSELECT \"name!\", \"value!\", \"pending_review!\"\nFROM vampire_influence\nWHERE vampire_id = $1\n      ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "name!",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 1,
+        "name": "value!",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 2,
+        "name": "pending_review!",
+        "type_info": "Bool"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int8"
+      ]
+    },
+    "nullable": [
+      true,
+      true,
+      true
+    ]
+  },
+  "hash": "8450aaeb7154a7ea6b601d214e6d3ec3f271393dd6d5904f9fe4fb1263f81673"
+}

@@ -1,0 +1,52 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n    SELECT\n      'humanity' AS \"kind!\",\n      humanity_change.humanity_change_id AS \"usage_id!\",\n      humanity_change.note AS \"name!\",\n      ABS(humanity_change.change)::INT AS \"increase!\",\n      humanity_change.xp_cost AS \"xp_cost!\",\n      to_char(humanity_change.creation_time, 'YYYY-MM-DD HH24:MI:SS') AS \"created_at!\"\n    FROM humanity_change\n    LEFT JOIN humanity_change_review USING (humanity_change_id)\n    WHERE humanity_change.vampire_id = $1 AND humanity_change_review.state IS NULL\n    ORDER BY humanity_change.creation_time, humanity_change.humanity_change_id\n    ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "kind!",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 1,
+        "name": "usage_id!",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 2,
+        "name": "name!",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 3,
+        "name": "increase!",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 4,
+        "name": "xp_cost!",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 5,
+        "name": "created_at!",
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int8"
+      ]
+    },
+    "nullable": [
+      null,
+      false,
+      false,
+      null,
+      false,
+      null
+    ]
+  },
+  "hash": "95122cf0ae990a44c812fbb8d5bbcb12612d1b4e19b912802474dca1238ab538"
+}

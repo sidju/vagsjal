@@ -5,7 +5,9 @@ use std::collections::HashMap;
 #[derive(Debug)]
 struct CharacterHeader {
   name: String,
+  status: CharacterStatus,
   remaining_xp: i64,
+  character_description_url: Option<String>,
 }
 #[derive(Debug, Serialize)]
 struct StatLine {
@@ -94,6 +96,20 @@ struct Index {
   show_admin_link: bool,
   oldest_active: Option<OldestActiveCharacter>,
 }
+#[derive(Debug, Template)]
+#[template(path = "character/id/draft.html")]
+struct DraftView {
+  character: CharacterHeader,
+  show_admin_link: bool,
+  oldest_active: Option<OldestActiveCharacter>,
+}
+#[derive(Debug, Template)]
+#[template(path = "character/id/inactive.html")]
+struct InactiveView {
+  character: CharacterHeader,
+  show_admin_link: bool,
+  oldest_active: Option<OldestActiveCharacter>,
+}
 
 async fn get_character(
   state: &'static State,
@@ -104,7 +120,7 @@ async fn get_character(
   sqlx::query_as!(
     CharacterHeader,
     "
-SELECT vampire.name, COALESCE(xp_remaining.amount, 0) AS \"remaining_xp!\"
+SELECT vampire.name, vampire.status AS \"status: CharacterStatus\", COALESCE(xp_remaining.amount, 0) AS \"remaining_xp!\", vampire.character_description_url AS \"character_description_url?\"
 FROM vampire
 LEFT JOIN xp_remaining USING (vampire_id)
 WHERE vampire.vampire_id = $1
@@ -268,6 +284,23 @@ async fn index_get(
   character: CharacterHeader,
   vampire_id: i64,
 ) -> Result<Response, Error> {
+  let oldest_active = fetch_oldest_active(state, session.user_id).await?;
+
+  if character.status.is_draft() {
+    return html(DraftView {
+      character,
+      show_admin_link: session.role.is_storyteller(),
+      oldest_active,
+    }.render()?);
+  }
+  if character.status.is_inactive() {
+    return html(InactiveView {
+      character,
+      show_admin_link: session.role.is_storyteller(),
+      oldest_active,
+    }.render()?);
+  }
+
   let query: SavedQuery = parse_query(&req)?;
   let (
     stats,
@@ -324,7 +357,6 @@ async fn index_get(
       influences: influence_options,
     },
   })?.replace("</", r"<\/");
-  let oldest_active = fetch_oldest_active(state, session.user_id).await?;
 
   html(Index {
     character,
@@ -341,9 +373,12 @@ async fn index_post(
   state: &'static State,
   mut req: Request,
   _session: SessionData,
-  _character: CharacterHeader,
+  character: CharacterHeader,
   vampire_id: i64,
 ) -> Result<Response, Error> {
+  if !character.status.is_active() {
+    return Err(Error::character_not_active());
+  }
   let save_form: SaveForm = parse_body_urlencoded(&mut req, state.max_content_len).await?;
   let operations: Vec<DraftOperation> = serde_json::from_str(&save_form.ops_json)
     .map_err(|e| Error::invalid_builder_draft(&format!("Invalid draft operations JSON: {e}")))?;

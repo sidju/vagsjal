@@ -1,0 +1,16 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n      INSERT INTO power_raise_review (power_raise_id, state, reviewer_id)\n      VALUES ($1, CASE WHEN $2 = 'approved' THEN 'approved' ELSE 'denied' END::approval_state_t, $3)\n      ON CONFLICT DO NOTHING\n      ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Int8",
+        "Text",
+        "Int8"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "e6c3e308cb8cecde1403a7865ffc3844d30691539df2ab48b97de6a4982238b2"
+}

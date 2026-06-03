@@ -1,0 +1,16 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\nINSERT INTO humanity_change(vampire_id, change, xp_cost, note)\nSELECT\n  $1,\n  $2::INT,\n  humanity_xp_cost.xp_cost * ABS($2::INT),\n  $3::VARCHAR\nFROM humanity_xp_cost\nWHERE humanity_xp_cost.change_type = CASE WHEN $2::INT > 0 THEN 'gain' ELSE 'loss' END\n          ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Int8",
+        "Int4",
+        "Varchar"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "5c75e41879d5749fe373aea529410f9657174baa270521eb85fd6a8f68ef3699"
+}

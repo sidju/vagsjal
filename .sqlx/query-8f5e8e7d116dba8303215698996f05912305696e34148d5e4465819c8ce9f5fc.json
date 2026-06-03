@@ -1,0 +1,41 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\nSELECT vampire.name, vampire.status AS \"status: CharacterStatus\", COALESCE(xp_remaining.amount, 0) AS \"remaining_xp!\", vampire.character_description_url AS \"character_description_url?\"\nFROM vampire\nLEFT JOIN xp_remaining USING (vampire_id)\nWHERE vampire.vampire_id = $1\n  AND vampire.user_id = $2\n    ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "name",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 1,
+        "name": "status: CharacterStatus",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 2,
+        "name": "remaining_xp!",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 3,
+        "name": "character_description_url?",
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int8",
+        "Int8"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      null,
+      true
+    ]
+  },
+  "hash": "8f5e8e7d116dba8303215698996f05912305696e34148d5e4465819c8ce9f5fc"
+}

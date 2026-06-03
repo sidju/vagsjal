@@ -1,0 +1,52 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n    SELECT\n      'influence' AS \"kind!\",\n      influence_raise.influence_raise_id AS \"usage_id!\",\n      influence_raise.influence AS \"name!\",\n      influence_raise.increase AS \"increase!\",\n      influence_raise.xp_cost AS \"xp_cost!\",\n      to_char(influence_raise.creation_time, 'YYYY-MM-DD HH24:MI:SS') AS \"created_at!\"\n    FROM influence_raise\n    LEFT JOIN influence_raise_review USING (influence_raise_id)\n    WHERE influence_raise.vampire_id = $1 AND influence_raise_review.state IS NULL\n    ORDER BY influence_raise.creation_time, influence_raise.influence_raise_id\n    ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "kind!",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 1,
+        "name": "usage_id!",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 2,
+        "name": "name!",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 3,
+        "name": "increase!",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 4,
+        "name": "xp_cost!",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 5,
+        "name": "created_at!",
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int8"
+      ]
+    },
+    "nullable": [
+      null,
+      false,
+      false,
+      false,
+      false,
+      null
+    ]
+  },
+  "hash": "ba09f8a3bed2882089467ea21ebfccb03fd84b35f3dda077ce320521a1b8b747"
+}
