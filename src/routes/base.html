@@ -7,9 +7,19 @@
   </head>
   <body>
     <nav>
-      <span class="nav-title">The Nightly Grind</span>
-      <a href="/">Home</a>
+      <div class="nav-inner">
+        <span class="nav-title">The Nightly Grind</span>
+        <div class="nav-links">
+          <a href="/">Home</a>
+          {% if show_admin_link %}
+          <a href="/admin/">Admin</a>
+          {% endif %}
+        </div>
+      </div>
     </nav>
+    <div class="page-back">
+      <a href="../">Back</a>
+    </div>
     <main>
       {% block body %}Placeholder content{% endblock %}
     </main>

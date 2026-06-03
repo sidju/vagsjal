@@ -92,6 +92,7 @@ struct Index {
   /// Safe JSON embedded via <script type="application/json"> (</> escaped)
   initial_data_json: String,
   saved: bool,
+  show_admin_link: bool,
 }
 
 async fn get_character(
@@ -332,6 +333,7 @@ async fn index_get(
     influences,
     initial_data_json,
     saved: query.saved == Some(1),
+    show_admin_link: session.role.is_storyteller(),
   }.render()?)
 }
 async fn index_post(

@@ -22,6 +22,7 @@ struct Index {
   bookkeeping_name: String,
   imported_account_changes: Vec<ImportedAccountChange>,
   accounts_by_type: std::collections::HashMap<String, Vec<Account>>,
+  show_admin_link: bool,
 }
 async fn index(
   state: &'static State,
@@ -70,6 +71,7 @@ WHERE Accounts.bookkeeping_id = $1
     bookkeeping_name: bookkeeping.name,
     imported_account_changes,
     accounts_by_type,
+    show_admin_link: session.role.is_storyteller(),
   }.render()?)
 }
 

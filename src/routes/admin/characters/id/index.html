@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+
+{% block title %}Edit character {{ character.vampire_id }}{% endblock %}
+
+{% block body %}
+  <h1>{{ character.name }}</h1>
+
+  <h2>Character</h2>
+  <form method="post" enctype="application/x-www-form-urlencoded">
+    <input type="hidden" name="action" value="update">
+    <p>
+      <label>Owner
+        <select name="user_id">
+          {% for user in users %}
+          <option value="{{ user.user_id }}" {% if user.user_id == character.user_id %}selected{% endif %}>{{ user.name }}</option>
+          {% endfor %}
+        </select>
+      </label>
+    </p>
+    <p><label>Name <input name="name" value="{{ character.name }}"></label></p>
+    <p><label>Apparent age <input name="apparent_age" type="number" value="{{ character.apparent_age }}"></label></p>
+    <p><label>Date embraced <input name="date_embraced" type="date" value="{{ character.date_embraced }}"></label></p>
+    <p><label>Torpor months <input name="torpor_months" type="number" value="{{ character.torpor_time.months }}"></label></p>
+    <p><label>Torpor days <input name="torpor_days" type="number" value="{{ character.torpor_time.days }}"></label></p>
+    <p>
+      <label>Clan
+        <select name="clan_id">
+          {% for clan in clans %}
+          <option value="{{ clan.clan_id }}" {% if clan.clan_id == character.clan_id %}selected{% endif %}>{{ clan.name }}</option>
+          {% endfor %}
+        </select>
+      </label>
+    </p>
+    <p><label><input type="checkbox" name="active" {% if character.active %}checked{% endif %}> Active</label></p>
+    <button type="submit">Save</button>
+  </form>
+
+  <h2>Pending XP usages</h2>
+  {% if pending.len() == 0 %}
+    <p>None pending.</p>
+  {% else %}
+    <table class="stat-table">
+      <tr><th>Kind</th><th>Name</th><th>Increase</th><th>XP cost</th><th>Action</th></tr>
+      {% for usage in pending %}
+      <tr>
+        <td>{{ usage.kind }}</td>
+        <td>{{ usage.name }}</td>
+        <td>{{ usage.increase }}</td>
+        <td>{{ usage.xp_cost }}</td>
+        <td>
+          <form method="post" enctype="application/x-www-form-urlencoded">
+            <input type="hidden" name="action" value="review">
+            <input type="hidden" name="review_kind" value="{{ usage.kind }}">
+            <input type="hidden" name="usage_id" value="{{ usage.usage_id }}">
+            <button type="submit" name="decision" value="approve">Approve</button>
+            <button type="submit" name="decision" value="reject">Reject</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  {% endif %}
+{% endblock %}

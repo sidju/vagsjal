@@ -6,6 +6,7 @@ mod id;
 #[derive(Debug)]
 struct Character {
   vampire_id: i64,
+  active: bool,
   name: String,
   apparent_age: i32, // in years
   date_embraced: Date,
@@ -22,23 +23,23 @@ struct Stat {
 #[derive(Template)]
 #[template(path = "characters/index.html")]
 struct Index {
-  user_id: i64,
   character_stats: Vec<(
     Character,
     // Split into stats, powers, influences
     Vec<Stat>, Vec<Stat>, Vec<Stat>
   )>,
+  show_admin_link: bool,
 }
 
 async fn index(
   state: &'static State,
   session: SessionData,
 ) -> Result<Response, Error> {
-  // Storytellers see all characters; users see only their own
   let characters = sqlx::query_as!(Character,
     "
 SELECT
   vampire.vampire_id,
+  vampire.active,
   vampire.name,
   vampire.apparent_age,
   vampire.date_embraced,
@@ -48,9 +49,9 @@ SELECT
 FROM vampire
 JOIN clan USING (clan_id)
 JOIN xp_remaining USING (vampire_id)
-WHERE ($1 OR vampire.user_id = $2)
+WHERE vampire.user_id = $1
+ORDER BY vampire.active DESC, vampire.name
     ",
-    session.role.is_storyteller(),
     session.user_id,
   )
     .fetch_all(&state.db)
@@ -97,8 +98,8 @@ WHERE vampire_id = $1
 
   // Render and return
   html(Index{
-    user_id: session.user_id,
     character_stats,
+    show_admin_link: session.role.is_storyteller(),
   }.render()?)
 }
 pub async fn route(

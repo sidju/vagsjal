@@ -101,6 +101,7 @@ pub enum ClientError {
 struct ErrorPageTemplate<'a> {
   status: &'a str,
   message: &'a str,
+  show_admin_link: bool,
 }
 impl Reply for ClientError {
   fn into_response(self) -> Response {
@@ -143,6 +144,7 @@ impl Reply for ClientError {
     let body = ErrorPageTemplate {
       status: status.as_str(),
       message: &message,
+      show_admin_link: false,
     }
       .render()
       .unwrap_or_else(|_| format!("<h1>{}</h1><p>{}</p>", status, message))

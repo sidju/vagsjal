@@ -69,26 +69,50 @@ fn verify_id_token_allow_missing_nonce<'a>(
 > {
   id_token.claims(&state.oidc_client.id_token_verifier(), allow_any_nonce)
 }
-async fn session_for_subject(
+fn display_name_from_claims(
+  claims: &openidconnect::IdTokenClaims<
+    openidconnect::EmptyAdditionalClaims,
+    openidconnect::core::CoreGenderClaim,
+  >,
+) -> String {
+  claims
+    .name()
+    .and_then(|name| name.get(None))
+    .map(|name| name.as_str().to_owned())
+    .or_else(|| claims.preferred_username().map(|username| username.as_str().to_owned()))
+    .or_else(|| claims.email().map(|email| email.as_str().to_owned()))
+    .unwrap_or_else(|| claims.subject().as_str().to_owned())
+}
+async fn session_for_claims(
   state: &'static State,
-  oidc_subject: &str,
-) -> Result<Option<SessionData>, Error> {
+  claims: &openidconnect::IdTokenClaims<
+    openidconnect::EmptyAdditionalClaims,
+    openidconnect::core::CoreGenderClaim,
+  >,
+) -> Result<SessionData, Error> {
+  let display_name = display_name_from_claims(claims);
   let row = sqlx::query!(
     "
-SELECT user_id, role AS \"role!:Role\"
-FROM app_user
-WHERE oidc_subject = $1
+INSERT INTO app_user(oidc_subject, name, role)
+VALUES ($1, $2, 'user')
+ON CONFLICT (oidc_subject)
+DO UPDATE SET name = CASE
+  WHEN app_user.name = '' THEN EXCLUDED.name
+  ELSE app_user.name
+END
+RETURNING user_id, role AS \"role!:Role\"
     ",
-    oidc_subject,
+    claims.subject().as_str(),
+    display_name,
   )
-    .fetch_optional(&state.db)
+    .fetch_one(&state.db)
     .await
-    .map_err(Error::from)
-  ?;
-  Ok(row.map(|r| SessionData {
-    user_id: r.user_id,
-    role: r.role,
-  }))
+    .map_err(Error::from)?
+  ;
+  Ok(SessionData {
+    user_id: row.user_id,
+    role: row.role,
+  })
 }
 async fn refresh_session_from_cookie(
   state: &'static State,
@@ -110,16 +134,7 @@ async fn refresh_session_from_cookie(
     Ok(claims) => claims,
     Err(_) => return Ok(None),
   };
-  let session = match session_for_subject(state, claims.subject().as_str()).await? {
-    Some(session) => session,
-    None => {
-      eprintln!(
-        "Auth refresh rejected: no local account for OIDC subject '{}'",
-        claims.subject().as_str(),
-      );
-      return Ok(None);
-    },
-  };
+  let session = session_for_claims(state, claims).await?;
   let refresh_token = token_response
     .refresh_token()
     .map(|t| t.secret().to_owned())
@@ -219,19 +234,9 @@ pub async fn authenticate_from_cookies(
       });
     },
   };
-  let session = session_for_subject(state, claims.subject().as_str()).await?;
-  if session.is_none() {
-    eprintln!(
-      "Auth rejected: no local account for OIDC subject '{}'",
-      claims.subject().as_str(),
-    );
-    return Ok(AuthResult {
-      session: None,
-      set_cookies: clear_auth_cookies()?,
-    });
-  }
+  let session = session_for_claims(state, claims).await?;
   Ok(AuthResult {
-    session,
+    session: Some(session),
     set_cookies: vec![],
   })
 }
@@ -268,16 +273,7 @@ RETURNING nonce
     &state.oidc_client.id_token_verifier(),
     &openidconnect::Nonce::new(nonce),
   )?;
-  let oidc_subject = id_token_claims.subject().as_str();
-  session_for_subject(state, oidc_subject).await?
-    .ok_or_else(|| {
-      eprintln!(
-        "OIDC login rejected: no local account for OIDC subject '{}'",
-        oidc_subject,
-      );
-      ClientError::UserNotFound(oidc_subject.to_owned())
-    })
-  ?;
+  let _session = session_for_claims(state, id_token_claims).await?;
   let refresh_token = token_response
     .refresh_token()
     .ok_or(ClientError::OIDCGaveNoRefreshToken)?

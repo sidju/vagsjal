@@ -27,6 +27,7 @@ struct Index {
   accounts_by_type: std::collections::HashMap<String, Vec<Account>>,
   account_changes: Vec<AccountChange>,
   created: Created,
+  show_admin_link: bool,
 }
 #[derive(Debug, Deserialize)]
 struct Created {
@@ -91,6 +92,7 @@ WHERE Accounts.bookkeeping_id = $1
     account_changes,
     created,
     accounts_by_type,
+    show_admin_link: session.role.is_storyteller(),
   }.render()?)
 }
 pub async fn route(

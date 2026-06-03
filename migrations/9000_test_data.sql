@@ -61,10 +61,10 @@ INSERT INTO clan (name, unique_power, power_one, power_two) VALUES
   ('Nosferatu', 'Obfuscate', 'Animalism', 'Nightmare')
 ;
 
-INSERT INTO app_user (user_id, oidc_subject, role) VALUES
-  (0, 'storyteller-subject', 'storyteller'),
-  (1, 'reviewer-subject',    'storyteller'),
-  (2, 'player-subject',      'user')
+INSERT INTO app_user (user_id, name, oidc_subject, role) VALUES
+  (0, 'Storyteller', 'storyteller-subject', 'storyteller'),
+  (1, 'Reviewer',    'reviewer-subject',    'storyteller'),
+  (2, 'Player',      'player-subject',      'user')
 ;
 
 INSERT INTO vampire (vampire_id, user_id, active, name, apparent_age, date_embraced, torpor_time, clan_id) VALUES

@@ -22,14 +22,4 @@ role VARCHAR(64) NOT NULL DEFAULT 'user',
 FOREIGN KEY (role) REFERENCES app_role
 );
 
--- OIDC login takes care of authentication and user metadata, but we still need
--- to manage the sessions ourselves.
-CREATE TABLE session (
-session_id VARCHAR PRIMARY KEY, -- Randomly generated, collisions improbable
-user_id INTEGER NOT NULL,
-valid_until TIMESTAMPTZ DEFAULT NOW() + '6 hours',
-
-FOREIGN KEY (user_id) REFERENCES app_user
-);
-
 COMMIT; -- Apply the transaction

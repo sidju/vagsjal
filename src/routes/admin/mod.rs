@@ -1,0 +1,37 @@
+use super::*;
+
+mod characters;
+mod users;
+
+#[derive(Template)]
+#[template(path = "admin/index.html")]
+struct Index {
+  show_admin_link: bool,
+}
+
+async fn index() -> Result<Response, Error> {
+  html(Index {
+    show_admin_link: true,
+  }.render()?)
+}
+
+pub async fn route(
+  state: &'static State,
+  session: SessionData,
+  req: Request,
+  mut path_vec: Vec<String>,
+) -> Result<Response, Error> {
+  if !session.role.is_storyteller() {
+    return Err(Error::forbidden());
+  }
+  match path_vec.pop().as_deref() {
+    None => permanent_redirect(&format!("{}/", req.uri().path())),
+    Some("") => {
+      verify_method_path_end(&path_vec, &req, &Method::GET)?;
+      index().await
+    },
+    Some("users") => users::route(state, req, path_vec).await,
+    Some("characters") => characters::route(state, session, req, path_vec).await,
+    _ => Err(Error::path_not_found(&req)),
+  }
+}

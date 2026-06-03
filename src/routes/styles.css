@@ -13,9 +13,22 @@ body {
 nav {
   background: #1a1a2e;
   padding: 0.6rem 1.5rem;
+}
+nav .nav-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  gap: 1.5rem;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+nav .nav-links {
   display: flex;
   gap: 1.5rem;
   align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 nav a {
   color: #ccc;
@@ -27,7 +40,25 @@ nav a:hover {
 nav .nav-title {
   color: #fff;
   font-weight: bold;
-  margin-right: auto;
+}
+
+.page-back {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0.5rem 1rem 0;
+}
+.page-back a,
+.page-back a:visited {
+  display: inline-block;
+  padding: 0.35rem 0.7rem;
+  border: 1px solid #bbb;
+  border-radius: 0.35rem;
+  background: #fff;
+  color: #333;
+  text-decoration: none;
+}
+.page-back a:hover {
+  background: #f0f0f0;
 }
 
 /* Main content area */
@@ -51,6 +82,15 @@ th, td {
 }
 tr:nth-child(even) {
   background-color: #eeeeee;
+}
+
+tr.inactive,
+table.inactive {
+  color: #8a8a8a;
+}
+
+table.inactive a {
+  color: inherit;
 }
 
 /* Stat/power/influence name–value tables: pin the value column to a fixed

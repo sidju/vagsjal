@@ -18,6 +18,7 @@ mod auth;
 use auth::*;
 
 // And the actual route modules
+mod admin;
 mod characters;
 
 const CSS: &'static str = include_str!("styles.css");
@@ -25,6 +26,7 @@ const CSS: &'static str = include_str!("styles.css");
 #[derive(Template)]
 #[template(path = "index.html")]
 struct Index{
+  show_admin_link: bool,
 }
 
 pub async fn route(
@@ -68,7 +70,9 @@ pub async fn route(
  //     };
 
       // Utility function to build html response around given str
-      html(Index{}.render()?)
+      html(Index{
+        show_admin_link: session.as_ref().map(|s| s.role.is_storyteller()).unwrap_or(false),
+      }.render()?)
     },
 //    Some("login") => {
 //      verify_method_path_end(&path_vec, &req, &Method::GET)?;
@@ -86,6 +90,12 @@ pub async fn route(
       match session {
         None => start_oidc_login_flow(state).await,
         Some(session) => characters::route(state, session, req, path_vec).await,
+      }
+    },
+    Some("admin") => {
+      match session {
+        None => start_oidc_login_flow(state).await,
+        Some(session) => admin::route(state, session, req, path_vec).await,
       }
     },
     Some("styles.css") => {

@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Admin characters{% endblock %}
+
+{% block body %}
+  <h1>Characters</h1>
+  <table class="stat-table">
+    <tr><th>ID</th><th>Name</th><th>Owner</th><th>Clan</th><th>Active</th><th>Remaining XP</th></tr>
+    {% for character in characters %}
+    <tr{% if !character.active %} class="inactive"{% endif %}>
+      <td><a href="{{ character.vampire_id }}/">{{ character.vampire_id }}</a></td>
+      <td>{{ character.name }}</td>
+      <td><a href="/admin/users/{{ character.user_id }}/">{{ character.owner_name }}</a></td>
+      <td>{{ character.clan_name }}</td>
+      <td>{% if character.active %}yes{% else %}no{% endif %}</td>
+      <td>{{ character.remaining_xp }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <h2>Create character</h2>
+  <form method="post" enctype="application/x-www-form-urlencoded">
+    <input type="hidden" name="action" value="create">
+    <p>
+      <label>Owner
+        <select name="user_id">
+          {% for user in users %}
+          <option value="{{ user.user_id }}">{{ user.name }}</option>
+          {% endfor %}
+        </select>
+      </label>
+    </p>
+    <p><label>Name <input name="name"></label></p>
+    <p><label>Apparent age <input name="apparent_age" type="number" min="0"></label></p>
+    <p><label>Date embraced <input name="date_embraced" type="date"></label></p>
+    <p><label>Torpor months <input name="torpor_months" type="number" value="0"></label></p>
+    <p><label>Torpor days <input name="torpor_days" type="number" value="0"></label></p>
+    <p>
+      <label>Clan
+        <select name="clan_id">
+          {% for clan in clans %}
+          <option value="{{ clan.clan_id }}">{{ clan.name }}</option>
+          {% endfor %}
+        </select>
+      </label>
+    </p>
+    <p><label><input type="checkbox" name="active" checked> Active</label></p>
+    <button type="submit">Create</button>
+  </form>
+{% endblock %}

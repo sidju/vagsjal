@@ -3,12 +3,13 @@
 {% block title %}Characters{% endblock %}
 
 {% block body %}
-  <p>Hello user {{user_id}}!</p>
-
+  {% if character_stats.len() == 0 %}
+    <p>You have no characters, speak to a storyteller to create one.</p>
+  {% else %}
   <ul>
   {% for (c,stats,powers,influences) in character_stats %}
     <li><a href="{{c.vampire_id}}/">
-      <table class="stat-table">
+      <table class="stat-table{% if !c.active %} inactive{% endif %}">
         <tr>
           <th>{{ c.name }}</th>
         </tr>
@@ -74,5 +75,6 @@
     </a></li>
   {% endfor %}
   </ul>
+  {% endif %}
 
 {% endblock %}

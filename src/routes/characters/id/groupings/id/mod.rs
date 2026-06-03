@@ -33,6 +33,7 @@ struct Index {
   accounts: Vec<AccountSummary>,
   transactions: Vec<TransactionSummary>,
   created: Created,
+  show_admin_link: bool,
 }
 // Give a summary over the grouping, just like for bookkeepings above
 async fn index(
@@ -79,6 +80,7 @@ ORDER BY Transactions.day
     accounts: a,
     transactions: t,
     created: query,
+    show_admin_link: session.role.is_storyteller(),
   }.render()?)
 }
 
