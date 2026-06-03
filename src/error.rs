@@ -34,6 +34,7 @@ use crate::traits::{
 // Error representation for internal errors
 // Prints to stderr and returns a http 500 internal error
 #[derive(Debug)]
+#[allow(dead_code)]
 pub enum InternalError {
   Connection(ConnectionError),
   InvalidHeader(InvalidHeaderValue),
@@ -72,7 +73,6 @@ pub enum ClientError {
   // Routing errors
   PathNotFound(String),
   MethodNotFound(String),
-  Unauthorized,
   Forbidden,
 
   // Parsing errors
@@ -86,15 +86,11 @@ pub enum ClientError {
   InvalidUrlEncoding(String),
   InvalidIndexPath(String),
 
-  // Request processing errors
-  AlreadyExists(String), // For example uniqueness error on name column
-
   // Non-parsing user-caused errors (but probably not intentional)
   UnknownOIDCProcess, // Post-login OIDC handler did not find the OIDC login in DB
   OIDCGaveNoToken, // Unlikely, would probably be error in OIDC provider
   OIDCGaveNoRefreshToken,
 
-  UserNotFound(String), // Suggests contacting the site admin to register an account
   InvalidBuilderDraft(String),
 }
 #[derive(Template)]
@@ -112,7 +108,6 @@ impl Reply for ClientError {
 
       Self::PathNotFound(_) => StatusCode::NOT_FOUND,
       Self::MethodNotFound(_) => StatusCode::METHOD_NOT_ALLOWED,
-      Self::Unauthorized => StatusCode::UNAUTHORIZED,
       Self::Forbidden => StatusCode::FORBIDDEN,
 
       // All the remaining should be bad request
@@ -122,7 +117,6 @@ impl Reply for ClientError {
       Self::InternalError => "An internal error occurred.".to_owned(),
       Self::PathNotFound(path) => format!("Path not found: {}", path),
       Self::MethodNotFound(method) => format!("Method not allowed: {}", method),
-      Self::Unauthorized => "Unauthorized.".to_owned(),
       Self::Forbidden => "Forbidden.".to_owned(),
       Self::PathDataBeforeRoot(data) => format!("Path data before root: {}", data),
       Self::UnreadableHeader(msg) => msg.clone(),
@@ -136,11 +130,9 @@ impl Reply for ClientError {
       Self::InvalidJson(msg) => msg.clone(),
       Self::InvalidUrlEncoding(msg) => msg.clone(),
       Self::InvalidIndexPath(msg) => msg.clone(),
-      Self::AlreadyExists(msg) => msg.clone(),
       Self::UnknownOIDCProcess => "Unknown OIDC login process.".to_owned(),
       Self::OIDCGaveNoToken => "OIDC provider did not return an ID token.".to_owned(),
       Self::OIDCGaveNoRefreshToken => "OIDC provider did not return a refresh token.".to_owned(),
-      Self::UserNotFound(subject) => format!("No account is registered for subject '{}'.", subject),
       Self::InvalidBuilderDraft(msg) => msg.clone(),
     };
     let body = ErrorPageTemplate {
@@ -180,9 +172,6 @@ impl Error {
   }
   pub fn method_not_found(req: &Request) -> Self {
     ClientError::MethodNotFound(req.method().to_string()).into()
-  }
-  pub fn unauthorized() -> Self {
-    ClientError::Unauthorized.into()
   }
   pub fn forbidden() -> Self {
     ClientError::Forbidden.into()

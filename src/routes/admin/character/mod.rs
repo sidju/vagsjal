@@ -11,9 +11,6 @@ struct CharacterRow {
   owner_name: String,
   active: bool,
   name: String,
-  apparent_age: i32,
-  date_embraced: Date,
-  torpor_time: sqlx::postgres::types::PgInterval,
   clan_name: String,
   remaining_xp: i64,
 }
@@ -73,9 +70,6 @@ async fn fetch_index_data(state: &'static State) -> Result<(Vec<CharacterRow>, V
       app_user.name AS owner_name,
       vampire.active,
       vampire.name,
-      vampire.apparent_age,
-      vampire.date_embraced,
-      vampire.torpor_time,
       clan.name AS clan_name,
       COALESCE(xp_remaining.amount, 0) AS "remaining_xp!"
     FROM vampire
