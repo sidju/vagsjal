@@ -8,6 +8,14 @@
     <a class="edit-button" href="./edit/">Redigera</a>
   </div>
 
+  {% if character.status.is_draft() %}
+  <form method="post" enctype="application/x-www-form-urlencoded">
+    <input type="hidden" name="action" value="approve">
+    <p>Denna karaktär är ett utkast som väntar på godkännande.</p>
+    <button type="submit">Godkänn och aktivera</button>
+  </form>
+  {% endif %}
+
   <table class="stat-table">
     <tr>
       <th>{{ character.name }}</th>
@@ -17,25 +25,35 @@
       <td>{{ character.owner_name }}</td>
     </tr>
     <tr>
-      <td>Aktiv</td>
-      <td>{% if character.active %}ja{% else %}nej{% endif %}</td>
+      <td>Status</td>
+      <td>
+        {% if character.status.is_active() %}Aktiv{% endif %}
+        {% if character.status.is_draft() %}Utkast{% endif %}
+        {% if character.status.is_inactive() %}Inaktiv{% endif %}
+      </td>
     </tr>
     <tr>
-      <td>Uppenbar ålder</td>
+      <td>Mänsklig ålder</td>
       <td>{{ character.apparent_age }}</td>
     </tr>
     <tr>
-      <td>Datum för omfamning</td>
+      <td><a href="/wiki/omfamning/">Omfamningsdatum</a></td>
       <td>{{ character.date_embraced }}</td>
     </tr>
     <tr>
-      <td>Tid i torpor</td>
+      <td><a href="/wiki/torpor/">Tid i torpor</a></td>
       <td>{{ character.torpor_time.months / 12 }} år, {{ character.torpor_time.months % 12 }} månader, {{ character.torpor_time.days }} dagar</td>
     </tr>
     <tr>
-      <td>Klankrets</td>
-      <td>{{ character.clan_name }}</td>
+      <td><a href="/wiki/klan/">Klan</a></td>
+      <td><a href="/wiki/{{ character.clan_name | lower }}/">{{ character.clan_name }}</a></td>
     </tr>
+    {% if let Some(url) = character.character_description_url %}
+    <tr>
+      <td>Karaktärsbeskrivning</td>
+      <td><a href="{{ url }}">Länk</a></td>
+    </tr>
+    {% endif %}
     <tr>
       <th>Stats</th>
     </tr>

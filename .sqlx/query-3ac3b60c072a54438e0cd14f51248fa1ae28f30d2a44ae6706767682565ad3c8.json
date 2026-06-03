@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "INSERT INTO LoginProcesses(state_id, nonce) VALUES($1, $2)",
+  "query": "INSERT INTO login_process(state_id, nonce) VALUES($1, $2)",
   "describe": {
     "columns": [],
     "parameters": {
@@ -11,5 +11,5 @@
     },
     "nullable": []
   },
-  "hash": "513676ea0fc2ca4ed65856298d0502b4fa85e8d0167e80e8f5765c79521a7d2c"
+  "hash": "3ac3b60c072a54438e0cd14f51248fa1ae28f30d2a44ae6706767682565ad3c8"
 }

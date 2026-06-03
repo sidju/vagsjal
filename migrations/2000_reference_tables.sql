@@ -58,4 +58,9 @@ FOREIGN KEY (power_one) REFERENCES power,
 FOREIGN KEY (power_two) REFERENCES power
 );
 
+CREATE TABLE character_status (
+  name VARCHAR(16) PRIMARY KEY
+);
+INSERT INTO character_status (name) VALUES ('draft'), ('active'), ('inactive');
+
 COMMIT;

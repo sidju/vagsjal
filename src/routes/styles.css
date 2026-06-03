@@ -88,11 +88,31 @@ nav .nav-title {
   text-decoration: none;
 }
 
+main a {
+  color: #3a4a6a;
+  text-decoration: underline;
+  text-decoration-color: #b0b8c8;
+  text-underline-offset: 2px;
+}
+main a:visited {
+  color: #43557a;
+  text-decoration-color: #b8c0d0;
+}
+main a:hover {
+  color: #1a2a4a;
+  text-decoration-color: #1a2a4a;
+}
+
 /* Main content area */
 main {
   max-width: 900px;
   margin: 0 auto;
   padding: 1.5rem;
+}
+main ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
 }
 
 /* Tables */

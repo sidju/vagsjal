@@ -4,21 +4,9 @@
 
 {% block body %}
   <h1>Karaktärer</h1>
-  <table class="stat-table">
-    <tr><th>ID</th><th>Namn</th><th>Ägare</th><th>Klankrets</th><th>Aktiv</th><th>Återstående XP</th></tr>
-    {% for character in characters %}
-    <tr{% if !character.active %} class="inactive"{% endif %}>
-      <td><a href="{{ character.vampire_id }}/">{{ character.vampire_id }}</a></td>
-      <td>{{ character.name }}</td>
-      <td><a href="/admin/user/{{ character.user_id }}/">{{ character.owner_name }}</a></td>
-      <td>{{ character.clan_name }}</td>
-      <td>{% if character.active %}ja{% else %}nej{% endif %}</td>
-      <td>{{ character.remaining_xp }}</td>
-    </tr>
-    {% endfor %}
-  </table>
 
-  <h2>Skapa karaktär</h2>
+  <details>
+    <summary><h2 style="display:inline">Skapa karaktär</h2></summary>
   <form method="post" enctype="application/x-www-form-urlencoded">
     <input type="hidden" name="action" value="create">
     <p>
@@ -31,13 +19,13 @@
       </label>
     </p>
     <p><label>Namn <input name="name"></label></p>
-    <p><label>Uppenbar ålder <input name="apparent_age" type="number" min="0"></label></p>
+    <p><label>Mänsklig ålder <input name="apparent_age" type="number" min="0"></label></p>
     <p><label>Datum för omfamning <input name="date_embraced" type="date"></label></p>
     <p><label>Torpor år <input name="torpor_years" type="number" value="0"></label></p>
     <p><label>Torpor månader <input name="torpor_months" type="number" value="0"></label></p>
     <p><label>Torpor dagar <input name="torpor_days" type="number" value="0"></label></p>
     <p>
-      <label>Klankrets
+      <label>Klan
         <select name="clan_id">
           {% for clan in clans %}
           <option value="{{ clan.clan_id }}">{{ clan.name }}</option>
@@ -45,7 +33,68 @@
         </select>
       </label>
     </p>
-    <p><label><input type="checkbox" name="active" checked> Aktiv</label></p>
+    <p><label>Länk till karaktärsbeskrivning <input name="character_description_url" type="url" placeholder="https://docs.google.com/..."></label></p>
+    <p>
+      <label>Status
+        <select name="status">
+          <option value="draft">Utkast</option>
+          <option value="active" selected>Aktiv</option>
+          <option value="inactive">Inaktiv</option>
+        </select>
+      </label>
+    </p>
     <button type="submit">Skapa</button>
   </form>
+  </details>
+
+  {% if draft_chars.len() > 0 %}
+  <h2>Utkast</h2>
+  <table class="stat-table">
+    <tr><th>ID</th><th>Namn</th><th>Ägare</th><th>Klan</th><th>Återstående XP</th><th>Beskrivning</th></tr>
+    {% for character in draft_chars %}
+    <tr>
+      <td><a href="{{ character.vampire_id }}/">{{ character.vampire_id }}</a></td>
+      <td>{{ character.name }}</td>
+      <td><a href="/admin/user/{{ character.user_id }}/">{{ character.owner_name }}</a></td>
+      <td><a href="/wiki/{{ character.clan_name | lower }}/">{{ character.clan_name }}</a></td>
+      <td>{{ character.remaining_xp }}</td>
+      <td>{% if let Some(url) = character.character_description_url %}<a href="{{ url }}">Länk</a>{% endif %}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% endif %}
+
+  {% if active_chars.len() > 0 %}
+  <h2>Aktiva</h2>
+  <table class="stat-table">
+    <tr><th>ID</th><th>Namn</th><th>Ägare</th><th>Klan</th><th>Återstående XP</th><th>Beskrivning</th></tr>
+    {% for character in active_chars %}
+    <tr>
+      <td><a href="{{ character.vampire_id }}/">{{ character.vampire_id }}</a></td>
+      <td>{{ character.name }}</td>
+      <td><a href="/admin/user/{{ character.user_id }}/">{{ character.owner_name }}</a></td>
+      <td><a href="/wiki/{{ character.clan_name | lower }}/">{{ character.clan_name }}</a></td>
+      <td>{{ character.remaining_xp }}</td>
+      <td>{% if let Some(url) = character.character_description_url %}<a href="{{ url }}">Länk</a>{% endif %}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% endif %}
+
+  {% if inactive_chars.len() > 0 %}
+  <h2>Inaktiva</h2>
+  <table class="stat-table">
+    <tr><th>ID</th><th>Namn</th><th>Ägare</th><th>Klan</th><th>Återstående XP</th><th>Beskrivning</th></tr>
+    {% for character in inactive_chars %}
+    <tr class="inactive">
+      <td><a href="{{ character.vampire_id }}/">{{ character.vampire_id }}</a></td>
+      <td>{{ character.name }}</td>
+      <td><a href="/admin/user/{{ character.user_id }}/">{{ character.owner_name }}</a></td>
+      <td><a href="/wiki/{{ character.clan_name | lower }}/">{{ character.clan_name }}</a></td>
+      <td>{{ character.remaining_xp }}</td>
+      <td>{% if let Some(url) = character.character_description_url %}<a href="{{ url }}">Länk</a>{% endif %}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% endif %}
 {% endblock %}

@@ -93,6 +93,9 @@ pub enum ClientError {
 
   InvalidBuilderDraft(String),
   InvalidOidcConfiguration(String),
+
+  // Business logic errors
+  CharacterNotActive,
 }
 #[derive(Template)]
 #[template(path = "error.html")]
@@ -136,6 +139,7 @@ impl Reply for ClientError {
       Self::OIDCGaveNoRefreshToken => "OIDC provider did not return a refresh token.".to_owned(),
       Self::InvalidBuilderDraft(msg) => msg.clone(),
       Self::InvalidOidcConfiguration(msg) => msg.clone(),
+      Self::CharacterNotActive => "Character is not active".to_owned(),
     };
     let body = ErrorPageTemplate {
       status: status.as_str(),
@@ -229,6 +233,9 @@ impl Error {
   }
   pub fn invalid_builder_draft(message: &str) -> Self {
     ClientError::InvalidBuilderDraft(message.to_owned()).into()
+  }
+  pub fn character_not_active() -> Self {
+    ClientError::CharacterNotActive.into()
   }
 }
 

@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "\nSELECT \"name!\", \"value!\", \"pending_review!\"\nFROM CharacterStats\nWHERE character = $1\n      ",
+  "query": "\n      SELECT \"name!\" AS \"name!\", \"value!\" AS \"value!\", \"pending_review!\" AS \"pending_review!\"\n      FROM vampire_stat\n      WHERE vampire_id = $1\n      ORDER BY \"name!\"\n      ",
   "describe": {
     "columns": [
       {
@@ -30,5 +30,5 @@
       true
     ]
   },
-  "hash": "0035d64f9d10eee12a2fd7feb6f56ee40b3d22e52c372863c7539d1a69119275"
+  "hash": "d5ab6777a990b53fff476b83227d00c3d9c48c96417fd5b2239e2b5d015e2c93"
 }

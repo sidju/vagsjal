@@ -1,0 +1,12 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "DELETE FROM login_process WHERE creation_time < NOW() - INTERVAL '5 minutes'",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": []
+  },
+  "hash": "e1488fadfa5c6e4b818f1e6610e01319d6fd6f27e1acc6053e4f4e5c5524a2f0"
+}

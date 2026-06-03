@@ -40,11 +40,11 @@ CREATE VIEW vampire_stat AS
 	)
 	SELECT vampire_id, name AS "name!", COALESCE(value, 0) AS "value!", COALESCE(pending_review, false) AS "pending_review!"
 	FROM (
-		SELECT humanity_change.vampire_id, 'Humanity' AS name, SUM(change) AS value, BOOL_OR(humanity_change_review.humanity_change_id IS NULL) AS pending_review
-		FROM humanity_change
-		LEFT JOIN humanity_change_review USING (humanity_change_id)
-		WHERE humanity_change_review.state IS NULL OR humanity_change_review.state != 'denied'
-		GROUP BY humanity_change.vampire_id
+		SELECT v.vampire_id, 'Humanity' AS name, 7 + COALESCE(SUM(hc.change), 0) AS value, BOOL_OR(hc.humanity_change_id IS NOT NULL AND hcr.humanity_change_id IS NULL) AS pending_review
+		FROM vampire v
+		LEFT JOIN humanity_change hc ON hc.vampire_id = v.vampire_id
+		LEFT JOIN humanity_change_review hcr ON hcr.humanity_change_id = hc.humanity_change_id AND (hcr.state IS NULL OR hcr.state != 'denied')
+		GROUP BY v.vampire_id
 	) UNION (
 		SELECT vampire_id, 'Blood Potency' AS name, bp AS value, false AS pending_review
 		FROM vampire_bp

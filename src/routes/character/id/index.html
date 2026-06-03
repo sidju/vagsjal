@@ -5,6 +5,9 @@
 {% block body %}
   <h1>{{ character.name }}</h1>
   {% if saved %}<p><b>Utkast sparat som pågående höjningar.</b></p>{% endif %}
+  {% if let Some(url) = character.character_description_url %}
+  <p>Karaktärsbeskrivning: <a href="{{ url }}">Länk</a></p>
+  {% endif %}
   <p>Återstående XP: {{ character.remaining_xp }}</p>
 
   <table class="stat-table">
@@ -15,7 +18,7 @@
     </tr>
     {% for s in stats %}
     <tr>
-      <td>{{ s.name }}</td>
+      <td><a href="/wiki/{{ s.name | lower }}/">{{ s.name }}</a></td>
       {% if s.pending_review %}
       <td>{{ s.value }}*</td>
       <td id="proj-stat-{{ loop.index0 }}">{{ s.value }}{% if s.pending_review %}*{% endif %}</td>
@@ -32,7 +35,7 @@
     </tr>
     {% for p in powers %}
     <tr>
-      <td>{{ p.name }}</td>
+      <td><a href="/wiki/{{ p.name | lower }}/">{{ p.name }}</a></td>
       {% if p.pending_review %}
       <td>{{ p.value }}*</td>
       <td id="proj-power-{{ loop.index0 }}">{{ p.value }}{% if p.pending_review %}*{% endif %}</td>
@@ -49,7 +52,7 @@
     </tr>
     {% for i in influences %}
     <tr>
-      <td>{{ i.name }}</td>
+      <td><a href="/wiki/{{ i.name | lower }}/">{{ i.name }}</a></td>
       {% if i.pending_review %}
       <td>{{ i.value }}*</td>
       <td id="proj-influence-{{ loop.index0 }}">{{ i.value }}{% if i.pending_review %}*{% endif %}</td>
@@ -364,7 +367,7 @@
         return sum + (cost != null ? cost : 0);
       }, 0);
       if (data.remaining_xp - totalCost < 0) {
-        if (!confirm("Varning: Detta utkast kostar " + totalCost + " XP men du har bara " + data.remaining_xp + " XP tillgängligt. Du måste prata med en berättare för att justera dina XP-köp. Skicka ändå?")) {
+        if (!confirm("Varning: Detta utkast kostar " + totalCost + " XP men du har bara " + data.remaining_xp + " XP tillgängligt. Du måste prata med en spelledare för att justera dina XP-köp. Skicka ändå?")) {
           e.preventDefault();
           return;
         }

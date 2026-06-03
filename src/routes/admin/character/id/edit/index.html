@@ -18,13 +18,13 @@
       </label>
     </p>
     <p><label>Namn <input name="name" value="{{ character.name }}"></label></p>
-    <p><label>Uppenbar ålder <input name="apparent_age" type="number" value="{{ character.apparent_age }}"></label></p>
+    <p><label>Mänsklig ålder <input name="apparent_age" type="number" value="{{ character.apparent_age }}"></label></p>
     <p><label>Datum för omfamning <input name="date_embraced" type="date" value="{{ character.date_embraced }}"></label></p>
     <p><label>Torpor år <input name="torpor_years" type="number" value="{{ character.torpor_time.months / 12 }}"></label></p>
     <p><label>Torpor månader <input name="torpor_months" type="number" value="{{ character.torpor_time.months % 12 }}"></label></p>
     <p><label>Torpor dagar <input name="torpor_days" type="number" value="{{ character.torpor_time.days }}"></label></p>
     <p>
-      <label>Klankrets
+      <label>Klan
         <select name="clan_id">
           {% for clan in clans %}
           <option value="{{ clan.clan_id }}" {% if clan.clan_id == character.clan_id %}selected{% endif %}>{{ clan.name }}</option>
@@ -32,7 +32,16 @@
         </select>
       </label>
     </p>
-    <p><label><input type="checkbox" name="active" {% if character.active %}checked{% endif %}> Aktiv</label></p>
+    <p><label>Länk till karaktärsbeskrivning <input name="character_description_url" type="url" {% if let Some(url) = character.character_description_url %}value="{{ url }}"{% else %}placeholder="https://docs.google.com/..."{% endif %}></label></p>
+    <p>
+      <label>Status
+        <select name="status">
+          <option value="draft" {% if character.status.is_draft() %}selected{% endif %}>Utkast</option>
+          <option value="active" {% if character.status.is_active() %}selected{% endif %}>Aktiv</option>
+          <option value="inactive" {% if character.status.is_inactive() %}selected{% endif %}>Inaktiv</option>
+        </select>
+      </label>
+    </p>
     <button type="submit">Spara</button>
   </form>
 {% endblock %}

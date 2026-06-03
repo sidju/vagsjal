@@ -1,4 +1,5 @@
 use super::*;
+use crate::routes::validate_description_url;
 use serde::Deserialize;
 use time::Date;
 
@@ -9,10 +10,11 @@ struct CharacterRow {
   vampire_id: i64,
   user_id: i64,
   owner_name: String,
-  active: bool,
+  status: CharacterStatus,
   name: String,
   clan_name: String,
   remaining_xp: i64,
+  character_description_url: Option<String>,
 }
 
 #[derive(sqlx::FromRow, Debug)]
@@ -38,7 +40,8 @@ struct CharacterForm {
   torpor_months: Option<i32>,
   torpor_days: Option<i32>,
   clan_id: Option<i64>,
-  active: Option<String>,
+  character_description_url: Option<String>,
+  status: Option<String>,
   review_kind: Option<String>,
   usage_id: Option<i64>,
   decision: Option<String>,
@@ -47,7 +50,9 @@ struct CharacterForm {
 #[derive(Template)]
 #[template(path = "admin/character/index.html")]
 struct Index {
-  characters: Vec<CharacterRow>,
+  draft_chars: Vec<CharacterRow>,
+  active_chars: Vec<CharacterRow>,
+  inactive_chars: Vec<CharacterRow>,
   clans: Vec<ClanRow>,
   users: Vec<UserRow>,
   show_admin_link: bool,
@@ -68,15 +73,22 @@ async fn fetch_index_data(state: &'static State) -> Result<(Vec<CharacterRow>, V
       vampire.vampire_id,
       vampire.user_id,
       app_user.name AS owner_name,
-      vampire.active,
+      vampire.status AS "status: CharacterStatus",
       vampire.name,
       clan.name AS clan_name,
-      COALESCE(xp_remaining.amount, 0) AS "remaining_xp!"
+      COALESCE(xp_remaining.amount, 0) AS "remaining_xp!",
+      vampire.character_description_url AS "character_description_url?"
     FROM vampire
     JOIN app_user USING (user_id)
     JOIN clan USING (clan_id)
     LEFT JOIN xp_remaining USING (vampire_id)
-    ORDER BY vampire.active DESC, vampire.name
+    ORDER BY
+      CASE vampire.status
+        WHEN 'draft' THEN 0
+        WHEN 'active' THEN 1
+        WHEN 'inactive' THEN 2
+      END,
+      vampire.name
     "#
   )
     .fetch_all(&state.db)
@@ -108,8 +120,21 @@ async fn index_get(state: &'static State, session: &SessionData) -> Result<Respo
   let (characters, clans, users) = fetch_index_data(state).await?;
   let oldest_active = fetch_oldest_active(state, session.user_id).await?;
 
+  let mut draft_chars = Vec::new();
+  let mut active_chars = Vec::new();
+  let mut inactive_chars = Vec::new();
+  for c in characters {
+    match c.status {
+      CharacterStatus::Draft => draft_chars.push(c),
+      CharacterStatus::Active => active_chars.push(c),
+      CharacterStatus::Inactive => inactive_chars.push(c),
+    }
+  }
+
   html(Index {
-    characters,
+    draft_chars,
+    active_chars,
+    inactive_chars,
     clans,
     users,
     show_admin_link: true,
@@ -131,19 +156,24 @@ async fn index_post(state: &'static State, mut req: Request) -> Result<Response,
         microseconds: 0,
       };
       let clan_id = form.clan_id.ok_or_else(|| Error::invalid_builder_draft("Missing clan_id"))?;
-      let active = form.active.is_some();
+      let status = form.status.as_deref().unwrap_or("draft");
+      let character_description_url = form.character_description_url.map(|u| u.trim().to_string()).filter(|u| !u.is_empty());
+      if let Some(ref url) = character_description_url {
+        validate_description_url(&state.http_client, url).await?;
+      }
       sqlx::query!(
         r#"
-        INSERT INTO vampire (user_id, active, name, apparent_age, date_embraced, torpor_time, clan_id)
-        VALUES ($1, $2, $3, $4, $5, $6, $7)
+        INSERT INTO vampire (user_id, status, name, apparent_age, date_embraced, torpor_time, clan_id, character_description_url)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
         "#,
         user_id,
-        active,
+        status,
         name,
         apparent_age,
         date_embraced,
         torpor_time,
         clan_id,
+        character_description_url,
       )
         .execute(&state.db)
         .await?;
