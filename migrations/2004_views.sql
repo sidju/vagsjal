@@ -54,7 +54,7 @@ CREATE VIEW vampire_stat AS
 			vampire_bp.vampire_id,
 			'HP' AS name,
 			(vampire_bp.bp * 6 + 6 + COALESCE(SUM(stat_raise.increase), 0)) AS value,
-			BOOL_OR(stat_raise_review.stat_raise_id IS NULL) AS pending_review
+			BOOL_OR(stat_raise.stat_raise_id IS NOT NULL AND stat_raise_review.stat_raise_id IS NULL) AS pending_review
 		FROM vampire_bp
 		LEFT JOIN stat_raise ON stat_raise.vampire_id = vampire_bp.vampire_id AND stat_raise.stat = 'HP'
 		LEFT JOIN stat_raise_review USING (stat_raise_id)

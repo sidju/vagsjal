@@ -1,0 +1,13 @@
+Transaktionsgrupperingar:
+<table>
+  <tr>
+    <th>Namn</th>
+    <th>Total monetär rörelse</th>
+  </tr>
+  {% for g in groupings %}
+  <tr>
+    <td>{{ g.name }}</td>
+    <td>{{ g.movement }}</td>
+  </tr>
+  {% endfor %}
+</table>

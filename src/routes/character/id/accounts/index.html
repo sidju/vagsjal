@@ -1,0 +1,13 @@
+Konton:<br>
+<table>
+  <tr>
+    <th>Namn</th>
+    <th>Saldo</th>
+  </tr>
+  {% for a in accounts %}
+  <tr>
+    <td>{{ a.name }}</td>
+    <td>{{ a.balance }}</td>
+  </tr>
+  {% endfor %}
+</table>

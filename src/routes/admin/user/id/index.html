@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Redigera användare {{ user.user_id }}{% endblock %}
+
+{% block body %}
+  <h1>Användare {{ user.user_id }}</h1>
+  <form method="post" enctype="application/x-www-form-urlencoded">
+    <p><label>Namn <input name="name" value="{{ user.name }}"></label></p>
+    <p><label>OIDC-subjekt <input name="oidc_subject" value="{{ user.oidc_subject }}"></label></p>
+    <p>
+      <label>Roll
+        <select name="role">
+          <option value="user" {% if user.role == "user" %}selected{% endif %}>användare</option>
+          <option value="storyteller" {% if user.role == "storyteller" %}selected{% endif %}>berättare</option>
+        </select>
+      </label>
+    </p>
+    <button type="submit">Spara</button>
+  </form>
+{% endblock %}

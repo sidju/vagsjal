@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block title %}Redigera karaktär {{ character.vampire_id }}{% endblock %}
+
+{% block body %}
+  <h1>{{ character.name }}</h1>
+  <div class="metadata-header">
+    <a class="edit-button" href="./edit/">Redigera metadata</a>
+  </div>
+
+  <table class="stat-table">
+    <tr>
+      <th>{{ character.name }}</th>
+    </tr>
+    <tr>
+      <td>Ägare</td>
+      <td>{{ character.owner_name }}</td>
+    </tr>
+    <tr>
+      <td>Aktiv</td>
+      <td>{% if character.active %}ja{% else %}nej{% endif %}</td>
+    </tr>
+    <tr>
+      <td>Uppenbar ålder</td>
+      <td>{{ character.apparent_age }}</td>
+    </tr>
+    <tr>
+      <td>Datum för omfamning</td>
+      <td>{{ character.date_embraced }}</td>
+    </tr>
+    <tr>
+      <td>Tid i torpor</td>
+      <td>{{ character.torpor_time.months }} månader, {{ character.torpor_time.days }} dagar</td>
+    </tr>
+    <tr>
+      <td>Klankrets</td>
+      <td>{{ character.clan_name }}</td>
+    </tr>
+    <tr>
+      <th>Stats</th>
+    </tr>
+    {% for stat in stats %}
+    <tr>
+      <td>{{ stat.name }}</td>
+      {% if stat.pending_review %}
+      <td>{{ stat.value }}*</td>
+      {% else %}
+      <td>{{ stat.value }}</td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+    <tr>
+      <th>Krafter</th>
+    </tr>
+    {% for power in powers %}
+    <tr>
+      <td>{{ power.name }}</td>
+      {% if power.pending_review %}
+      <td>{{ power.value }}*</td>
+      {% else %}
+      <td>{{ power.value }}</td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+    <tr>
+      <th>Inflytanden</th>
+    </tr>
+    {% for influence in influences %}
+    <tr>
+      <td>{{ influence.name }}</td>
+      {% if influence.pending_review %}
+      <td>{{ influence.value }}*</td>
+      {% else %}
+      <td>{{ influence.value }}</td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+    <tr>
+      <th>Återstående XP</th><th>{{ character.remaining_xp }}</th>
+    </tr>
+  </table>
+  <p><small>* väntar på granskning</small></p>
+
+  <h2>Pågående XP-användningar</h2>
+  {% if pending.len() == 0 %}
+    <p>Inga pågående.</p>
+  {% else %}
+    <table class="stat-table">
+      <tr><th>Typ</th><th>Namn</th><th>Ökning</th><th>XP-kostnad</th><th>Skapad</th><th>Åtgärd</th></tr>
+      {% for usage in pending %}
+      <tr>
+        <td>{{ usage.kind }}</td>
+        <td>{{ usage.name }}</td>
+        <td>{{ usage.increase }}</td>
+        <td>{{ usage.xp_cost }}</td>
+        <td>{{ usage.created_at }}</td>
+        <td>
+          <form method="post" enctype="application/x-www-form-urlencoded">
+            <input type="hidden" name="review_kind" value="{{ usage.kind }}">
+            <input type="hidden" name="usage_id" value="{{ usage.usage_id }}">
+            <button type="submit" name="decision" value="approve">Godkänn</button>
+            <button type="submit" name="decision" value="reject">Avvisa</button>
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+    </table>
+  {% endif %}
+{% endblock %}

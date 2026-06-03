@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}{{ name }}{% endblock %}
+
+{% block body %}
+  <table>
+    <tr>
+      <th>Grupperingsnamn</th>
+      <th>Bokföring</th>
+    </tr>
+    <tr>
+      <td>{{ name }}</td>
+      <td>{{ bookkeeping_name }}</td>
+    </tr>
+  </table>
+  <br>
+  Konton:
+  <table>
+    <tr>
+      <th>Namn</th>
+      <th>Saldo</th>
+      <th>Typ</td>
+    </tr>
+    {% for a in accounts %}
+    <tr>
+      <td>{{ a.name }}</td>
+      <td>{{ a.balance }}</td>
+      <td>{{ a.type }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  <br>
+  Transaktioner:
+  <table>
+    <tr>
+      <th>Namn</th>
+      <th>Datum</th>
+      <th>Giltig</th>
+    </tr>
+    {% for t in transactions %}
+    <tr>
+      {% if created.equals_transaction(t.id) %}
+      <td><a href="transactions/{{ t.id }}/"><b>{{ t.name }}</b></a></td>
+      {% else %}
+      <td><a href="transactions/{{ t.id }}/">{{ t.name }}</a></td>
+      {% endif %}
+      <td>{{ t.date.to_string() }}</td>
+      <td>{% if t.sum.is_zero() %}giltig{% else %}<b>OGILTIG MED {{ t.sum }}</b>{% endif %}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  <form method="post" formenctype="application/x-www-form-urlencoded" action="transactions/">
+    Skapa ny transaktion:
+    <br>
+    Namn: <input type="text" name="name">
+    <br>
+    Datum: <input type="date" name="date">
+    <br>
+    <input type="submit" value="Skapa">
+  </form>
+{% endblock %}

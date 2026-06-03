@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block title %}Admin karaktärer{% endblock %}
+
+{% block body %}
+  <h1>Karaktärer</h1>
+  <table class="stat-table">
+    <tr><th>ID</th><th>Namn</th><th>Ägare</th><th>Klankrets</th><th>Aktiv</th><th>Återstående XP</th></tr>
+    {% for character in characters %}
+    <tr{% if !character.active %} class="inactive"{% endif %}>
+      <td><a href="{{ character.vampire_id }}/">{{ character.vampire_id }}</a></td>
+      <td>{{ character.name }}</td>
+      <td><a href="/admin/user/{{ character.user_id }}/">{{ character.owner_name }}</a></td>
+      <td>{{ character.clan_name }}</td>
+      <td>{% if character.active %}ja{% else %}nej{% endif %}</td>
+      <td>{{ character.remaining_xp }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  <h2>Skapa karaktär</h2>
+  <form method="post" enctype="application/x-www-form-urlencoded">
+    <input type="hidden" name="action" value="create">
+    <p>
+      <label>Ägare
+        <select name="user_id">
+          {% for user in users %}
+          <option value="{{ user.user_id }}">{{ user.name }}</option>
+          {% endfor %}
+        </select>
+      </label>
+    </p>
+    <p><label>Namn <input name="name"></label></p>
+    <p><label>Uppenbar ålder <input name="apparent_age" type="number" min="0"></label></p>
+    <p><label>Datum för omfamning <input name="date_embraced" type="date"></label></p>
+    <p><label>Torpor månader <input name="torpor_months" type="number" value="0"></label></p>
+    <p><label>Torpor dagar <input name="torpor_days" type="number" value="0"></label></p>
+    <p>
+      <label>Klankrets
+        <select name="clan_id">
+          {% for clan in clans %}
+          <option value="{{ clan.clan_id }}">{{ clan.name }}</option>
+          {% endfor %}
+        </select>
+      </label>
+    </p>
+    <p><label><input type="checkbox" name="active" checked> Aktiv</label></p>
+    <button type="submit">Skapa</button>
+  </form>
+{% endblock %}

@@ -1,0 +1,65 @@
+{% extends "base.html" %}
+
+{% block title %}{{ name }}{% endblock %}
+
+{% block body %}
+  <table>
+    <tr>
+      <th>Transaktionsnamn</th>
+      <th>Transaktionsdatum</th>
+      <th>Transaktionssumma</th>
+      <th>Gruppering</th>
+      <th>Bokföring</th>
+    </tr>
+    <tr>
+      <td>{{ name }}</td>
+      <td>{{ date }}</td>
+      <td>{{ sum }}</td>
+      <td>{{ grouping_name }}</td>
+      <td>{{ bookkeeping_name }}</td>
+    </tr>
+  </table>
+  <br>
+  Kontoförändringar:
+  <table>
+    <tr>
+      <td>Konto</th>
+      <th>Datum</th>
+      <td>Meddelande</th>
+      <th>Belopp</th>
+    </tr>
+    {% for a in account_changes %}
+    <tr>
+      {% if created.equals_account_change(a.id) %}
+      <td><b>{{ a.account_name }}</b></td>
+      {% else %}
+      <td>{{ a.account_name }}</td>
+      {% endif %}
+      <td>{{ a.date.to_string() }}</td>
+      <td>{{ a.message }}</td>
+      <td>{{ a.amount.to_string() }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+  <form method="post" formenctype="application/x-www-form-urlencoded" action="account-changes/">
+    Skapa ny kontoförändring:
+    <br>
+    Konto: <select name="account">
+      {% for (t, accounts) in accounts_by_type %}
+        <optgroup label="{{ t }}">
+          {% for a in accounts %}
+            <option value="{{ a.id }}">{{ a.name }}</option>
+          {% endfor %}
+        </optgroup>
+      {% endfor %}
+    </select>
+    <br>
+    Datum: <input type="date" name="date" value="{{ date.to_string() }}">
+    <br>
+    Meddelande: <input type="text" name="message">
+    <br>
+    Belopp: <input type="number" name="amount" step=".01">
+    <br>
+    <input type="submit" value="Skapa">
+  </form>
+{% endblock %}

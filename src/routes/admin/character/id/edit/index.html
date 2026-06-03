@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+
+{% block title %}Redigera karaktär {{ character.vampire_id }}{% endblock %}
+
+{% block body %}
+  <h1>Redigera {{ character.name }}</h1>
+  <p>Ägare: {{ character.owner_name }}</p>
+
+  <form method="post" enctype="application/x-www-form-urlencoded">
+    <input type="hidden" name="action" value="update">
+    <p>
+      <label>Ägare
+        <select name="user_id">
+          {% for user in users %}
+          <option value="{{ user.user_id }}" {% if user.user_id == character.user_id %}selected{% endif %}>{{ user.name }}</option>
+          {% endfor %}
+        </select>
+      </label>
+    </p>
+    <p><label>Namn <input name="name" value="{{ character.name }}"></label></p>
+    <p><label>Uppenbar ålder <input name="apparent_age" type="number" value="{{ character.apparent_age }}"></label></p>
+    <p><label>Datum för omfamning <input name="date_embraced" type="date" value="{{ character.date_embraced }}"></label></p>
+    <p><label>Torpor månader <input name="torpor_months" type="number" value="{{ character.torpor_time.months }}"></label></p>
+    <p><label>Torpor dagar <input name="torpor_days" type="number" value="{{ character.torpor_time.days }}"></label></p>
+    <p>
+      <label>Klankrets
+        <select name="clan_id">
+          {% for clan in clans %}
+          <option value="{{ clan.clan_id }}" {% if clan.clan_id == character.clan_id %}selected{% endif %}>{{ clan.name }}</option>
+          {% endfor %}
+        </select>
+      </label>
+    </p>
+    <p><label><input type="checkbox" name="active" {% if character.active %}checked{% endif %}> Aktiv</label></p>
+    <button type="submit">Spara</button>
+  </form>
+{% endblock %}

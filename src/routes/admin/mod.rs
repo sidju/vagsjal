@@ -1,7 +1,7 @@
 use super::*;
 
-mod characters;
-mod users;
+mod character;
+mod user;
 
 #[derive(Template)]
 #[template(path = "admin/index.html")]
@@ -30,8 +30,8 @@ pub async fn route(
       verify_method_path_end(&path_vec, &req, &Method::GET)?;
       index().await
     },
-    Some("users") => users::route(state, req, path_vec).await,
-    Some("characters") => characters::route(state, session, req, path_vec).await,
+    Some("user") => user::route(state, req, path_vec).await,
+    Some("character") => character::route(state, session, req, path_vec).await,
     _ => Err(Error::path_not_found(&req)),
   }
 }

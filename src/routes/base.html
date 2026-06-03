@@ -1,36 +1,48 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Bookkeep: {% block title %}placeholder title{% endblock %}</title>
+    <title>VägSjäl: {% block title %}platshållartitel{% endblock %}</title>
     {% block head %}{% endblock %}
     <link rel="stylesheet" href="/styles.css">
   </head>
   <body>
     <nav>
       <div class="nav-inner">
-        <span class="nav-title">The Nightly Grind</span>
+        <span class="nav-title">VägSjäl: Regentens Rekviem</span>
         <div class="nav-links">
-          <a href="/">Home</a>
+          <a href="/">Hem</a>
           {% if show_admin_link %}
           <a href="/admin/">Admin</a>
           {% endif %}
         </div>
       </div>
     </nav>
-    <div class="page-paths" id="page-paths" aria-label="Breadcrumb"></div>
+    <div class="page-paths" id="page-paths" aria-label="Sökväg"></div>
     <script>
       (() => {
         const container = document.getElementById('page-paths');
         if (!container) return;
 
+        const labels = {
+          'character': 'Karaktärer',
+          'admin': 'Admin',
+          'user': 'Användare',
+          'edit': 'Redigera',
+          'accounts': 'Konton',
+          'groupings': 'Grupperingar',
+          'transactions': 'Transaktioner',
+          'account-changes': 'Kontoförändringar',
+          'imported-account-changes': 'Importerade kontoförändringar',
+        };
+
         const parts = window.location.pathname.split('/').filter(Boolean);
         if (parts.length === 0) return;
 
-        const links = [{ href: '/', label: 'Home' }];
+        const links = [{ href: '/', label: 'Hem' }];
         let path = '/';
         for (let i = 0; i < parts.length - 1; i++) {
           path += `${parts[i]}/`;
-          const label = decodeURIComponent(parts[i])
+          const label = labels[parts[i]] || decodeURIComponent(parts[i])
             .replace(/[-_]+/g, ' ')
             .replace(/\b\w/g, (c) => c.toUpperCase());
           links.push({ href: path, label });
@@ -40,7 +52,7 @@
       })();
     </script>
     <main>
-      {% block body %}Placeholder content{% endblock %}
+      {% block body %}Innehåll{% endblock %}
     </main>
   </body>
 </html>

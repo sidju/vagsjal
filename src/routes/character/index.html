@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block title %}Karaktärer{% endblock %}
+
+{% block body %}
+  {% if character_stats.len() == 0 %}
+    <p>Du har inga karaktärer, prata med en berättare för att skapa en.</p>
+  {% else %}
+  <ul>
+  {% for (c,stats,powers,influences) in character_stats %}
+    <li><a class="character-link" href="{{c.vampire_id}}/">
+      <table class="stat-table{% if !c.active %} inactive{% endif %}">
+        <tr>
+          <th>{{ c.name }}</th>
+        </tr>
+        <tr>
+          <td>Uppenbar ålder (år)</td>
+          <td>{{ c.apparent_age }}</td>
+        </tr>
+        <tr>
+          <td>Datum för omfamning</td>
+          <td>{{ c.date_embraced }}</td>
+        </tr>
+        <tr>
+          <td>Tid i torpor</td>
+          <td>{{ c.torpor_time.months }} månader, {{ c.torpor_time.days }} dagar</td>
+        </tr>
+        <tr>
+          <td>Klankrets</td>
+          <td>{{ c.clan_name }}</td>
+        </tr>
+        {% for s in stats %}
+        <tr>
+          <td>{{ s.name }}</td>
+          {% if s.pending_review %}
+          <td><i>{{ s.value }}</i></td>
+          {% else %}
+          <td>{{ s.value }}</td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+        <tr>
+          <th>Krafter</th>
+        </tr>
+        {% for d in powers %}
+        <tr>
+          <td>{{ d.name }}</td>
+          {% if d.pending_review %}
+          <td><i>{{ d.value }}</i></td>
+          {% else %}
+          <td>{{ d.value }}</td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+        <tr>
+          <th>Inflytanden</th>
+        </tr>
+        {% for i in influences %}
+        <tr>
+          <td>{{ i.name }}</td>
+          {% if i.pending_review %}
+          <td><i>{{ i.value }}</i></td>
+          {% else %}
+          <td>{{ i.value }}</td>
+          {% endif %}
+        </tr>
+        {% endfor %}
+        <tr>
+          <th>Återstående XP</th><th>{{ c.remaining_xp }}</th>
+        </tr>
+      </table>
+    </a></li>
+  {% endfor %}
+  </ul>
+  {% endif %}
+
+{% endblock %}

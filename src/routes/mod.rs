@@ -19,7 +19,7 @@ use auth::*;
 
 // And the actual route modules
 mod admin;
-mod characters;
+mod character;
 
 const CSS: &'static str = include_str!("styles.css");
 
@@ -86,10 +86,10 @@ pub async fn route(
         hyper::header::HeaderValue::from_static("no-store")
       )
     },
-    Some("characters") => {
+    Some("character") => {
       match session {
         None => start_oidc_login_flow(state).await,
-        Some(session) => characters::route(state, session, req, path_vec).await,
+        Some(session) => character::route(state, session, req, path_vec).await,
       }
     },
     Some("admin") => {
