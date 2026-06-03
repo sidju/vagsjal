@@ -67,6 +67,7 @@ mod wiki;
 use wiki::WikiPageTemplate;
 
 const CSS: &'static str = include_str!("styles.css");
+const LOGO: &'static [u8] = include_bytes!("vs-rr.png");
 
 #[derive(Template)]
 #[template(path = "index.html")]
@@ -160,6 +161,10 @@ pub async fn route(
     Some("styles.css") => {
       verify_method_path_end(&path_vec, &req, &Method::GET)?;
       css(CSS)
+    },
+    Some("vs-rr.png") => {
+      verify_method_path_end(&path_vec, &req, &Method::GET)?;
+      png(LOGO)
     },
     _ => Err(Error::path_not_found(&req)),
   };

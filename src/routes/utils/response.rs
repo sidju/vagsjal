@@ -80,6 +80,17 @@ pub fn css(
   );
   Ok(re)
 }
+// Return given bytes as a PNG image
+pub fn png(
+  data: &'static [u8],
+) -> Result<Response, Error> {
+  let mut re = Response::new(data.into());
+  re.headers_mut().insert(
+    "Content-Type",
+    HeaderValue::from_static("image/png")
+  );
+  Ok(re)
+}
 // Serialize given struct into json and return it
 #[allow(dead_code)]
 pub fn json<T: Serialize + ?Sized>(
