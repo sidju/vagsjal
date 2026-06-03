@@ -22,7 +22,7 @@ use openidconnect::ClaimsVerificationError as OIDCClaimsVerificationError;
 use askama::Error as RenderingError;
 
 type OIDCRequestError = openidconnect::RequestTokenError<
-  openidconnect::reqwest::Error<reqwest::Error>,
+  openidconnect::HttpClientError<reqwest::Error>,
   openidconnect::StandardErrorResponse<openidconnect::core::CoreErrorResponseType>
 >;
 
@@ -92,6 +92,7 @@ pub enum ClientError {
   OIDCGaveNoRefreshToken,
 
   InvalidBuilderDraft(String),
+  InvalidOidcConfiguration(String),
 }
 #[derive(Template)]
 #[template(path = "error.html")]
@@ -134,6 +135,7 @@ impl Reply for ClientError {
       Self::OIDCGaveNoToken => "OIDC provider did not return an ID token.".to_owned(),
       Self::OIDCGaveNoRefreshToken => "OIDC provider did not return a refresh token.".to_owned(),
       Self::InvalidBuilderDraft(msg) => msg.clone(),
+      Self::InvalidOidcConfiguration(msg) => msg.clone(),
     };
     let body = ErrorPageTemplate {
       status: status.as_str(),
@@ -292,6 +294,11 @@ impl From<OIDCClaimsVerificationError> for Error {
 impl From<OIDCRequestError> for Error {
   fn from(e: OIDCRequestError) -> Self {
     InternalError::OIDCRequestError(e).into()
+  }
+}
+impl From<openidconnect::ConfigurationError> for Error {
+  fn from(e: openidconnect::ConfigurationError) -> Self {
+    ClientError::InvalidOidcConfiguration(format!("{}", e)).into()
   }
 }
 impl From<RenderingError> for Error {

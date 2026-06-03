@@ -1,44 +1,25 @@
 use std::env::var;
 use sqlx::postgres::PgPool;
-use serde::{Serialize, Deserialize};
 
-
-// Teach openidconnect-rs about a Google custom extension to the OpenID Discovery response that we can use as the RFC
-// 7009 OAuth 2.0 Token Revocation endpoint. For more information about the Google specific Discovery response see the
-// Google OpenID Connect service documentation at: https://developers.google.com/identity/protocols/oidc2/openid-connect#discovery
-#[derive(Clone, Debug, Deserialize, Serialize)]
-struct RevocationEndpointProviderMetadata {
-    revocation_endpoint: String,
-}
-impl openidconnect::AdditionalProviderMetadata for RevocationEndpointProviderMetadata {}
-type GoogleProviderMetadata = openidconnect::ProviderMetadata<
-    RevocationEndpointProviderMetadata,
-    openidconnect::core::CoreAuthDisplay,
-    openidconnect::core::CoreClientAuthMethod,
-    openidconnect::core::CoreClaimName,
-    openidconnect::core::CoreClaimType,
-    openidconnect::core::CoreGrantType,
-    openidconnect::core::CoreJweContentEncryptionAlgorithm,
-    openidconnect::core::CoreJweKeyManagementAlgorithm,
-    openidconnect::core::CoreJwsSigningAlgorithm,
-    openidconnect::core::CoreJsonWebKeyType,
-    openidconnect::core::CoreJsonWebKeyUse,
-    openidconnect::core::CoreJsonWebKey,
-    openidconnect::core::CoreResponseMode,
-    openidconnect::core::CoreResponseType,
-    openidconnect::core::CoreSubjectIdentifierType,
+pub type AppOidcClient = openidconnect::core::CoreClient<
+  openidconnect::EndpointSet,
+  openidconnect::EndpointNotSet,
+  openidconnect::EndpointNotSet,
+  openidconnect::EndpointSet,
+  openidconnect::EndpointMaybeSet,
+  openidconnect::EndpointMaybeSet,
 >;
 
 pub struct State {
   pub db: PgPool,
-  pub oidc_client: openidconnect::core::CoreClient,
+  pub oidc_client: AppOidcClient,
+  pub http_client: reqwest::Client,
 
   // Only relevant if accepting POST/PUT
   pub max_content_len: usize,
 }
 
 pub async fn init_state() -> &'static State {
-  // Read in .env file via dotenv
   dotenvy::dotenv().expect("Failed to read .env file into environment");
 
   // Get needed data from environment
@@ -68,26 +49,25 @@ pub async fn init_state() -> &'static State {
   let db = sqlx::postgres::PgPoolOptions::new()
     .max_connections(8)
     .min_connections(1)
-    // It is recommended to enforce reconnects every 24 hours, in case of per
-    // connection memory leaks in the database itself
     .max_lifetime(std::time::Duration::from_secs(24 * 60 * 60))
     .connect(&db_url)
     .await
     .expect("Failed to connect to database")
   ;
-  let oidc_metadata = GoogleProviderMetadata::discover_async(
+  let http_client = reqwest::Client::new();
+  let oidc_metadata = openidconnect::core::CoreProviderMetadata::discover_async(
     openidconnect::IssuerUrl::new(
       "https://accounts.google.com".to_string()
     ).unwrap(),
-    openidconnect::reqwest::async_http_client,
+    &http_client,
   )
     .await
     .expect("Failed to get oidc metadata from google")
   ;
-  let revocation_url = oidc_metadata
-    .additional_metadata()
-    .revocation_endpoint
-    .clone()
+  let revocation_url = openidconnect::RevocationUrl::new(
+    "https://oauth2.googleapis.com/revoke".to_string()
+  )
+    .expect("Invalid revocation URL")
   ;
   let oidc_client = openidconnect::core::CoreClient::from_provider_metadata(
     oidc_metadata,
@@ -98,10 +78,7 @@ pub async fn init_state() -> &'static State {
       openidconnect::RedirectUrl::new(oidc_redirect_url)
         .expect("Invalid OIDC_REDIRECT_URL")
     )
-    .set_revocation_uri(
-      openidconnect::RevocationUrl::new(revocation_url)
-        .unwrap()
-    )
+    .set_revocation_url(revocation_url)
   ;
 
   // Perform any setup operations
@@ -127,6 +104,7 @@ INSERT INTO app_user(user_id, oidc_subject, name, role) VALUES(0, $1, 'Admin', '
   Box::leak(Box::new(State{
     db,
     oidc_client,
+    http_client,
     max_content_len,
   }))
 }

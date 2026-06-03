@@ -1,9 +1,9 @@
 [package]
-name = "the-nightly-grind"
+name = "vagsjal"
 version = "0.1.0"
 authors = ["sidju <contact@sidju.se>"]
 license = "MIT"
-edition = "2021"
+edition = "2024"
 
 [build-dependencies]
 comrak = { version = "0.52", default-features = false }
@@ -17,10 +17,10 @@ http-body-util = "0.1"
 # Multithreaded/asynchronous runtime (version controlled by hyper)
 tokio = { version = "1", features = ["full"] }
 # Helpers for asynchronous programming (version controlled by hyper)
-futures = "*"
+futures = "0.3"
 # Serialization (syntax versions set by main lib)
 serde = { version = "1.0", features = ["derive"] }
-serde_json = "*"
+serde_json = "1.0"
 serde_urlencoded = "*"
 # SQL database driver
 sqlx = { version = "0.8", features = [
@@ -38,8 +38,8 @@ sqlx = { version = "0.8", features = [
 time = { version = "0.3", features = ["serde-human-readable"] }
 # Auth library
 # (We'll later custom write the request/response code for this in raw hyper)
-openidconnect = { version = "3.5" } #, default-features = false }
-reqwest = "0.11.27"
+openidconnect = { version = "4.0" } #, default-features = false }
+reqwest = "0.12"
 nanoid = "0.5"
 # And a templating library, to render html
 askama = "0.16"
