@@ -4,7 +4,6 @@ use std::collections::HashMap;
 
 #[derive(Debug)]
 struct CharacterHeader {
-  vampire_id: i64,
   name: String,
   remaining_xp: i64,
 }
@@ -105,7 +104,7 @@ async fn get_character(
   sqlx::query_as!(
     CharacterHeader,
     "
-SELECT vampire.vampire_id, vampire.name, COALESCE(xp_remaining.amount, 0) AS \"remaining_xp!\"
+SELECT vampire.name, COALESCE(xp_remaining.amount, 0) AS \"remaining_xp!\"
 FROM vampire
 LEFT JOIN xp_remaining USING (vampire_id)
 WHERE vampire.vampire_id = $1

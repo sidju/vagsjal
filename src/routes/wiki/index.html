@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+
+{% block title %}Wiki{% endblock %}
+
+{% block body %}
+<h1>Wiki</h1>
+<ul>
+{% for (name, title) in pages %}
+  <li><a href="/wiki/{{ name }}/">{{ title }}</a></li>
+{% endfor %}
+</ul>
+{% endblock %}

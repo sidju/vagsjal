@@ -16,6 +16,7 @@
           {% else %}
           <a href="/character/">Karaktärsblad</a>
           {% endif %}
+          <a href="/wiki/">Wiki</a>
           {% if show_admin_link %}
           <a href="/admin/">Admin</a>
           {% endif %}
@@ -38,6 +39,7 @@
           'transactions': 'Transaktioner',
           'account-changes': 'Kontoförändringar',
           'imported-account-changes': 'Importerade kontoförändringar',
+          'wiki': 'Wiki',
         };
 
         const parts = window.location.pathname.split('/').filter(Boolean);

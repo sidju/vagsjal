@@ -45,6 +45,8 @@ LIMIT 1
 // And the actual route modules
 mod admin;
 mod character;
+mod wiki;
+use wiki::WikiPageTemplate;
 
 const CSS: &'static str = include_str!("styles.css");
 
@@ -94,11 +96,23 @@ pub async fn route(
         None => None,
       };
 
-      // Utility function to build html response around given str
-      html(Index{
-        show_admin_link: session.as_ref().map(|s| s.role.is_storyteller()).unwrap_or(false),
-        oldest_active,
-      }.render()?)
+      let show_admin = session.as_ref().map(|s| s.role.is_storyteller()).unwrap_or(false);
+
+      // Render from homepage.md if available
+      let body = match wiki::wiki_pages::get("homepage") {
+        Some(page) => WikiPageTemplate {
+          title: page.title.to_string(),
+          content: page.content.to_string(),
+          show_admin_link: show_admin,
+          oldest_active,
+        }.render()?,
+        None => Index {
+          show_admin_link: show_admin,
+          oldest_active,
+        }.render()?,
+      };
+
+      html(body)
     },
 //    Some("login") => {
 //      verify_method_path_end(&path_vec, &req, &Method::GET)?;
@@ -124,6 +138,7 @@ pub async fn route(
         Some(session) => admin::route(state, session, req, path_vec).await,
       }
     },
+    Some("wiki") => wiki::route(state, session, req, path_vec).await,
     Some("styles.css") => {
       verify_method_path_end(&path_vec, &req, &Method::GET)?;
       css(CSS)

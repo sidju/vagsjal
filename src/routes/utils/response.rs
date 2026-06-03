@@ -5,6 +5,7 @@ use super::*;
 //
 
 // Return an empty OK response (HTTP 204)
+#[allow(dead_code)]
 pub fn empty() -> Result<Response, Error> {
   let mut re = Response::new("".into());
   *re.status_mut() = StatusCode::NO_CONTENT;
@@ -12,6 +13,7 @@ pub fn empty() -> Result<Response, Error> {
 }
 // Return an empty not modified response
 // Useful to handle http conditional requests
+#[allow(dead_code)]
 pub fn not_modified() -> Result<Response, Error> {
   let mut re = Response::new("".into());
   *re.status_mut() = StatusCode::NOT_MODIFIED;
@@ -79,6 +81,7 @@ pub fn css(
   Ok(re)
 }
 // Serialize given struct into json and return it
+#[allow(dead_code)]
 pub fn json<T: Serialize + ?Sized>(
   data: &T,
 ) -> Result<Response, Error> {
@@ -90,6 +93,7 @@ pub fn json<T: Serialize + ?Sized>(
   Ok(re)
 }
 
+#[allow(dead_code)]
 pub fn set_status(
   re: Result<Response, Error>,
   status: StatusCode,

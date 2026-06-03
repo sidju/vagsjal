@@ -127,3 +127,17 @@ table.stat-table th:last-child {
   width: 4.5em;
   text-align: center;
 }
+
+/* Wiki styles */
+.wiki-section h2 {
+  font-size: 1.1rem;
+}
+
+.wiki-section ul {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.wiki-section li {
+  margin: 0.2rem 0;
+}

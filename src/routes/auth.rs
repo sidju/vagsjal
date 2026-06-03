@@ -1,6 +1,6 @@
 use super::*;
 
-use openidconnect::{ClaimsVerificationError, OAuth2TokenResponse, TokenResponse};
+use openidconnect::{ClaimsVerificationError, OAuth2TokenResponse};
 use serde::{Deserialize, Serialize};
 
 pub const SESSION_COOKIE_NAME: &str = "__Host-session_token";
@@ -118,15 +118,16 @@ async fn refresh_session_from_cookie(
   state: &'static State,
   refresh_token_raw: &str,
 ) -> Result<Option<(SessionData, Vec<HeaderValue>)>, Error> {
-  let token_response = match state.oidc_client
+  let token_response: openidconnect::core::CoreTokenResponse = match state.oidc_client
     .exchange_refresh_token(&openidconnect::RefreshToken::new(refresh_token_raw.to_owned()))
-    .request_async(openidconnect::reqwest::async_http_client)
-    .await
   {
-    Ok(response) => response,
+    Ok(req) => match req.request_async(&state.http_client).await {
+      Ok(resp) => resp,
+      Err(_) => return Ok(None),
+    },
     Err(_) => return Ok(None),
   };
-  let id_token = match token_response.id_token() {
+  let id_token = match token_response.extra_fields().id_token() {
     Some(token) => token,
     None => return Ok(None),
   };
@@ -260,12 +261,13 @@ RETURNING nonce
     .ok_or(ClientError::UnknownOIDCProcess)?
   ;
 
-  let token_response = state.oidc_client
-    .exchange_code(openidconnect::AuthorizationCode::new(oidc_response.code))
-    .request_async(openidconnect::reqwest::async_http_client)
+  let token_response: openidconnect::core::CoreTokenResponse = state.oidc_client
+    .exchange_code(openidconnect::AuthorizationCode::new(oidc_response.code))?
+    .request_async(&state.http_client)
     .await
   ?;
   let id_token = token_response
+    .extra_fields()
     .id_token()
     .ok_or(ClientError::OIDCGaveNoToken)?
   ;
