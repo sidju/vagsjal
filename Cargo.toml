@@ -5,6 +5,9 @@ authors = ["sidju <contact@sidju.se>"]
 license = "MIT"
 edition = "2021"
 
+[build-dependencies]
+comrak = { version = "0.52", default-features = false }
+
 [dependencies]
 dotenvy = "*"
 # Web serving framework
