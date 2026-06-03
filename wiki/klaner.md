@@ -2,12 +2,6 @@
 
 #index #lore #regler
 
-Klaner är Kindreds blodslinjer och nedärvda natur. De fem etablerade klanerna är:
-
-- [Daeva](daeva.md)
-- [Gangrel](gangrel.md)
-- [Mekhet](mekhet.md)
-- [Nosferatu](nosferatu.md)
-- [Ventrue](ventrue.md)
-
-En klan avgör särskilda styrkor och svagheter, inklusive klanens specifika förbannelse.
+Klaner är vampyriska blodslinjer och deras nedärvda natur. En klan medför
+särskilda styrkor och svagheter, inklusive klanens specifika förbannelse, samt
+vilka [blodskrafter](blodskrafter.md) som vampyren har fallenhet för.

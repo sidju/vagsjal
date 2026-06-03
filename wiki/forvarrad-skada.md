@@ -3,7 +3,7 @@
 #regler
 
 Förvärrad skada är inte bara fysisk skada — det är en förgiftning, en
-infektion av kindred-kroppen av en skadlig ande eller essens. Såret bär med sig
+infektion av vampyrkroppen av en skadlig ande eller essens. Såret bär med sig
 något av sin källa, och den essensen motstår kroppens försök att driva ut den.
 De som granskar såren hos en drabbad kindred noga kan ana att essensen
 fortfarande finns kvar i dem — till exempel glöden från glödande kol eller ett
@@ -17,6 +17,6 @@ framför allt det svarta vitae-giftet från
 ## Effekt
 
 Medan en kindred bär på förvärrad skada läker den bara 1 [HP](hp.md) per natt,
-oavsett [Blood Potency](blodpotens.md). Förgiftningen lämnar dem inte förrän
+oavsett [blodpotens](blodpotens.md). Förgiftningen lämnar dem inte förrän
 de är helt läkta — först när all skada är borta kan kroppen till slut trycka ut
 den fientliga essensen.

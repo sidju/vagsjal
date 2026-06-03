@@ -1,10 +1,12 @@
 # VägSjäl Wiki
 
-#wiki
+Welcome to the wiki! This is where we try to put all the rules and lore.
 
-Welcome to the wiki! This is a space for shared notes, rules references, and documentation.
+Sidor som behöver ses över är:
 
-## Getting started
+- [Protean](protean.md)
+- [Strid](strid.md)
+- [Utrustning](utrustning.md) ?
 
-- [Markdown help](markdown.md) — how to write and link pages
-- [Hashtag categories](categories.md) — how #tags work for organisation
+
+Not every page is listed on this page, but some good ones to start exploring are:

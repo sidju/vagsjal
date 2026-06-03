@@ -2,4 +2,6 @@
 
 #influenssystem
 
-Handlingar är omedelbara, engångsanvändningar av inflytande. Tala med en berättare för att få dina inflytanden att få något att hända i världen just nu.
+Handlingar är omedelbara, engångsanvändningar av influenser. Prata med en
+spelledare under lajvet för att omedelbart påverka spelvärlden med dina
+influenser.
