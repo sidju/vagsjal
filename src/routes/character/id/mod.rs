@@ -8,6 +8,12 @@ struct CharacterHeader {
   status: CharacterStatus,
   remaining_xp: i64,
   character_description_url: Option<String>,
+  owner_name: String,
+  apparent_age: i32,
+  date_embraced: String,
+  clan_name: String,
+  torpor_time: sqlx::postgres::types::PgInterval,
+  torpor_display: String,
 }
 #[derive(Debug, Serialize)]
 struct StatLine {
@@ -39,13 +45,13 @@ struct StatOptionRow {
   name: String,
   xp_cost: Option<i32>,
 }
-#[derive(Debug, Serialize)]
+#[derive(Debug, Clone, Serialize)]
 struct PowerOption {
   id: String,
   name: String,
   in_clan: bool,
 }
-#[derive(Debug, Serialize)]
+#[derive(Debug, Clone, Serialize)]
 struct InfluenceOption {
   id: String,
   name: String,
@@ -101,25 +107,24 @@ struct Index {
   stats: Vec<StatLine>,
   powers: Vec<StatLine>,
   influences: Vec<StatLine>,
+  power_options: Vec<PowerOption>,
+  influence_options: Vec<InfluenceOption>,
   /// Safe JSON embedded via <script type="application/json"> (</> escaped)
   initial_data_json: String,
   saved: bool,
   show_admin_link: bool,
-  oldest_active: Option<OldestActiveCharacter>,
 }
 #[derive(Debug, Template)]
 #[template(path = "character/id/draft.html")]
 struct DraftView {
   character: CharacterHeader,
   show_admin_link: bool,
-  oldest_active: Option<OldestActiveCharacter>,
 }
 #[derive(Debug, Template)]
 #[template(path = "character/id/inactive.html")]
 struct InactiveView {
   character: CharacterHeader,
   show_admin_link: bool,
-  oldest_active: Option<OldestActiveCharacter>,
 }
 
 async fn get_character(
@@ -130,18 +135,31 @@ async fn get_character(
 ) -> Result<CharacterHeader, Error> {
   sqlx::query_as!(
     CharacterHeader,
-    "
-SELECT vampire.name, vampire.status AS \"status: CharacterStatus\", COALESCE(xp_remaining.amount, 0) AS \"remaining_xp!\", vampire.character_description_url AS \"character_description_url?\"
+    r#"
+SELECT
+  vampire.name,
+  vampire.status AS "status: CharacterStatus",
+  COALESCE(xp_remaining.amount, 0) AS "remaining_xp!",
+  vampire.character_description_url AS "character_description_url?",
+  app_user.name AS "owner_name!",
+  vampire.apparent_age,
+  to_char(vampire.date_embraced, 'YYYY-MM-DD') AS "date_embraced!",
+  clan.name AS "clan_name!",
+  vampire.torpor_time,
+  '' AS "torpor_display!"
 FROM vampire
+JOIN app_user USING (user_id)
+JOIN clan USING (clan_id)
 LEFT JOIN xp_remaining USING (vampire_id)
 WHERE vampire.vampire_id = $1
   AND vampire.user_id = $2
-    ",
+    "#,
     vampire_id,
     user_id,
   )
     .fetch_optional(&state.db)
     .await?
+    .map(|mut c| { c.torpor_display = fmt_torpor(&c.torpor_time); c })
     .ok_or_else(|| Error::path_not_found(req))
 }
 /// Fetches computed stats from the view (includes Blood Potency/HP formula rows).
@@ -158,7 +176,7 @@ SELECT
   "pending_review!" AS "pending_review!"
 FROM vampire_stat
 WHERE vampire_id = $1
-ORDER BY "name!"
+ORDER BY CASE "id!" WHEN 'humanity' THEN 0 WHEN 'blood-potency' THEN 1 WHEN 'hp' THEN 2 WHEN 'physical-ability' THEN 3 WHEN 'mental-ability' THEN 4 WHEN 'organizational-ability' THEN 5 END
     "#,
     vampire_id,
   )
@@ -305,20 +323,16 @@ async fn index_get(
   character: CharacterHeader,
   vampire_id: i64,
 ) -> Result<Response, Error> {
-  let oldest_active = fetch_oldest_active(state, session.user_id).await?;
-
   if character.status.is_draft() {
     return html(DraftView {
       character,
       show_admin_link: session.role.is_storyteller(),
-      oldest_active,
     }.render()?);
   }
   if character.status.is_inactive() {
     return html(InactiveView {
       character,
       show_admin_link: session.role.is_storyteller(),
-      oldest_active,
     }.render()?);
   }
 
@@ -374,8 +388,8 @@ async fn index_get(
     },
     options: DraftOptions {
       stats: stat_options,
-      powers: power_options,
-      influences: influence_options,
+      powers: power_options.clone(),
+      influences: influence_options.clone(),
     },
   })?.replace("</", r"<\/");
 
@@ -384,10 +398,11 @@ async fn index_get(
     stats,
     powers,
     influences,
+    power_options,
+    influence_options,
     initial_data_json,
     saved: query.saved == Some(1),
     show_admin_link: session.role.is_storyteller(),
-    oldest_active,
   }.render()?)
 }
 async fn index_post(

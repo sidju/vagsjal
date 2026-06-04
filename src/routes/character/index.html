@@ -12,6 +12,7 @@
       <li>
         <table class="stat-table">
           <tr>
+            <th>Namn:</th>
             <th><a class="character-link" href="{{character.vampire_id}}/">{{ character.name }}</a></th>
           </tr>
           <tr>
@@ -19,7 +20,7 @@
             <td>{{ character.apparent_age }}</td>
           </tr>
           <tr>
-            <td><a href="/wiki/omfamning/">Omfamningsdatum</a></td>
+            <td><a href="/wiki/embrace/">Omfamningsdatum</a></td>
             <td>{{ character.date_embraced }}</td>
           </tr>
           <tr>
@@ -27,12 +28,12 @@
             <td>{{ character.torpor_display }}</td>
           </tr>
           <tr>
-            <td><a href="/wiki/klan/">Klan</a></td>
+            <td><a href="/wiki/clan/">Klan</a></td>
             <td><a href="/wiki/{{ character.clan_name | lower }}/">{{ character.clan_name }}</a></td>
           </tr>
           {% if let Some(url) = character.character_description_url %}
           <tr>
-            <td>Karaktärsbeskrivning</td>
+            <td><a href="/wiki/character-description/">Karaktärsbeskrivning</a></td>
             <td><a href="{{ url }}">{{ url }}</a></td>
           </tr>
           {% endif %}
@@ -47,24 +48,49 @@
     <h2>Skapa karaktär</h2>
     <p>Fyll i grundläggande information för att skapa en ny karaktär. En spelledare kommer att godkänna den innan den blir aktiv.</p>
     <form method="post" enctype="application/x-www-form-urlencoded">
-      <p><label>Namn <input name="name" required></label></p>
-      <p><label>Mänsklig ålder <input name="apparent_age" type="number" min="0" required></label></p>
-      <p><label>Datum för omfamning <input name="date_embraced" type="date" required></label></p>
-      <p><label>Torpor år <input name="torpor_years" type="number" value="0"></label></p>
-      <p><label>Torpor månader <input name="torpor_months" type="number" value="0"></label></p>
-      <p><label>Torpor dagar <input name="torpor_days" type="number" value="0"></label></p>
-      <p>
-        <label>Klan
-          <select name="clan_id" required>
-            <option value="">Välj...</option>
-            {% for clan in clans %}
-            <option value="{{ clan.clan_id }}">{{ clan.name }}</option>
-            {% endfor %}
-          </select>
-        </label>
-      </p>
-      <p><label>Länk till karaktärsbeskrivning <input name="character_description_url" type="url" placeholder="https://docs.google.com/..."></label></p>
-      <button type="submit">Skapa</button>
+      <table class="stat-table">
+        <tr>
+          <td><label for="name">Namn</label></td>
+          <td><input id="name" name="name" required></td>
+        </tr>
+        <tr>
+          <td><label for="apparent_age">Mänsklig ålder</label></td>
+          <td><input id="apparent_age" name="apparent_age" type="number" min="0" required></td>
+        </tr>
+        <tr>
+          <td><label for="date_embraced">Datum för omfamning</label></td>
+          <td><input id="date_embraced" name="date_embraced" type="date" required></td>
+        </tr>
+        <tr>
+          <td><label for="torpor_years">Torpor år</label></td>
+          <td><input id="torpor_years" name="torpor_years" type="number" value="0"></td>
+        </tr>
+        <tr>
+          <td><label for="torpor_months">Torpor månader</label></td>
+          <td><input id="torpor_months" name="torpor_months" type="number" value="0"></td>
+        </tr>
+        <tr>
+          <td><label for="torpor_days">Torpor dagar</label></td>
+          <td><input id="torpor_days" name="torpor_days" type="number" value="0"></td>
+        </tr>
+        <tr>
+          <td><label for="clan_id">Klan</label></td>
+          <td>
+            <select id="clan_id" name="clan_id" required>
+              <option value="">Välj...</option>
+              {% for clan in clans %}
+              <option value="{{ clan.clan_id }}">{{ clan.name }}</option>
+              {% endfor %}
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td><label for="character_description_url">Länk till karaktärsbeskrivning</label></td>
+          <td><input id="character_description_url" name="character_description_url" type="url" placeholder="https://docs.google.com/..."></td>
+        </tr>
+      </table>
+      <br>
+      <div style="text-align: center;"><button type="submit" style="font-size: 1.5rem;">Skapa</button></div>
     </form>
   {% endif %}
 
@@ -77,6 +103,7 @@
       <li>
         <table class="stat-table draft">
           <tr>
+            <th>Namn:</th>
             <th><a class="character-link" href="{{c.vampire_id}}/">{{ c.name }}</a></th>
           </tr>
           <tr>
@@ -84,7 +111,7 @@
             <td>{{ c.apparent_age }}</td>
           </tr>
           <tr>
-            <td><a href="/wiki/omfamning/">Omfamningsdatum</a></td>
+            <td><a href="/wiki/embrace/">Omfamningsdatum</a></td>
             <td>{{ c.date_embraced }}</td>
           </tr>
           <tr>
@@ -92,9 +119,15 @@
             <td>{{ c.torpor_display }}</td>
           </tr>
           <tr>
-            <td><a href="/wiki/klan/">Klan</a></td>
+            <td><a href="/wiki/clan/">Klan</a></td>
             <td><a href="/wiki/{{ c.clan_name | lower }}/">{{ c.clan_name }}</a></td>
           </tr>
+          {% if let Some(url) = c.character_description_url %}
+          <tr>
+            <td><a href="/wiki/character-description/">Karaktärsbeskrivning</a></td>
+            <td><a href="{{ url }}">{{ url }}</a></td>
+          </tr>
+          {% endif %}
         </table>
       </li>
     {% endfor %}
@@ -108,6 +141,7 @@
       <li>
         <table class="stat-table inactive">
           <tr>
+            <th>Namn:</th>
             <th><a class="character-link" href="{{c.vampire_id}}/">{{ c.name }}</a></th>
           </tr>
           <tr>
@@ -115,7 +149,7 @@
             <td>{{ c.apparent_age }}</td>
           </tr>
           <tr>
-            <td><a href="/wiki/omfamning/">Omfamningsdatum</a></td>
+            <td><a href="/wiki/embrace/">Omfamningsdatum</a></td>
             <td>{{ c.date_embraced }}</td>
           </tr>
           <tr>
@@ -123,9 +157,15 @@
             <td>{{ c.torpor_display }}</td>
           </tr>
           <tr>
-            <td><a href="/wiki/klan/">Klan</a></td>
+            <td><a href="/wiki/clan/">Klan</a></td>
             <td><a href="/wiki/{{ c.clan_name | lower }}/">{{ c.clan_name }}</a></td>
           </tr>
+          {% if let Some(url) = c.character_description_url %}
+          <tr>
+            <td><a href="/wiki/character-description/">Karaktärsbeskrivning</a></td>
+            <td><a href="{{ url }}">{{ url }}</a></td>
+          </tr>
+          {% endif %}
         </table>
       </li>
     {% endfor %}

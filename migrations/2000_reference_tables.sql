@@ -36,9 +36,14 @@ FOREIGN KEY (influence) REFERENCES influence
 );
 
 CREATE TABLE humanity_xp_cost (
-change_type VARCHAR(64) PRIMARY KEY,
-xp_cost INT CHECK (xp_cost >= 0) NOT NULL
+  change_type VARCHAR(64) PRIMARY KEY,
+  xp_cost INT CHECK (xp_cost >= 0) NOT NULL
 );
+
+INSERT INTO humanity_xp_cost (change_type, xp_cost) VALUES
+  ('gain', 7),
+  ('loss', 0)
+;
 
 CREATE TABLE power_xp_cost (
 in_clan BOOL NOT NULL,

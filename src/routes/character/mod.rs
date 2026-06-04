@@ -71,7 +71,6 @@ struct Index {
   show_form: bool,
   saved: bool,
   show_admin_link: bool,
-  oldest_active: Option<OldestActiveCharacter>,
 }
 
 fn parse_date(date: &str) -> Result<Date, Error> {
@@ -205,7 +204,6 @@ WHERE vampire_id = $1
 
   let clans = fetch_clans(state).await?;
   let show_form = active_chars.is_empty() && draft_chars.is_empty();
-  let oldest_active = fetch_oldest_active(state, session.user_id).await?;
 
   // Render and return
   html(Index{
@@ -216,7 +214,6 @@ WHERE vampire_id = $1
     show_form,
     saved,
     show_admin_link: session.role.is_storyteller(),
-    oldest_active,
   }.render()?)
 }
 

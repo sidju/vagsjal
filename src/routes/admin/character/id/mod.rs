@@ -79,7 +79,6 @@ struct Index {
   pending: Vec<PendingUsageRow>,
   bp_changes: Vec<BpChange>,
   show_admin_link: bool,
-  oldest_active: Option<OldestActiveCharacter>,
 }
 
 fn parse_date(date: &str) -> Result<Date, Error> {
@@ -268,7 +267,7 @@ async fn fetch_pending_usage(state: &'static State, vampire_id: i64) -> Result<V
     .collect())
 }
 
-async fn index_get(state: &'static State, session: &SessionData, vampire_id: i64) -> Result<Response, Error> {
+async fn index_get(state: &'static State, vampire_id: i64) -> Result<Response, Error> {
   let (character, stats, powers, influences, pending, bp_changes) = tokio::try_join!(
     get_character(state, vampire_id),
     fetch_stats(state, vampire_id),
@@ -277,8 +276,6 @@ async fn index_get(state: &'static State, session: &SessionData, vampire_id: i64
     fetch_pending_usage(state, vampire_id),
     fetch_bp_changes(state, vampire_id),
   )?;
-  let oldest_active = fetch_oldest_active(state, session.user_id).await?;
-
   html(Index {
     character,
     stats,
@@ -287,7 +284,6 @@ async fn index_get(state: &'static State, session: &SessionData, vampire_id: i64
     pending,
     bp_changes,
     show_admin_link: true,
-    oldest_active,
   }.render()?)
 }
 
@@ -472,11 +468,11 @@ pub async fn route(
   match path_vec.pop().as_deref() {
     None => permanent_redirect(&format!("{}/", req.uri().path())),
     Some("") => match req.method() {
-      &Method::GET => index_get(state, &session, vampire_id).await,
+      &Method::GET => index_get(state, vampire_id).await,
       &Method::POST => index_post(state, session, req, vampire_id).await,
       _ => Err(Error::method_not_found(&req)),
     },
-    Some("edit") => edit::route(state, session, req, path_vec, vampire_id).await,
+    Some("edit") => edit::route(state, req, path_vec, vampire_id).await,
     _ => Err(Error::path_not_found(&req)),
   }
 }

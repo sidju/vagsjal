@@ -58,7 +58,6 @@ struct Index {
   clans: Vec<ClanRow>,
   users: Vec<UserRow>,
   show_admin_link: bool,
-  oldest_active: Option<OldestActiveCharacter>,
 }
 
 fn parse_date(date: &str) -> Result<Date, Error> {
@@ -118,10 +117,8 @@ async fn fetch_index_data(state: &'static State) -> Result<(Vec<CharacterRow>, V
   Ok((characters, clans, users))
 }
 
-async fn index_get(state: &'static State, session: &SessionData) -> Result<Response, Error> {
+async fn index_get(state: &'static State) -> Result<Response, Error> {
   let (characters, clans, users) = fetch_index_data(state).await?;
-  let oldest_active = fetch_oldest_active(state, session.user_id).await?;
-
   let mut draft_chars = Vec::new();
   let mut active_chars = Vec::new();
   let mut inactive_chars = Vec::new();
@@ -140,7 +137,6 @@ async fn index_get(state: &'static State, session: &SessionData) -> Result<Respo
     clans,
     users,
     show_admin_link: true,
-    oldest_active,
   }.render()?)
 }
 
@@ -194,7 +190,7 @@ pub async fn route(
   match path_vec.pop().as_deref() {
     None => permanent_redirect(&format!("{}/", req.uri().path())),
     Some("") => match req.method() {
-      &Method::GET => index_get(state, &session).await,
+      &Method::GET => index_get(state).await,
       &Method::POST => index_post(state, req).await,
       _ => Err(Error::method_not_found(&req)),
     },

@@ -1,10 +1,5 @@
 BEGIN;
 
-INSERT INTO humanity_xp_cost (change_type, xp_cost) VALUES
-  ('gain', 7),
-  ('loss', 0)
-;
-
 INSERT INTO power_xp_cost (in_clan, level, xp_cost) VALUES
   (TRUE, 1, 9),
   (TRUE, 2, 12),
