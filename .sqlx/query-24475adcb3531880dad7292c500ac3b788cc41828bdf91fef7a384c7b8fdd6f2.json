@@ -1,0 +1,46 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\nSELECT\n  power.id AS \"id!\",\n  power.name AS \"name!\",\n  COALESCE(vp.\"value!\", 0) AS \"value!: i64\",\n  COALESCE(vp.\"pending_review!\", false) AS \"pending_review!\",\n  EXISTS(\n    SELECT 1\n    FROM vampire\n    JOIN clan USING (clan_id)\n    WHERE vampire.vampire_id = $1\n      AND (power.id = clan.unique_power\n        OR power.id = clan.power_one\n        OR power.id = clan.power_two)\n  ) AS \"in_clan!\"\nFROM power\nLEFT JOIN vampire_power vp ON vp.\"id!\" = power.id AND vp.vampire_id = $1\nORDER BY power.name\n    ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id!",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 1,
+        "name": "name!",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 2,
+        "name": "value!: i64",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 3,
+        "name": "pending_review!",
+        "type_info": "Bool"
+      },
+      {
+        "ordinal": 4,
+        "name": "in_clan!",
+        "type_info": "Bool"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int8"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      null,
+      null,
+      null
+    ]
+  },
+  "hash": "24475adcb3531880dad7292c500ac3b788cc41828bdf91fef7a384c7b8fdd6f2"
+}

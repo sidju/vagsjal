@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "\nSELECT\n  vampire.vampire_id,\n  vampire.status AS \"status: CharacterStatus\",\n  vampire.name,\n  vampire.apparent_age,\n  vampire.date_embraced,\n  vampire.torpor_time,\n      clan.name AS clan_name,\n      COALESCE(xp_remaining.amount, 0) AS \"remaining_xp!\",\n      vampire.character_description_url AS \"character_description_url?\"\nFROM vampire\nJOIN clan USING (clan_id)\nLEFT JOIN xp_remaining USING (vampire_id)\nWHERE vampire.user_id = $1\nORDER BY vampire.name\n    ",
+  "query": "\nSELECT\n  vampire.vampire_id,\n  vampire.status AS \"status: CharacterStatus\",\n  vampire.name,\n  vampire.apparent_age,\n  vampire.date_embraced,\n  vampire.torpor_time,\n      clan.name AS clan_name,\n      COALESCE(xp_remaining.amount, 0) AS \"remaining_xp!\",\n      vampire.character_description_url AS \"character_description_url?\",\n      '' AS \"torpor_display!\"\nFROM vampire\nJOIN clan USING (clan_id)\nLEFT JOIN xp_remaining USING (vampire_id)\nWHERE vampire.user_id = $1\nORDER BY vampire.name\n    ",
   "describe": {
     "columns": [
       {
@@ -47,6 +47,11 @@
         "ordinal": 8,
         "name": "character_description_url?",
         "type_info": "Text"
+      },
+      {
+        "ordinal": 9,
+        "name": "torpor_display!",
+        "type_info": "Text"
       }
     ],
     "parameters": {
@@ -63,8 +68,9 @@
       false,
       false,
       null,
-      true
+      true,
+      null
     ]
   },
-  "hash": "21a9a324f3311b0d77f4acb314b3f0f46a72f0e035a90d03cd228893a5c47a5d"
+  "hash": "e421a52884d88ed365b061f9170cac2136ee32d0b4a90b439af0c131352122ce"
 }

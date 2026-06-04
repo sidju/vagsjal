@@ -5,14 +5,14 @@
 ### 1: Request
 
 Med ögonkontakt och en mjuk begäran binder du ett mål med lägre
-[Mental Förmåga](mental-formaga.md) än dig och gör dem undermedvetet benägna
+[Mental Förmåga](mental-ability.md) än dig och gör dem undermedvetet benägna
 att uppfylla din begäran. Kindred uppfyller spontant små förfrågningar och tror
 att det var av egen vilja. Dödliga är villiga att utföra upp till en timmes
 arbete för dig.
 
 ### 1: Command
 
-Om du har mer [Mental Förmåga](mental-formaga.md) än ditt mål och ögonkontakt
+Om du har mer [Mental Förmåga](mental-ability.md) än ditt mål och ögonkontakt
 binder du dem och tvingar dem att lyda en kort befallning. Övernaturliga
 varelser märker att du gjorde något mot dem, men kan ändå inte stå emot och
 lyder tvångsmässigt. Dödliga hittar på förklaringar till sina handlingar och
@@ -22,7 +22,7 @@ permanent omformar deras syn på händelser och världen så att den passar ditt
 ### 2: Mesmerize
 
 Med ögonkontakt kan du försätta ett mål med lägre
-[Mental Förmåga](mental-formaga.md) än dig i ett suggestibelt hypnotiskt
+[Mental Förmåga](mental-ability.md) än dig i ett suggestibelt hypnotiskt
 tillstånd. I detta tillstånd minns de inte vad de blir tillsagda, men de lyder.
 De kan ta emot en lång och komplex uppgift som tar upp till en natt. De känner sig
 tvingade att följa instruktionerna, men kindred kan stå emot dem om lydnad vore
@@ -39,7 +39,7 @@ _informera mig_.". Effekten varar en natt på kindred och en vecka på människo
 ### 3: Decree
 
 Du kan utfärda ett högt och tydligt uttalande; alla som ser och hör dig och har
-lägre [Mental Ability](mental-formaga.md) än du påverkas som av
+lägre [Mental Ability](mental-ability.md) än du påverkas som av
 [Command](#1-command).
 
 ### 3: Forgetful Mind

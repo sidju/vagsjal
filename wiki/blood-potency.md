@@ -15,7 +15,7 @@ såsom eld, och ingjuter en trötthet som tvingar dem att sova mer.
 - Din läkningstakt multipliceras med din BP.
 - Din skada från [Banes](banes.md) multipliceras med din BP.
 - Varje BP utöver den första gör att du sover en timme mer per dag (minskar
-  [Organisatorisk förmåga](organisatorisk-formaga.md) med 2 för varje BP över
+  [Organisatorisk förmåga](organizational-ability.md) med 2 för varje BP över
   1).
 
 ## Att få blodpotens

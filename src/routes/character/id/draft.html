@@ -5,7 +5,7 @@
 {% block body %}
   <h1>{{ character.name }}</h1>
   {% if let Some(url) = character.character_description_url %}
-  <p>Karaktärsbeskrivning: <a href="{{ url }}">Länk</a></p>
+  <p>Karaktärsbeskrivning: <a href="{{ url }}">{{ url }}</a></p>
   {% endif %}
   <p>Denna karaktär väntar på godkännande från en spelledare.</p>
   <p><a href="/character/">Tillbaka till karaktärslistan</a></p>

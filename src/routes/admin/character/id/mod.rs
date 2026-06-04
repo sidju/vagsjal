@@ -54,8 +54,9 @@ struct PendingUsageRow {
   created_at: String,
 }
 
-#[derive(sqlx::FromRow, Debug)]
+#[derive(Debug)]
 struct SummaryStat {
+  id: String,
   name: String,
   value: i64,
   pending_review: bool,
@@ -120,60 +121,48 @@ async fn get_character(state: &'static State, vampire_id: i64) -> Result<Charact
 }
 
 async fn fetch_stats(
-    state: &'static State,
-    vampire_id: i64,
+  state: &'static State,
+  vampire_id: i64,
 ) -> Result<Vec<SummaryStat>, Error> {
-    let stats = sqlx::query_as!(
-      SummaryStat,
-      r#"
-      SELECT "name!" AS "name!", "value!" AS "value!", "pending_review!" AS "pending_review!"
-      FROM vampire_stat
-      WHERE vampire_id = $1
-      ORDER BY "name!"
-      "#,
-      vampire_id,
-    )
-      .fetch_all(&state.db)
-      .await?;
-    Ok(stats)
+  let rows = sqlx::query!(
+    r#"SELECT "id!" AS "id!", "name!" AS "name!", "value!" AS "value!: i64", "pending_review!" AS "pending_review!" FROM vampire_stat WHERE vampire_id = $1 ORDER BY "name!""#,
+    vampire_id,
+  )
+    .fetch_all(&state.db)
+    .await?;
+  Ok(rows.into_iter().map(|r| SummaryStat {
+    id: r.id, name: r.name, value: r.value, pending_review: r.pending_review,
+  }).collect())
 }
 
 async fn fetch_powers(
-    state: &'static State,
-    vampire_id: i64,
+  state: &'static State,
+  vampire_id: i64,
 ) -> Result<Vec<SummaryStat>, Error> {
-    let powers = sqlx::query_as!(
-      SummaryStat,
-      r#"
-      SELECT "name!" AS "name!", "value!" AS "value!", "pending_review!" AS "pending_review!"
-      FROM vampire_power
-      WHERE vampire_id = $1
-      ORDER BY "name!"
-      "#,
-      vampire_id,
-    )
-      .fetch_all(&state.db)
-      .await?;
-    Ok(powers)
+  let rows = sqlx::query!(
+    r#"SELECT "id!" AS "id!", "name!" AS "name!", "value!" AS "value!: i64", "pending_review!" AS "pending_review!" FROM vampire_power WHERE vampire_id = $1 ORDER BY "name!""#,
+    vampire_id,
+  )
+    .fetch_all(&state.db)
+    .await?;
+  Ok(rows.into_iter().map(|r| SummaryStat {
+    id: r.id, name: r.name, value: r.value, pending_review: r.pending_review,
+  }).collect())
 }
 
 async fn fetch_influences(
-    state: &'static State,
-    vampire_id: i64,
+  state: &'static State,
+  vampire_id: i64,
 ) -> Result<Vec<SummaryStat>, Error> {
-    let influences = sqlx::query_as!(
-      SummaryStat,
-      r#"
-      SELECT "name!" AS "name!", "value!" AS "value!", "pending_review!" AS "pending_review!"
-      FROM vampire_influence
-      WHERE vampire_id = $1
-      ORDER BY "name!"
-      "#,
-      vampire_id,
-    )
-      .fetch_all(&state.db)
-      .await?;
-    Ok(influences)
+  let rows = sqlx::query!(
+    r#"SELECT "id!" AS "id!", "name!" AS "name!", "value!" AS "value!: i64", "pending_review!" AS "pending_review!" FROM vampire_influence WHERE vampire_id = $1 ORDER BY "name!""#,
+    vampire_id,
+  )
+    .fetch_all(&state.db)
+    .await?;
+  Ok(rows.into_iter().map(|r| SummaryStat {
+    id: r.id, name: r.name, value: r.value, pending_review: r.pending_review,
+  }).collect())
 }
 
 async fn fetch_bp_changes(state: &'static State, vampire_id: i64) -> Result<Vec<BpChange>, Error> {
@@ -199,14 +188,15 @@ async fn fetch_pending_usage(state: &'static State, vampire_id: i64) -> Result<V
   let stat_rows = sqlx::query!(
     r#"
     SELECT
-      'stat' AS "kind!",
+      'Stat' AS "kind!",
       stat_raise.stat_raise_id AS "usage_id!",
-      stat_raise.stat AS "name!",
+      stat.name AS "name!",
       stat_raise.increase AS "increase!",
       stat_raise.xp_cost AS "xp_cost!",
       to_char(stat_raise.creation_time, 'YYYY-MM-DD HH24:MI:SS') AS "created_at!"
     FROM stat_raise
     LEFT JOIN stat_raise_review USING (stat_raise_id)
+    JOIN stat ON stat.id = stat_raise.stat
     WHERE stat_raise.vampire_id = $1 AND stat_raise_review.state IS NULL
     ORDER BY stat_raise.creation_time, stat_raise.stat_raise_id
     "#,
@@ -217,13 +207,14 @@ async fn fetch_pending_usage(state: &'static State, vampire_id: i64) -> Result<V
   let power_rows = sqlx::query!(
     r#"
     SELECT
-      'power' AS "kind!",
+      'Kraft' AS "kind!",
       power_raise.power_raise_id AS "usage_id!",
-      power_raise.power AS "name!",
+      power.name AS "name!",
       1 AS "increase!",
       power_raise.xp_cost AS "xp_cost!",
       to_char(power_raise.creation_time, 'YYYY-MM-DD HH24:MI:SS') AS "created_at!"
     FROM power_raise
+    JOIN power ON power.id = power_raise.power
     LEFT JOIN power_raise_review USING (power_raise_id)
     WHERE power_raise.vampire_id = $1 AND power_raise_review.state IS NULL
     ORDER BY power_raise.creation_time, power_raise.power_raise_id
@@ -235,13 +226,14 @@ async fn fetch_pending_usage(state: &'static State, vampire_id: i64) -> Result<V
   let influence_rows = sqlx::query!(
     r#"
     SELECT
-      'influence' AS "kind!",
+      'Inflytande' AS "kind!",
       influence_raise.influence_raise_id AS "usage_id!",
-      influence_raise.influence AS "name!",
+      influence.name AS "name!",
       1 AS "increase!",
       influence_raise.xp_cost AS "xp_cost!",
       to_char(influence_raise.creation_time, 'YYYY-MM-DD HH24:MI:SS') AS "created_at!"
     FROM influence_raise
+    JOIN influence ON influence.id = influence_raise.influence
     LEFT JOIN influence_raise_review USING (influence_raise_id)
     WHERE influence_raise.vampire_id = $1 AND influence_raise_review.state IS NULL
     ORDER BY influence_raise.creation_time, influence_raise.influence_raise_id
@@ -253,7 +245,7 @@ async fn fetch_pending_usage(state: &'static State, vampire_id: i64) -> Result<V
   let humanity_rows = sqlx::query!(
     r#"
     SELECT
-      'humanity' AS "kind!",
+      'Mänsklighet' AS "kind!",
       humanity_change.humanity_change_id AS "usage_id!",
       humanity_change.note AS "name!",
       ABS(humanity_change.change)::INT AS "increase!",
@@ -357,12 +349,12 @@ async fn review_pending(
   let usage_id = form.usage_id.ok_or_else(|| Error::invalid_builder_draft("Missing usage_id"))?;
   let decision = form.decision.ok_or_else(|| Error::invalid_builder_draft("Missing decision"))?;
   let approved = match decision.as_str() {
-    "approve" => "approved",
-    "reject" => "denied",
+    "godkänn" => "approved",
+    "avvisa" => "denied",
     _ => return Err(Error::invalid_builder_draft("Invalid review decision")),
   };
   let rows_affected = match kind.as_str() {
-    "stat" => sqlx::query!(
+    "Stat" => sqlx::query!(
       r#"
       INSERT INTO stat_raise_review (stat_raise_id, state, reviewer_id)
       VALUES ($1, CASE WHEN $2 = 'approved' THEN 'approved' ELSE 'denied' END::approval_state_t, $3)
@@ -375,7 +367,7 @@ async fn review_pending(
       .execute(&state.db)
       .await?
       .rows_affected(),
-    "power" => sqlx::query!(
+    "Kraft" => sqlx::query!(
       r#"
       INSERT INTO power_raise_review (power_raise_id, state, reviewer_id)
       VALUES ($1, CASE WHEN $2 = 'approved' THEN 'approved' ELSE 'denied' END::approval_state_t, $3)
@@ -388,7 +380,7 @@ async fn review_pending(
       .execute(&state.db)
       .await?
       .rows_affected(),
-    "influence" => sqlx::query!(
+    "Inflytande" => sqlx::query!(
       r#"
       INSERT INTO influence_raise_review (influence_raise_id, state, reviewer_id)
       VALUES ($1, CASE WHEN $2 = 'approved' THEN 'approved' ELSE 'denied' END::approval_state_t, $3)
@@ -401,7 +393,7 @@ async fn review_pending(
       .execute(&state.db)
       .await?
       .rows_affected(),
-    "humanity" => sqlx::query!(
+    "Mänsklighet" => sqlx::query!(
       r#"
       INSERT INTO humanity_change_review (humanity_change_id, state, reviewer_id)
       VALUES ($1, CASE WHEN $2 = 'approved' THEN 'approved' ELSE 'denied' END::approval_state_t, $3)

@@ -17,7 +17,7 @@ att du blir allt mer uppenbar.
 ## Närstridsvapen
 
 Närstridsvapen ger en _Vapenbonus_ till din
-[Fysisk förmåga](fysisk-formaga.md) när de används, vilket kan öka skadan men
+[Fysisk förmåga](physical-ability.md) när de används, vilket kan öka skadan men
 inte säkert gör det.
 
 | Vapenbonus | Kategoribeskrivning  | Exempelvapen         |
@@ -30,7 +30,7 @@ inte säkert gör det.
 
 Avståndsvapen gör helt enkelt en fast skada och är sällan lika dödliga som en
 närstridskämpe, men för den som inte vill gå in i närstrid / saknar
-[Fysisk förmåga](fysisk-formaga.md) för att vara effektiv i närstrid är det
+[Fysisk förmåga](physical-ability.md) för att vara effektiv i närstrid är det
 något. Observera att vapen gör dubbel skada om målet är inom närhåll, så med
 risk går det att få ganska bra skada.
 

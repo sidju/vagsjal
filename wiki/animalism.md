@@ -27,7 +27,7 @@ dödade det förblir synliga.
 
 Du kan spilla ditt blod och genom det sprida din best genom omgivningen, och
 driva djur och människor till raseri. Övernaturliga varelser kan stå emot om de
-har högre [Blood Potency](blodpotens.md) än du, men om de har druckit ditt
+har högre [Blood Potency](blood-potency.md) än du, men om de har druckit ditt
 blod för mindre än ett antal månader motsvarande din Blood Potency räknas din
 Blood Potency som 2 högre. De som frenzy:ar av detta står i viss mån under ditt
 befäl; du kan styra dem att attackera ett mål eller en grupp. Om du inte gör det

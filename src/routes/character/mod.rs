@@ -31,6 +31,7 @@ fn fmt_torpor(t: &sqlx::postgres::types::PgInterval) -> String {
 }
 #[derive(Debug)]
 struct Stat {
+  id: String,
   name: String,
   value: i64,
   pending_review: bool,
@@ -128,38 +129,62 @@ ORDER BY vampire.name
   // Fetch the stats for each character
   let mut character_stats = Vec::new();
   for c in characters {
-    let stats = sqlx::query_as!(Stat,
-      "
-SELECT \"name!\", \"value!\", \"pending_review!\"
+    let stats = sqlx::query!(
+      r#"
+SELECT "id!" AS "id!", "name!" AS "name!", "value!" AS "value!: i64", "pending_review!" AS "pending_review!"
 FROM vampire_stat
 WHERE vampire_id = $1
-      ",
+      "#,
       c.vampire_id
     )
       .fetch_all(&state.db)
       .await?
+      .into_iter()
+      .map(|r| Stat {
+        id: r.id,
+        name: r.name,
+        value: r.value,
+        pending_review: r.pending_review,
+      })
+      .collect()
     ;
-    let powers = sqlx::query_as!(Stat,
-      "
-SELECT \"name!\", \"value!\", \"pending_review!\"
+    let powers = sqlx::query!(
+      r#"
+SELECT "id!" AS "id!", "name!" AS "name!", "value!" AS "value!: i64", "pending_review!" AS "pending_review!"
 FROM vampire_power
 WHERE vampire_id = $1
-      ",
+      "#,
       c.vampire_id
     )
       .fetch_all(&state.db)
       .await?
+      .into_iter()
+      .map(|r| Stat {
+        id: r.id,
+        name: r.name,
+        value: r.value,
+        pending_review: r.pending_review,
+      })
+      .collect()
     ;
-    let influences = sqlx::query_as!(Stat,
-      "
-SELECT \"name!\", \"value!\", \"pending_review!\"
+    let influences = sqlx::query!(
+      r#"
+SELECT "id!" AS "id!", "name!" AS "name!", "value!" AS "value!: i64", "pending_review!" AS "pending_review!"
 FROM vampire_influence
 WHERE vampire_id = $1
-      ",
+      "#,
       c.vampire_id
     )
       .fetch_all(&state.db)
       .await?
+      .into_iter()
+      .map(|r| Stat {
+        id: r.id,
+        name: r.name,
+        value: r.value,
+        pending_review: r.pending_review,
+      })
+      .collect()
     ;
     character_stats.push((c,stats,powers,influences));
   }

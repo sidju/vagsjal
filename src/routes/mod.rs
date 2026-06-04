@@ -164,7 +164,7 @@ pub async fn route(
     },
     Some("vs-rr.png") => {
       verify_method_path_end(&path_vec, &req, &Method::GET)?;
-      png(LOGO)
+      add_header(png(LOGO), hyper::header::CACHE_CONTROL, HeaderValue::from_static("public, max-age=2592000, immutable"))
     },
     _ => Err(Error::path_not_found(&req)),
   };

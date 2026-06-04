@@ -1,0 +1,46 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\nSELECT\n  influence.id AS \"id!\",\n  influence.name AS \"name!\",\n  COALESCE(vi.\"value!\", 0) AS \"value!: i64\",\n  COALESCE(vi.\"pending_review!\", false) AS \"pending_review!\",\n  ixc.xp_cost AS \"xp_cost?\"\nFROM influence\nLEFT JOIN vampire_influence vi ON vi.\"id!\" = influence.id AND vi.vampire_id = $1\nLEFT JOIN influence_xp_cost ixc ON ixc.influence = influence.id\nORDER BY influence.name\n    ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id!",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 1,
+        "name": "name!",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 2,
+        "name": "value!: i64",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 3,
+        "name": "pending_review!",
+        "type_info": "Bool"
+      },
+      {
+        "ordinal": 4,
+        "name": "xp_cost?",
+        "type_info": "Int4"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int8"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      null,
+      null,
+      false
+    ]
+  },
+  "hash": "22729a250dd9763eba858108689c2bf78ea10a1126a8b974f16e7691abe06b2b"
+}

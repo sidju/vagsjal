@@ -17,6 +17,6 @@ framför allt det svarta vitae-giftet från
 ## Effekt
 
 Medan en kindred bär på förvärrad skada läker den bara 1 [HP](hp.md) per natt,
-oavsett [blodpotens](blodpotens.md). Förgiftningen lämnar dem inte förrän
+oavsett [blodpotens](blood-potency.md). Förgiftningen lämnar dem inte förrän
 de är helt läkta — först när all skada är borta kan kroppen till slut trycka ut
 den fientliga essensen.

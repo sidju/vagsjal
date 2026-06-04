@@ -2,7 +2,7 @@
 
 #lore #klaner
 
-Deras [krafter](blodets-krafter.md) är:
+Deras [krafter](blood-powers.md) är:
 
 - **[Protean](protean.md)**
 - [Animalism](animalism.md)

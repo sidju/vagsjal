@@ -3,7 +3,7 @@
 #lore #kovenanter
 
 Ordo Dracul är lärda och asketer, kovenanteret för dem som vägrar acceptera
-begränsningarna i sitt tillstånd. Där andra [kovenanter](kovenanter.md) sluter fred
+begränsningarna i sitt tillstånd. Där andra [kovenanter](covenants.md) sluter fred
 med vad det innebär att vara Kindred — genom religiös inramning, politisk
 struktur eller filosofiskt accepterande — betraktar Ordo Dracul vampyrisk
 existens som ett problem som ska lösas. Framför allt är de en kovenant för
@@ -19,7 +19,7 @@ gudomliga påbud eller naturliga fakta utan kedjor. Och kedjor kan brytas eller
 lossas.
 
 Detta ger Ordo Dracul en inriktning som är unik bland
-[kovenanterna](kovenanter.md): i grunden introspektiv och experimentell, mer
+[kovenanterna](covenants.md): i grunden introspektiv och experimentell, mer
 inriktad på självbehärskning än makt över andra. Det gör dem inte ofarliga,
 en kovenant av vampyrer som ägnar sig åt ett stort verk av självförädling kan
 vara hänsynslös i sin strävan, men det skiljer dem något från den politiska

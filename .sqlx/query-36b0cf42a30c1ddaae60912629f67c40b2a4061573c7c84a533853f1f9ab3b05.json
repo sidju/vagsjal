@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "\n    SELECT\n      'stat' AS \"kind!\",\n      stat_raise.stat_raise_id AS \"usage_id!\",\n      stat_raise.stat AS \"name!\",\n      stat_raise.increase AS \"increase!\",\n      stat_raise.xp_cost AS \"xp_cost!\",\n      to_char(stat_raise.creation_time, 'YYYY-MM-DD HH24:MI:SS') AS \"created_at!\"\n    FROM stat_raise\n    LEFT JOIN stat_raise_review USING (stat_raise_id)\n    WHERE stat_raise.vampire_id = $1 AND stat_raise_review.state IS NULL\n    ORDER BY stat_raise.creation_time, stat_raise.stat_raise_id\n    ",
+  "query": "\n    SELECT\n      'Stat' AS \"kind!\",\n      stat_raise.stat_raise_id AS \"usage_id!\",\n      stat.name AS \"name!\",\n      stat_raise.increase AS \"increase!\",\n      stat_raise.xp_cost AS \"xp_cost!\",\n      to_char(stat_raise.creation_time, 'YYYY-MM-DD HH24:MI:SS') AS \"created_at!\"\n    FROM stat_raise\n    LEFT JOIN stat_raise_review USING (stat_raise_id)\n    JOIN stat ON stat.id = stat_raise.stat\n    WHERE stat_raise.vampire_id = $1 AND stat_raise_review.state IS NULL\n    ORDER BY stat_raise.creation_time, stat_raise.stat_raise_id\n    ",
   "describe": {
     "columns": [
       {
@@ -48,5 +48,5 @@
       null
     ]
   },
-  "hash": "bf86f64246f264431aaa2c1407cc2f1802fda42b1740bdc466fda96c78986e1f"
+  "hash": "36b0cf42a30c1ddaae60912629f67c40b2a4061573c7c84a533853f1f9ab3b05"
 }

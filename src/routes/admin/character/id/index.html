@@ -51,51 +51,10 @@
     {% if let Some(url) = character.character_description_url %}
     <tr>
       <td>Karaktärsbeskrivning</td>
-      <td><a href="{{ url }}">Länk</a></td>
+      <td><a href="{{ url }}">{{ url }}</a></td>
     </tr>
     {% endif %}
-    <tr>
-      <th>Stats</th>
-    </tr>
-    {% for stat in stats %}
-    <tr>
-      <td>{{ stat.name }}</td>
-      {% if stat.pending_review %}
-      <td>{{ stat.value }}*</td>
-      {% else %}
-      <td>{{ stat.value }}</td>
-      {% endif %}
-    </tr>
-    {% endfor %}
-    <tr>
-      <th>Krafter</th>
-    </tr>
-    {% for power in powers %}
-    <tr>
-      <td>{{ power.name }}</td>
-      {% if power.pending_review %}
-      <td>{{ power.value }}*</td>
-      {% else %}
-      <td>{{ power.value }}</td>
-      {% endif %}
-    </tr>
-    {% endfor %}
-    <tr>
-      <th>Inflytanden</th>
-    </tr>
-    {% for influence in influences %}
-    <tr>
-      <td>{{ influence.name }}</td>
-      {% if influence.pending_review %}
-      <td>{{ influence.value }}*</td>
-      {% else %}
-      <td>{{ influence.value }}</td>
-      {% endif %}
-    </tr>
-    {% endfor %}
-    <tr>
-      <th>Återstående XP</th><th>{{ character.remaining_xp }}</th>
-    </tr>
+    {% include "character/_stats_table.html" %}
   </table>
   <p><small>* väntar på granskning</small></p>
 
@@ -116,8 +75,8 @@
           <form method="post" enctype="application/x-www-form-urlencoded">
             <input type="hidden" name="review_kind" value="{{ usage.kind }}">
             <input type="hidden" name="usage_id" value="{{ usage.usage_id }}">
-            <button type="submit" name="decision" value="approve">Godkänn</button>
-            <button type="submit" name="decision" value="reject">Avvisa</button>
+            <button type="submit" name="decision" value="godkänn">Godkänn</button>
+            <button type="submit" name="decision" value="avvisa">Avvisa</button>
           </form>
         </td>
       </tr>

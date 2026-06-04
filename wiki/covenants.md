@@ -3,7 +3,7 @@
 #index #lore
 
 En Kovenant är en politisk och filosofisk lojalitet — vald, inte nedärvd. Där
-en [klan](klaner.md) är en fråga om blod, är ett förbund en fråga om tro och
+en [klan](clans.md) är en fråga om blod, är ett förbund en fråga om tro och
 ambition. Kindred ansluter sig till kovenanter då de finner en världsbild
 som matchar deras egen, eller då kovenanten erbjuder något de vill ha:
 makt, gemenskap, kunskap eller syfte.

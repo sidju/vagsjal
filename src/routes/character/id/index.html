@@ -6,7 +6,7 @@
   <h1>{{ character.name }}</h1>
   {% if saved %}<p><b>Utkast sparat som pågående höjningar.</b></p>{% endif %}
   {% if let Some(url) = character.character_description_url %}
-  <p>Karaktärsbeskrivning: <a href="{{ url }}">Länk</a></p>
+  <p>Karaktärsbeskrivning: <a href="{{ url }}">{{ url }}</a></p>
   {% endif %}
   <p>Återstående XP: {{ character.remaining_xp }}</p>
 
@@ -19,7 +19,7 @@
     </tr>
     {% for s in stats %}
     <tr>
-      <td><a href="/wiki/{{ s.name | lower }}/">{{ s.name }}</a></td>
+      <td><a href="/wiki/{{ s.id }}/">{{ s.name }}</a></td>
       {% if s.pending_review %}
       <td>{{ s.value }}*</td>
       <td id="proj-stat-{{ loop.index0 }}">{{ s.value }}{% if s.pending_review %}*{% endif %}</td>
@@ -27,7 +27,7 @@
       <td>{{ s.value }}</td>
       <td id="proj-stat-{{ loop.index0 }}">{{ s.value }}</td>
       {% endif %}
-      <td><button type="button" class="raise-btn" data-kind="stat" data-name="{{ s.name }}">+1</button></td>
+      <td><button type="button" class="raise-btn" data-kind="stat" data-name="{{ s.id }}">+1</button></td>
     </tr>
     {% endfor %}
     <tr>
@@ -38,7 +38,7 @@
     </tr>
     {% for p in powers %}
     <tr>
-      <td><a href="/wiki/{{ p.name | lower }}/">{{ p.name }}</a></td>
+      <td><a href="/wiki/{{ p.id }}/">{{ p.name }}</a></td>
       {% if p.pending_review %}
       <td>{{ p.value }}*</td>
       <td id="proj-power-{{ loop.index0 }}">{{ p.value }}{% if p.pending_review %}*{% endif %}</td>
@@ -46,18 +46,18 @@
       <td>{{ p.value }}</td>
       <td id="proj-power-{{ loop.index0 }}">{{ p.value }}</td>
       {% endif %}
-      <td><button type="button" class="raise-btn" data-kind="power" data-name="{{ p.name }}">+1</button></td>
+      <td><button type="button" class="raise-btn" data-kind="power" data-name="{{ p.id }}">+1</button></td>
     </tr>
     {% endfor %}
     <tr>
-      <th>Inflytanden</th>
+      <th>Influenser</th>
       <th>Nuvarande</th>
       <th>Projicerad</th>
       <th></th>
     </tr>
     {% for i in influences %}
     <tr>
-      <td><a href="/wiki/{{ i.name | lower }}/">{{ i.name }}</a></td>
+      <td><a href="/wiki/{{ i.id }}/">{{ i.name }}</a></td>
       {% if i.pending_review %}
       <td>{{ i.value }}*</td>
       <td id="proj-influence-{{ loop.index0 }}">{{ i.value }}{% if i.pending_review %}*{% endif %}</td>
@@ -65,7 +65,7 @@
       <td>{{ i.value }}</td>
       <td id="proj-influence-{{ loop.index0 }}">{{ i.value }}</td>
       {% endif %}
-      <td><button type="button" class="raise-btn" data-kind="influence" data-name="{{ i.name }}">+1</button></td>
+      <td><button type="button" class="raise-btn" data-kind="influence" data-name="{{ i.id }}">+1</button></td>
     </tr>
     {% endfor %}
     <tr>
@@ -113,11 +113,11 @@
 
     // Build current-level lookups from server-rendered data
     const curStatLevel = {};
-    for (const s of data.stats) curStatLevel[s.name] = s.value;
+    for (const s of data.stats) curStatLevel[s.id] = s.value;
     const curPowerLevel = {};
-    for (const p of data.powers) curPowerLevel[p.name] = p.value;
+    for (const p of data.powers) curPowerLevel[p.id] = p.value;
     const curInfluenceLevel = {};
-    for (const i of data.influences) curInfluenceLevel[i.name] = i.value;
+    for (const i of data.influences) curInfluenceLevel[i.id] = i.value;
 
     // Compute the XP cost for a single op, given effective current levels per-kind.
     // effectiveLevels is mutated in place as ops are processed so multi-op accumulation
@@ -133,7 +133,7 @@
         return cost != null ? cost * inc : null;
       }
       if (op.kind === "power") {
-        const powerOpt = data.options.powers.find(function (p) { return p.name === op.power; });
+        const powerOpt = data.options.powers.find(function (p) { return p.id === op.power; });
         if (!powerOpt) return null;
         const table = powerOpt.in_clan ? data.xp_costs.power_in_clan : data.xp_costs.power_out_clan;
         const fromLevel = effectivePowerLevels[op.power] != null ? effectivePowerLevels[op.power] : (curPowerLevel[op.power] || 0);
@@ -207,32 +207,31 @@
 
       // Compute projected levels for each stat/power/influence
       const projStats = {};
-      for (const s of data.stats) projStats[s.name] = s.value;
+      for (const s of data.stats) projStats[s.id] = s.value;
       const projPowers = {};
-      for (const p of data.powers) projPowers[p.name] = p.value;
+      for (const p of data.powers) projPowers[p.id] = p.value;
       const projInfluences = {};
-      for (const i of data.influences) projInfluences[i.name] = i.value;
+      for (const i of data.influences) projInfluences[i.id] = i.value;
       for (const op of ops) {
         if (op.kind === "stat") projStats[op.stat] = (projStats[op.stat] || 0) + op.increase;
         else if (op.kind === "power") projPowers[op.power] = (projPowers[op.power] || 0) + (op.increase || 1);
         else if (op.kind === "influence") projInfluences[op.influence] = (projInfluences[op.influence] || 0) + (op.increase || 1);
         else if (op.kind === "humanity") {
-          const humanityVal = Object.keys(projStats).find(function (k) { return k.toLowerCase() === "humanity"; });
-          if (humanityVal) projStats[humanityVal] = (projStats[humanityVal] || 0) + op.change;
+          if (projStats.humanity != null) projStats.humanity += op.change;
         }
       }
       // Update projected stat table cells (using index-based IDs)
       data.stats.forEach(function(s, idx) {
         const el = document.getElementById("proj-stat-" + idx);
-        if (el) el.textContent = projStats[s.name] != null ? projStats[s.name] : s.value;
+        if (el) el.textContent = projStats[s.id] != null ? projStats[s.id] : s.value;
       });
       data.powers.forEach(function(p, idx) {
         const el = document.getElementById("proj-power-" + idx);
-        if (el) el.textContent = projPowers[p.name] != null ? projPowers[p.name] : p.value;
+        if (el) el.textContent = projPowers[p.id] != null ? projPowers[p.id] : p.value;
       });
       data.influences.forEach(function(i, idx) {
         const el = document.getElementById("proj-influence-" + idx);
-        if (el) el.textContent = projInfluences[i.name] != null ? projInfluences[i.name] : i.value;
+        if (el) el.textContent = projInfluences[i.id] != null ? projInfluences[i.id] : i.value;
       });
 
       // Update +1 button disabled states
@@ -257,6 +256,14 @@
         return cost;
       });
 
+      // Build display-name lookups from IDs
+      const statNameMap = {};
+      for (const s of data.stats) statNameMap[s.id] = s.name;
+      const powerNameMap = {};
+      for (const p of data.powers) powerNameMap[p.id] = p.name;
+      const influenceNameMap = {};
+      for (const i of data.influences) influenceNameMap[i.id] = i.name;
+
       const fragment = document.createDocumentFragment();
       if (ops.length === 0) {
         const p = document.createElement("p");
@@ -276,12 +283,12 @@
           const costCell = row.insertCell();
           const removeCell = row.insertCell();
           // Use textContent throughout to avoid XSS from user-supplied strings
-          if (op.kind === "stat") descCell.textContent = op.stat + " +" + op.increase;
-          else if (op.kind === "power") descCell.textContent = op.power + " +1";
-          else if (op.kind === "influence") descCell.textContent = op.influence + " +1";
+          if (op.kind === "stat") descCell.textContent = (statNameMap[op.stat] || op.stat) + " +" + op.increase;
+          else if (op.kind === "power") descCell.textContent = (powerNameMap[op.power] || op.power) + " +1";
+          else if (op.kind === "influence") descCell.textContent = (influenceNameMap[op.influence] || op.influence) + " +1";
           else if (op.kind === "humanity") {
             const sign = op.change >= 0 ? "+" : "";
-            descCell.textContent = "Humanity " + sign + op.change + (op.note ? " (" + op.note + ")" : "");
+            descCell.textContent = "Mänsklighet " + sign + op.change + (op.note ? " (" + op.note + ")" : "");
           }
           costCell.textContent = opCosts[i] != null ? opCosts[i] + " XP" : "? XP";
           const btn = document.createElement("button");
@@ -324,10 +331,15 @@
         namedRow.style.display = "";
         humanityRow.style.display = "none";
         nameEl.replaceChildren();
-        (optionMap[kind] || []).forEach(function (name) {
+        (optionMap[kind] || []).forEach(function (item) {
           const opt = document.createElement("option");
-          opt.value = name;
-          opt.textContent = name;
+          if (kind === "stat" || kind === "influence") {
+            opt.value = item.id;
+            opt.textContent = item.name;
+          } else {
+            opt.value = item;
+            opt.textContent = item;
+          }
           nameEl.appendChild(opt);
         });
       }
@@ -353,7 +365,7 @@
         const note = document.getElementById("op-humanity-note").value;
         let currentHumanity = 0;
         for (const s of data.stats) {
-          if (s.name.toLowerCase() === "humanity") { currentHumanity = s.value; break; }
+          if (s.id === "humanity") { currentHumanity = s.value; break; }
         }
         for (const op of ops) {
           if (op.kind === "humanity") currentHumanity += op.change;

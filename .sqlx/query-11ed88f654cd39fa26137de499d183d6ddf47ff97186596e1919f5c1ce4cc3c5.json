@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "\n    SELECT\n      'power' AS \"kind!\",\n      power_raise.power_raise_id AS \"usage_id!\",\n      power_raise.power AS \"name!\",\n      power_raise.increase AS \"increase!\",\n      power_raise.xp_cost AS \"xp_cost!\",\n      to_char(power_raise.creation_time, 'YYYY-MM-DD HH24:MI:SS') AS \"created_at!\"\n    FROM power_raise\n    LEFT JOIN power_raise_review USING (power_raise_id)\n    WHERE power_raise.vampire_id = $1 AND power_raise_review.state IS NULL\n    ORDER BY power_raise.creation_time, power_raise.power_raise_id\n    ",
+  "query": "\n    SELECT\n      'Mänsklighet' AS \"kind!\",\n      humanity_change.humanity_change_id AS \"usage_id!\",\n      humanity_change.note AS \"name!\",\n      ABS(humanity_change.change)::INT AS \"increase!\",\n      humanity_change.xp_cost AS \"xp_cost!\",\n      to_char(humanity_change.creation_time, 'YYYY-MM-DD HH24:MI:SS') AS \"created_at!\"\n    FROM humanity_change\n    LEFT JOIN humanity_change_review USING (humanity_change_id)\n    WHERE humanity_change.vampire_id = $1 AND humanity_change_review.state IS NULL\n    ORDER BY humanity_change.creation_time, humanity_change.humanity_change_id\n    ",
   "describe": {
     "columns": [
       {
@@ -43,10 +43,10 @@
       null,
       false,
       false,
-      false,
+      null,
       false,
       null
     ]
   },
-  "hash": "b31760a1dbd91a641eb2b51dba8b77837f595f931fa001a6357f5ab3c8be1aa9"
+  "hash": "11ed88f654cd39fa26137de499d183d6ddf47ff97186596e1919f5c1ce4cc3c5"
 }

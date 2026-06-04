@@ -8,73 +8,35 @@
   {% if active_chars.len() > 0 %}
     <h2>Aktiva karaktärer</h2>
     <ul>
-    {% for (c,stats,powers,influences) in active_chars %}
+    {% for (character,stats,powers,influences) in active_chars %}
       <li>
         <table class="stat-table">
           <tr>
-            <th><a class="character-link" href="{{c.vampire_id}}/">{{ c.name }}</a></th>
+            <th><a class="character-link" href="{{character.vampire_id}}/">{{ character.name }}</a></th>
           </tr>
           <tr>
             <td>Mänsklig ålder (år)</td>
-            <td>{{ c.apparent_age }}</td>
+            <td>{{ character.apparent_age }}</td>
           </tr>
           <tr>
             <td><a href="/wiki/omfamning/">Omfamningsdatum</a></td>
-            <td>{{ c.date_embraced }}</td>
+            <td>{{ character.date_embraced }}</td>
           </tr>
           <tr>
             <td><a href="/wiki/torpor/">Tid i torpor</a></td>
-            <td>{{ c.torpor_display }}</td>
+            <td>{{ character.torpor_display }}</td>
           </tr>
           <tr>
             <td><a href="/wiki/klan/">Klan</a></td>
-            <td><a href="/wiki/{{ c.clan_name | lower }}/">{{ c.clan_name }}</a></td>
+            <td><a href="/wiki/{{ character.clan_name | lower }}/">{{ character.clan_name }}</a></td>
           </tr>
-          {% if let Some(url) = c.character_description_url %}
+          {% if let Some(url) = character.character_description_url %}
           <tr>
             <td>Karaktärsbeskrivning</td>
-            <td><a href="{{ url }}">Länk</a></td>
+            <td><a href="{{ url }}">{{ url }}</a></td>
           </tr>
           {% endif %}
-          {% for s in stats %}
-          <tr>
-            <td><a href="/wiki/{{ s.name | lower }}/">{{ s.name }}</a></td>
-            {% if s.pending_review %}
-            <td><i>{{ s.value }}</i></td>
-            {% else %}
-            <td>{{ s.value }}</td>
-            {% endif %}
-          </tr>
-          {% endfor %}
-          <tr>
-            <th>Krafter</th>
-          </tr>
-          {% for d in powers %}
-          <tr>
-            <td><a href="/wiki/{{ d.name | lower }}/">{{ d.name }}</a></td>
-            {% if d.pending_review %}
-            <td><i>{{ d.value }}</i></td>
-            {% else %}
-            <td>{{ d.value }}</td>
-            {% endif %}
-          </tr>
-          {% endfor %}
-          <tr>
-            <th>Inflytanden</th>
-          </tr>
-          {% for i in influences %}
-          <tr>
-            <td><a href="/wiki/{{ i.name | lower }}/">{{ i.name }}</a></td>
-            {% if i.pending_review %}
-            <td><i>{{ i.value }}</i></td>
-            {% else %}
-            <td>{{ i.value }}</td>
-            {% endif %}
-          </tr>
-          {% endfor %}
-          <tr>
-            <th>Återstående XP</th><th>{{ c.remaining_xp }}</th>
-          </tr>
+          {% include "character/_stats_table.html" %}
         </table>
       </li>
     {% endfor %}

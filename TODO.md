@@ -7,7 +7,7 @@
     always rendering the template at the bottom level. This would allow the top-level
     route to inject the universally used data (assuming the templates implement a
     trait for that) and rendering only thereafter.
-- Look over the user-facing error messages
+- [DONE] Look over the user-facing error messages (RowNotFound → 404)
 
 
 - [DONE] Add a BP changes table, to track amaranth increases and reductions through ritual or torpor.

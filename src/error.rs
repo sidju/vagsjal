@@ -279,7 +279,10 @@ impl From<ParseIntError> for Error {
 }
 impl From<SqlxError> for Error {
   fn from(e: SqlxError) -> Self {
-    InternalError::Db(e).into()
+    match e {
+      SqlxError::RowNotFound => ClientError::PathNotFound("Resource not found".into()).into(),
+      e => InternalError::Db(e).into(),
+    }
   }
 }
 impl From<ConnectionError> for Error {

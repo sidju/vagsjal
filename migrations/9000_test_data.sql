@@ -44,9 +44,9 @@ INSERT INTO humanity_change_review (humanity_change_id, state, reviewer_id) VALU
 
 -- Stat raises
 INSERT INTO stat_raise (stat_raise_id, vampire_id, stat, increase, xp_cost) VALUES
-  (1, 1, 'Physical Ability', 3, 12), -- approved
-  (2, 1, 'Mental Ability',   2,  8), -- denied
-  (3, 2, 'HP',               6, 18)  -- pending
+  (1, 1, 'physical-ability', 3, 12), -- approved
+  (2, 1, 'mental-ability',   2,  8), -- denied
+  (3, 2, 'hp',               6, 18)  -- pending
 ;
 INSERT INTO stat_raise_review (stat_raise_id, state, reviewer_id) VALUES
   (1, 'approved', 1),
@@ -55,11 +55,11 @@ INSERT INTO stat_raise_review (stat_raise_id, state, reviewer_id) VALUES
 
 -- Power raises (each row is always +1)
 INSERT INTO power_raise (power_raise_id, vampire_id, power, xp_cost) VALUES
-  (1, 1, 'Dominate',   9), -- approved (clan power)
-  (2, 1, 'Presence',   9), -- approved (clan power)
-  (3, 2, 'Obfuscate',  9), -- approved (clan power, lvl1)
-  (4, 2, 'Obfuscate', 12), -- approved (clan power, lvl2)
-  (5, 2, 'Nightmare', 12)  -- pending
+  (1, 1, 'dominate',  9), -- approved (clan power)
+  (2, 1, 'presence',  9), -- approved (clan power)
+  (3, 2, 'obfuscate', 9), -- approved (clan power, lvl1)
+  (4, 2, 'obfuscate', 12), -- approved (clan power, lvl2)
+  (5, 2, 'nightmare', 12)  -- pending
 ;
 INSERT INTO power_raise_review (power_raise_id, state, reviewer_id) VALUES
   (1, 'approved', 1),
@@ -70,10 +70,10 @@ INSERT INTO power_raise_review (power_raise_id, state, reviewer_id) VALUES
 
 -- Influence raises (each row is always +1)
 INSERT INTO influence_raise (influence_raise_id, vampire_id, influence, xp_cost) VALUES
-  (1, 1, 'Juridik',  4), -- approved
-  (2, 1, 'Juridik',  4), -- approved
-  (3, 2, 'Gatuliv',  4), -- denied
-  (4, 1, 'Societet', 4)  -- pending
+  (1, 1, 'law',  4), -- approved
+  (2, 1, 'law',  4), -- approved
+  (3, 2, 'street-life',  4), -- denied
+  (4, 1, 'high-society', 4)  -- pending
 ;
 INSERT INTO influence_raise_review (influence_raise_id, state, reviewer_id) VALUES
   (1, 'approved', 1),

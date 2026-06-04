@@ -32,7 +32,7 @@ inte är större än en minibuss; effekten kvarstår till soluppgången.
 
 Du kan utvidga din kontroll över hur människor uppfattar dig till andra genom
 beröring; genom att hålla i dem när du döljer din närvaro kan du dölja dem. Du
-kan dölja ett mål utöver dig själv per 3 [Mental Förmåga](mental-formaga.md). De du
+kan dölja ett mål utöver dig själv per 3 [Mental Förmåga](mental-ability.md). De du
 håller direkt med händerna döljs på nivå 2 av Obfuskering, de som håller i dig
 döljs på nivå 1 av Obfuskering.
 
@@ -40,4 +40,4 @@ döljs på nivå 1 av Obfuskering.
 
 Genom att märka dess gräns med vitae kan du göra anspråk på ett domänområde,
 dölja det för vardagliga sinnen och kontrollera vad de inom området kan
-uppfatta. Det förblir under din kontroll i en vecka per [BlobPotens](blodpotens.md).
+uppfatta. Det förblir under din kontroll i en vecka per [BlobPotens](blood-potency.md).
