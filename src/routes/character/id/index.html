@@ -15,6 +15,7 @@
       <th>Stats</th>
       <th>Nuvarande</th>
       <th>Projicerad</th>
+      <th></th>
     </tr>
     {% for s in stats %}
     <tr>
@@ -26,12 +27,14 @@
       <td>{{ s.value }}</td>
       <td id="proj-stat-{{ loop.index0 }}">{{ s.value }}</td>
       {% endif %}
+      <td><button type="button" class="raise-btn" data-kind="stat" data-name="{{ s.name }}">+1</button></td>
     </tr>
     {% endfor %}
     <tr>
       <th>Krafter</th>
       <th>Nuvarande</th>
       <th>Projicerad</th>
+      <th></th>
     </tr>
     {% for p in powers %}
     <tr>
@@ -43,12 +46,14 @@
       <td>{{ p.value }}</td>
       <td id="proj-power-{{ loop.index0 }}">{{ p.value }}</td>
       {% endif %}
+      <td><button type="button" class="raise-btn" data-kind="power" data-name="{{ p.name }}">+1</button></td>
     </tr>
     {% endfor %}
     <tr>
       <th>Inflytanden</th>
       <th>Nuvarande</th>
       <th>Projicerad</th>
+      <th></th>
     </tr>
     {% for i in influences %}
     <tr>
@@ -60,16 +65,16 @@
       <td>{{ i.value }}</td>
       <td id="proj-influence-{{ loop.index0 }}">{{ i.value }}</td>
       {% endif %}
+      <td><button type="button" class="raise-btn" data-kind="influence" data-name="{{ i.name }}">+1</button></td>
     </tr>
     {% endfor %}
     <tr>
-      <th>Återstående XP</th><th>{{ character.remaining_xp }}</th><th id="proj-remaining-xp">{{ character.remaining_xp }}</th>
+      <th>Återstående XP</th><th>{{ character.remaining_xp }}</th><th id="proj-remaining-xp">{{ character.remaining_xp }}</th><th></th>
     </tr>
   </table>
   <p><small>* väntar på granskning</small></p>
 
   <h2>Utkast till höjningar</h2>
-  <p>Projicerad återstående XP: <strong id="projected-xp"></strong></p>
   <div id="ops-list"></div>
 
   <fieldset>
@@ -84,7 +89,7 @@
     </label>
     <span id="op-named-row">
       <label>Namn: <select id="op-name"></select></label>
-      <label>Öka med: <input type="number" id="op-increase" value="1" min="1" max="10"></label>
+      <input type="hidden" id="op-increase" value="1">
     </span>
     <span id="op-humanity-row" style="display:none">
       <label>Ändring: <input type="number" id="op-humanity-change" value="1" min="-10" max="10"></label>
@@ -124,20 +129,22 @@
       }
       if (op.kind === "influence") {
         const cost = data.xp_costs.influence[op.influence];
-        return cost != null ? cost * op.increase : null;
+        const inc = op.increase || 1;
+        return cost != null ? cost * inc : null;
       }
       if (op.kind === "power") {
         const powerOpt = data.options.powers.find(function (p) { return p.name === op.power; });
         if (!powerOpt) return null;
         const table = powerOpt.in_clan ? data.xp_costs.power_in_clan : data.xp_costs.power_out_clan;
         const fromLevel = effectivePowerLevels[op.power] != null ? effectivePowerLevels[op.power] : (curPowerLevel[op.power] || 0);
+        const inc = op.increase || 1;
         let total = 0;
-        for (let lvl = fromLevel + 1; lvl <= fromLevel + op.increase; lvl++) {
+        for (let lvl = fromLevel + 1; lvl <= fromLevel + inc; lvl++) {
           const levelCost = table[lvl];
           if (levelCost == null) return null;
           total += levelCost;
         }
-        effectivePowerLevels[op.power] = fromLevel + op.increase;
+        effectivePowerLevels[op.power] = fromLevel + inc;
         return total;
       }
       if (op.kind === "humanity") {
@@ -174,9 +181,27 @@
       localStorage.removeItem(draftKey);
     }
 
+    const limits = { power: 3, influence: 5, humanity: 10 };
+
+    function addOp(op) {
+      // Merge stat raises for the same stat
+      if (op.kind === "stat") {
+        const existing = ops.find(function (o) { return o.kind === "stat" && o.stat === op.stat; });
+        if (existing) {
+          existing.increase += op.increase;
+          saveDraft();
+          render();
+          return;
+        }
+      }
+      ops.push(op);
+      saveDraft();
+      render();
+    }
+
     function render() {
       const opsList = document.getElementById("ops-list");
-      const projXpEl = document.getElementById("projected-xp");
+      const projXpEl = document.getElementById("proj-remaining-xp");
       const opsJsonInput = document.getElementById("ops-json-input");
       const saveBtn = document.getElementById("save-btn");
 
@@ -189,8 +214,8 @@
       for (const i of data.influences) projInfluences[i.name] = i.value;
       for (const op of ops) {
         if (op.kind === "stat") projStats[op.stat] = (projStats[op.stat] || 0) + op.increase;
-        else if (op.kind === "power") projPowers[op.power] = (projPowers[op.power] || 0) + op.increase;
-        else if (op.kind === "influence") projInfluences[op.influence] = (projInfluences[op.influence] || 0) + op.increase;
+        else if (op.kind === "power") projPowers[op.power] = (projPowers[op.power] || 0) + (op.increase || 1);
+        else if (op.kind === "influence") projInfluences[op.influence] = (projInfluences[op.influence] || 0) + (op.increase || 1);
         else if (op.kind === "humanity") {
           const humanityVal = Object.keys(projStats).find(function (k) { return k.toLowerCase() === "humanity"; });
           if (humanityVal) projStats[humanityVal] = (projStats[humanityVal] || 0) + op.change;
@@ -208,6 +233,18 @@
       data.influences.forEach(function(i, idx) {
         const el = document.getElementById("proj-influence-" + idx);
         if (el) el.textContent = projInfluences[i.name] != null ? projInfluences[i.name] : i.value;
+      });
+
+      // Update +1 button disabled states
+      document.querySelectorAll(".raise-btn").forEach(function (btn) {
+        const kind = btn.dataset.kind;
+        const name = btn.dataset.name;
+        let current = 0;
+        if (kind === "stat") current = projStats[name] || 0;
+        else if (kind === "power") current = projPowers[name] || 0;
+        else if (kind === "influence") current = projInfluences[name] || 0;
+        const limit = limits[kind];
+        btn.disabled = limit !== undefined && current >= limit;
       });
 
       const effectivePowerLevels = {};
@@ -240,8 +277,8 @@
           const removeCell = row.insertCell();
           // Use textContent throughout to avoid XSS from user-supplied strings
           if (op.kind === "stat") descCell.textContent = op.stat + " +" + op.increase;
-          else if (op.kind === "power") descCell.textContent = op.power + " +" + op.increase;
-          else if (op.kind === "influence") descCell.textContent = op.influence + " +" + op.increase;
+          else if (op.kind === "power") descCell.textContent = op.power + " +1";
+          else if (op.kind === "influence") descCell.textContent = op.influence + " +1";
           else if (op.kind === "humanity") {
             const sign = op.change >= 0 ? "+" : "";
             descCell.textContent = "Humanity " + sign + op.change + (op.note ? " (" + op.note + ")" : "");
@@ -298,65 +335,43 @@
     kindEl.addEventListener("change", updateKind);
     updateKind();
 
-     document.getElementById("op-add").addEventListener("click", function () {
-       const kind = kindEl.value;
-       if (kind === "humanity") {
-          const change = parseInt(document.getElementById("op-humanity-change").value, 10);
-          if (!change) return;
-          const note = document.getElementById("op-humanity-note").value;
-          // Find current humanity level from stats
-          let currentHumanity = 0;
-          for (const s of data.stats) {
-            if (s.name.toLowerCase() === "humanity") { currentHumanity = s.value; break; }
-          }
-          // Accumulate humanity changes already in draft
-          for (const op of ops) {
-            if (op.kind === "humanity") currentHumanity += op.change;
-          }
-          const limit = limits.humanity;
-          if (currentHumanity + change > limit) {
-            alert(`Kan inte höja Humanitet över ${limit}. Nuvarande projicerat värde: ${currentHumanity + change}`);
-            return;
-          }
-          ops.push({ kind: "humanity", change: change, note: note });
-       } else {
-         const name = nameEl.value;
-         const increase = parseInt(document.getElementById("op-increase").value, 10);
-         if (!name || !(increase > 0)) return;
-         
-          // Define limits for each kind
-          const limits = { power: 3, influence: 5, humanity: 10 };
-         const limit = limits[kind];
-         if (limit !== undefined) {
-           // Get current level from initial data
-           let current = 0;
-           if (kind === "stat") {
-             for (const s of data.stats) {
-               if (s.name === name) { current = s.value; break; }
-             }
-           } else if (kind === "power") {
-             for (const p of data.powers) {
-               if (p.name === name) { current = p.value; break; }
-             }
-           } else if (kind === "influence") {
-             for (const i of data.influences) {
-               if (i.name === name) { current = i.value; break; }
-             }
-           }
-           // Check if raising would exceed limit
-           if (current + increase > limit) {
-              alert(`Kan inte höja ${name} över ${limit}. Nuvarande värde: ${current}`);
-              return;
-           }
-         }
-         
-         if (kind === "stat") ops.push({ kind: "stat", stat: name, increase: increase });
-         else if (kind === "power") ops.push({ kind: "power", power: name, increase: increase });
-         else if (kind === "influence") ops.push({ kind: "influence", influence: name, increase: increase });
-       }
-       saveDraft();
-       render();
-     });
+    document.querySelectorAll(".raise-btn").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        const kind = btn.dataset.kind;
+        const name = btn.dataset.name;
+        if (kind === "stat") addOp({ kind: "stat", stat: name, increase: 1 });
+        else if (kind === "power") addOp({ kind: "power", power: name });
+        else if (kind === "influence") addOp({ kind: "influence", influence: name });
+      });
+    });
+
+    document.getElementById("op-add").addEventListener("click", function () {
+      const kind = kindEl.value;
+      if (kind === "humanity") {
+        const change = parseInt(document.getElementById("op-humanity-change").value, 10);
+        if (!change) return;
+        const note = document.getElementById("op-humanity-note").value;
+        let currentHumanity = 0;
+        for (const s of data.stats) {
+          if (s.name.toLowerCase() === "humanity") { currentHumanity = s.value; break; }
+        }
+        for (const op of ops) {
+          if (op.kind === "humanity") currentHumanity += op.change;
+        }
+        const limit = limits.humanity;
+        if (currentHumanity + change > limit) {
+          alert(`Kan inte höja Humanitet över ${limit}. Nuvarande projicerat värde: ${currentHumanity + change}`);
+          return;
+        }
+        addOp({ kind: "humanity", change: change, note: note });
+      } else {
+        const name = nameEl.value;
+        if (!name) return;
+        if (kind === "stat") addOp({ kind: "stat", stat: name, increase: 1 });
+        else if (kind === "power") addOp({ kind: "power", power: name });
+        else if (kind === "influence") addOp({ kind: "influence", influence: name });
+      }
+    });
 
     document.getElementById("clear-btn").addEventListener("click", function () {
       if (ops.length === 0 || confirm("Rensa alla utkast till höjningar?")) clearDraft();

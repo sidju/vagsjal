@@ -180,7 +180,7 @@ async fn fetch_pending_usage(state: &'static State, vampire_id: i64) -> Result<V
       'power' AS "kind!",
       power_raise.power_raise_id AS "usage_id!",
       power_raise.power AS "name!",
-      power_raise.increase AS "increase!",
+      1 AS "increase!",
       power_raise.xp_cost AS "xp_cost!",
       to_char(power_raise.creation_time, 'YYYY-MM-DD HH24:MI:SS') AS "created_at!"
     FROM power_raise
@@ -198,7 +198,7 @@ async fn fetch_pending_usage(state: &'static State, vampire_id: i64) -> Result<V
       'influence' AS "kind!",
       influence_raise.influence_raise_id AS "usage_id!",
       influence_raise.influence AS "name!",
-      influence_raise.increase AS "increase!",
+      1 AS "increase!",
       influence_raise.xp_cost AS "xp_cost!",
       to_char(influence_raise.creation_time, 'YYYY-MM-DD HH24:MI:SS') AS "created_at!"
     FROM influence_raise

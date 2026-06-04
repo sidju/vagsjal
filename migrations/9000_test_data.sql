@@ -53,24 +53,27 @@ INSERT INTO stat_raise_review (stat_raise_id, state, reviewer_id) VALUES
   (2, 'denied',   1)
 ;
 
--- Power raises
-INSERT INTO power_raise (power_raise_id, vampire_id, power, increase, xp_cost) VALUES
-  (1, 1, 'Dominate',  1,  9), -- approved (clan power)
-  (2, 1, 'Presence',  1,  9), -- approved (clan power)
-  (3, 2, 'Obfuscate', 2, 21), -- approved (clan power lvl1+lvl2)
-  (4, 2, 'Nightmare', 1, 12)  -- pending
+-- Power raises (each row is always +1)
+INSERT INTO power_raise (power_raise_id, vampire_id, power, xp_cost) VALUES
+  (1, 1, 'Dominate',   9), -- approved (clan power)
+  (2, 1, 'Presence',   9), -- approved (clan power)
+  (3, 2, 'Obfuscate',  9), -- approved (clan power, lvl1)
+  (4, 2, 'Obfuscate', 12), -- approved (clan power, lvl2)
+  (5, 2, 'Nightmare', 12)  -- pending
 ;
 INSERT INTO power_raise_review (power_raise_id, state, reviewer_id) VALUES
   (1, 'approved', 1),
   (2, 'approved', 1),
-  (3, 'approved', 1)
+  (3, 'approved', 1),
+  (4, 'approved', 1)
 ;
 
--- Influence raises
-INSERT INTO influence_raise (influence_raise_id, vampire_id, influence, increase, xp_cost) VALUES
-  (1, 1, 'Juridik',  2, 8), -- approved
-  (2, 2, 'Gatuliv',  1, 4), -- denied
-  (3, 1, 'Societet', 1, 4)  -- pending
+-- Influence raises (each row is always +1)
+INSERT INTO influence_raise (influence_raise_id, vampire_id, influence, xp_cost) VALUES
+  (1, 1, 'Juridik',  4), -- approved
+  (2, 1, 'Juridik',  4), -- approved
+  (3, 2, 'Gatuliv',  4), -- denied
+  (4, 1, 'Societet', 4)  -- pending
 ;
 INSERT INTO influence_raise_review (influence_raise_id, state, reviewer_id) VALUES
   (1, 'approved', 1),

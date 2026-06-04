@@ -74,26 +74,26 @@ CREATE VIEW vampire_power AS
 	SELECT
 		vampire_id,
 		power AS "name!",
-		COALESCE(SUM(increase), 0) AS "value!",
+		COUNT(*)::INT AS "value!",
 		BOOL_OR(power_raise_review.power_raise_id IS NULL) AS "pending_review!"
 	FROM power_raise
 	LEFT JOIN power_raise_review USING (power_raise_id)
 	WHERE power_raise_review.state IS NULL OR power_raise_review.state != 'denied'
 	GROUP BY power, vampire_id
-	ORDER BY SUM(increase) DESC
+	ORDER BY COUNT(*) DESC
 ;
 
 CREATE VIEW vampire_influence AS
 	SELECT
 		vampire_id,
 		influence AS "name!",
-		COALESCE(SUM(increase), 0) AS "value!",
+		COUNT(*)::INT AS "value!",
 		BOOL_OR(influence_raise_review.influence_raise_id IS NULL) AS "pending_review!"
 	FROM influence_raise
 	LEFT JOIN influence_raise_review USING (influence_raise_id)
 	WHERE influence_raise_review.state IS NULL OR influence_raise_review.state != 'denied'
 	GROUP BY influence, vampire_id
-	ORDER BY SUM(increase) DESC
+	ORDER BY COUNT(*) DESC
 ;
 
 COMMIT;
