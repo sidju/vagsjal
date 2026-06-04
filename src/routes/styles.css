@@ -79,23 +79,21 @@ body {
   gap: 0.4rem;
   flex-wrap: wrap;
   align-items: center;
-  color: #6b1d1d;
+  color: #8f5a50;
+  font-size: 0.85rem;
 }
 .page-paths a,
 .page-paths a:visited {
-  color: #6b1d1d;
+  color: #b89088;
   text-decoration: none;
-  padding: 0.15rem 0.45rem;
-  border-radius: 999px;
-  background: rgba(255, 248, 244, 0.72);
-  border: 1px solid rgba(98, 18, 18, 0.26);
+  padding: 0.3rem 0.5rem;
 }
 .page-paths a:hover {
-  background: rgba(255, 241, 237, 0.95);
-  color: #4a1717;
+  color: #f0b8ae;
+  text-decoration: underline;
 }
 .page-paths span {
-  color: #8f5a50;
+  color: #5a3535;
 }
 
 .metadata-header {
@@ -119,8 +117,10 @@ body {
 
 .character-link,
 .character-link:visited {
-  color: #161010;
-  text-decoration: none;
+  color: #7a2222;
+  text-decoration: underline;
+  text-decoration-color: rgba(122, 34, 34, 0.55);
+  text-underline-offset: 2px;
 }
 
 main a {
@@ -179,10 +179,50 @@ table.inactive a {
 
 /* Stat/power/influence name–value tables: pin the value column to a fixed
    width so the split aligns across adjacent tables on the same page. */
+table.stat-table td:first-child,
+table.stat-table th:first-child {
+  width: 18em;
+}
 table.stat-table td:last-child,
 table.stat-table th:last-child {
   width: 4.5em;
   text-align: center;
+}
+table.stat-table.char-meta td:last-child,
+table.stat-table.char-meta th:last-child {
+  width: auto;
+}
+
+/* Button column in XP editor tables */
+table.stat-table td:nth-child(4),
+table.stat-table th:nth-child(4) {
+  width: 2.5em;
+  text-align: center;
+}
+
+/* Raise/lower buttons in XP editor */
+.raise-btn, .lower-btn {
+  font-size: 0.7rem;
+  padding: 0 0.35rem;
+  line-height: 1.2;
+  min-width: 1.6em;
+  border: 1px solid rgba(98, 18, 18, 0.25);
+  border-radius: 0.2rem;
+  background: rgba(255, 250, 247, 0.9);
+  color: #2e1111;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+}
+.raise-btn:hover, .lower-btn:hover {
+  background: rgba(255, 237, 231, 0.98);
+}
+.raise-btn:disabled, .lower-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.lower-btn {
+  margin-top: 1px;
 }
 
 /* Wiki styles */

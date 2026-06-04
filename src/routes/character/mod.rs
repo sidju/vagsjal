@@ -16,9 +16,22 @@ struct Character {
   clan_name: String,
   remaining_xp: i64,
   character_description_url: Option<String>,
+  torpor_display: String,
+}
+
+fn fmt_torpor(t: &sqlx::postgres::types::PgInterval) -> String {
+  let years = t.months / 12;
+  let months = t.months % 12;
+  let days = t.days;
+  let mut parts = Vec::new();
+  if years > 0 { parts.push(format!("{years} år")); }
+  if months > 0 { parts.push(format!("{months} månader")); }
+  if days > 0 { parts.push(format!("{days} dagar")); }
+  if parts.is_empty() { "0 dagar".into() } else { parts.join(", ") }
 }
 #[derive(Debug)]
 struct Stat {
+  id: String,
   name: String,
   value: i64,
   pending_review: bool,
@@ -58,7 +71,6 @@ struct Index {
   show_form: bool,
   saved: bool,
   show_admin_link: bool,
-  oldest_active: Option<OldestActiveCharacter>,
 }
 
 fn parse_date(date: &str) -> Result<Date, Error> {
@@ -86,7 +98,7 @@ async fn index_get(
   session: SessionData,
   saved: bool,
 ) -> Result<Response, Error> {
-  let characters = sqlx::query_as!(Character,
+  let mut characters = sqlx::query_as!(Character,
     "
 SELECT
   vampire.vampire_id,
@@ -97,7 +109,8 @@ SELECT
   vampire.torpor_time,
       clan.name AS clan_name,
       COALESCE(xp_remaining.amount, 0) AS \"remaining_xp!\",
-      vampire.character_description_url AS \"character_description_url?\"
+      vampire.character_description_url AS \"character_description_url?\",
+      '' AS \"torpor_display!\"
 FROM vampire
 JOIN clan USING (clan_id)
 LEFT JOIN xp_remaining USING (vampire_id)
@@ -109,41 +122,68 @@ ORDER BY vampire.name
     .fetch_all(&state.db)
     .await?
   ;
+  for c in &mut characters {
+    c.torpor_display = fmt_torpor(&c.torpor_time);
+  }
   // Fetch the stats for each character
   let mut character_stats = Vec::new();
   for c in characters {
-    let stats = sqlx::query_as!(Stat,
-      "
-SELECT \"name!\", \"value!\", \"pending_review!\"
+    let stats = sqlx::query!(
+      r#"
+SELECT "id!" AS "id!", "name!" AS "name!", "value!" AS "value!: i64", "pending_review!" AS "pending_review!"
 FROM vampire_stat
 WHERE vampire_id = $1
-      ",
+      "#,
       c.vampire_id
     )
       .fetch_all(&state.db)
       .await?
+      .into_iter()
+      .map(|r| Stat {
+        id: r.id,
+        name: r.name,
+        value: r.value,
+        pending_review: r.pending_review,
+      })
+      .collect()
     ;
-    let powers = sqlx::query_as!(Stat,
-      "
-SELECT \"name!\", \"value!\", \"pending_review!\"
+    let powers = sqlx::query!(
+      r#"
+SELECT "id!" AS "id!", "name!" AS "name!", "value!" AS "value!: i64", "pending_review!" AS "pending_review!"
 FROM vampire_power
 WHERE vampire_id = $1
-      ",
+      "#,
       c.vampire_id
     )
       .fetch_all(&state.db)
       .await?
+      .into_iter()
+      .map(|r| Stat {
+        id: r.id,
+        name: r.name,
+        value: r.value,
+        pending_review: r.pending_review,
+      })
+      .collect()
     ;
-    let influences = sqlx::query_as!(Stat,
-      "
-SELECT \"name!\", \"value!\", \"pending_review!\"
+    let influences = sqlx::query!(
+      r#"
+SELECT "id!" AS "id!", "name!" AS "name!", "value!" AS "value!: i64", "pending_review!" AS "pending_review!"
 FROM vampire_influence
 WHERE vampire_id = $1
-      ",
+      "#,
       c.vampire_id
     )
       .fetch_all(&state.db)
       .await?
+      .into_iter()
+      .map(|r| Stat {
+        id: r.id,
+        name: r.name,
+        value: r.value,
+        pending_review: r.pending_review,
+      })
+      .collect()
     ;
     character_stats.push((c,stats,powers,influences));
   }
@@ -164,7 +204,6 @@ WHERE vampire_id = $1
 
   let clans = fetch_clans(state).await?;
   let show_form = active_chars.is_empty() && draft_chars.is_empty();
-  let oldest_active = fetch_oldest_active(state, session.user_id).await?;
 
   // Render and return
   html(Index{
@@ -175,7 +214,6 @@ WHERE vampire_id = $1
     show_form,
     saved,
     show_admin_link: session.role.is_storyteller(),
-    oldest_active,
   }.render()?)
 }
 

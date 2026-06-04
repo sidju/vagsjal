@@ -16,12 +16,6 @@ use utils::*;
 mod auth;
 use auth::*;
 
-#[derive(Debug)]
-pub struct OldestActiveCharacter {
-  pub vampire_id: i64,
-  pub name: String,
-}
-
 #[derive(sqlx::Type, Debug, PartialEq, Clone)]
 #[sqlx(rename_all = "lowercase", type_name = "VARCHAR")]
 pub enum CharacterStatus {
@@ -41,25 +35,6 @@ impl CharacterStatus {
   }
 }
 
-pub async fn fetch_oldest_active(
-  state: &'static State,
-  user_id: i64,
-) -> Result<Option<OldestActiveCharacter>, Error> {
-  Ok(sqlx::query_as!(
-    OldestActiveCharacter,
-    r#"
-SELECT vampire_id, name
-FROM vampire
-WHERE user_id = $1 AND status = 'active'
-ORDER BY vampire_id
-LIMIT 1
-    "#,
-    user_id,
-  )
-    .fetch_optional(&state.db)
-    .await?)
-}
-
 // And the actual route modules
 mod admin;
 mod character;
@@ -71,9 +46,8 @@ const LOGO: &'static [u8] = include_bytes!("vs-rr.png");
 
 #[derive(Template)]
 #[template(path = "index.html")]
-struct Index{
+struct Index {
   show_admin_link: bool,
-  oldest_active: Option<OldestActiveCharacter>,
 }
 
 pub async fn route(
@@ -110,11 +84,6 @@ pub async fn route(
       // utility function for simple paths
       verify_method_path_end(&path_vec, &req, &Method::GET)?;
 
-      let oldest_active = match session {
-        Some(ref s) => fetch_oldest_active(state, s.user_id).await?,
-        None => None,
-      };
-
       let show_admin = session.as_ref().map(|s| s.role.is_storyteller()).unwrap_or(false);
 
       // Render from homepage.md if available
@@ -123,11 +92,9 @@ pub async fn route(
           title: page.title.to_string(),
           content: page.content.to_string(),
           show_admin_link: show_admin,
-          oldest_active,
         }.render()?,
         None => Index {
           show_admin_link: show_admin,
-          oldest_active,
         }.render()?,
       };
 
@@ -157,14 +124,14 @@ pub async fn route(
         Some(session) => admin::route(state, session, req, path_vec).await,
       }
     },
-    Some("wiki") => wiki::route(state, session, req, path_vec).await,
+    Some("wiki") => wiki::route(session, req, path_vec).await,
     Some("styles.css") => {
       verify_method_path_end(&path_vec, &req, &Method::GET)?;
       css(CSS)
     },
     Some("vs-rr.png") => {
       verify_method_path_end(&path_vec, &req, &Method::GET)?;
-      png(LOGO)
+      add_header(png(LOGO), hyper::header::CACHE_CONTROL, HeaderValue::from_static("public, max-age=2592000, immutable"))
     },
     _ => Err(Error::path_not_found(&req)),
   };

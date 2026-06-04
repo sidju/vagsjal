@@ -1,0 +1,40 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "SELECT \"id!\" AS \"id!\", \"name!\" AS \"name!\", \"value!\" AS \"value!: i64\", \"pending_review!\" AS \"pending_review!\" FROM vampire_stat WHERE vampire_id = $1 ORDER BY \"name!\"",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id!",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 1,
+        "name": "name!",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 2,
+        "name": "value!: i64",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 3,
+        "name": "pending_review!",
+        "type_info": "Bool"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int8"
+      ]
+    },
+    "nullable": [
+      true,
+      true,
+      true,
+      true
+    ]
+  },
+  "hash": "e5af7e0c3bcca4b1c5d6759ca1e45d5bf7c0df59f94dba86dead44591a2e92d2"
+}

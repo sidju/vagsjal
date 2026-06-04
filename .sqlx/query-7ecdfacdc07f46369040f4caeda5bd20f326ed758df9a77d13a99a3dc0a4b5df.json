@@ -1,0 +1,77 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\nSELECT\n  vampire.name,\n  vampire.status AS \"status: CharacterStatus\",\n  COALESCE(xp_remaining.amount, 0) AS \"remaining_xp!\",\n  vampire.character_description_url AS \"character_description_url?\",\n  app_user.name AS \"owner_name!\",\n  vampire.apparent_age,\n  to_char(vampire.date_embraced, 'YYYY-MM-DD') AS \"date_embraced!\",\n  clan.name AS \"clan_name!\",\n  vampire.torpor_time,\n  '' AS \"torpor_display!\"\nFROM vampire\nJOIN app_user USING (user_id)\nJOIN clan USING (clan_id)\nLEFT JOIN xp_remaining USING (vampire_id)\nWHERE vampire.vampire_id = $1\n  AND vampire.user_id = $2\n    ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "name",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 1,
+        "name": "status: CharacterStatus",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 2,
+        "name": "remaining_xp!",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 3,
+        "name": "character_description_url?",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 4,
+        "name": "owner_name!",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 5,
+        "name": "apparent_age",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 6,
+        "name": "date_embraced!",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 7,
+        "name": "clan_name!",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 8,
+        "name": "torpor_time",
+        "type_info": "Interval"
+      },
+      {
+        "ordinal": 9,
+        "name": "torpor_display!",
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int8",
+        "Int8"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      null,
+      true,
+      false,
+      false,
+      null,
+      false,
+      false,
+      null
+    ]
+  },
+  "hash": "7ecdfacdc07f46369040f4caeda5bd20f326ed758df9a77d13a99a3dc0a4b5df"
+}

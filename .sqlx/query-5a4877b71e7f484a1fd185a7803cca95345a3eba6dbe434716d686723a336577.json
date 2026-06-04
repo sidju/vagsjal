@@ -1,0 +1,52 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n    SELECT\n      'Kraft' AS \"kind!\",\n      power_raise.power_raise_id AS \"usage_id!\",\n      power.name AS \"name!\",\n      1 AS \"increase!\",\n      power_raise.xp_cost AS \"xp_cost!\",\n      to_char(power_raise.creation_time, 'YYYY-MM-DD HH24:MI:SS') AS \"created_at!\"\n    FROM power_raise\n    JOIN power ON power.id = power_raise.power\n    LEFT JOIN power_raise_review USING (power_raise_id)\n    WHERE power_raise.vampire_id = $1 AND power_raise_review.state IS NULL\n    ORDER BY power_raise.creation_time, power_raise.power_raise_id\n    ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "kind!",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 1,
+        "name": "usage_id!",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 2,
+        "name": "name!",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 3,
+        "name": "increase!",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 4,
+        "name": "xp_cost!",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 5,
+        "name": "created_at!",
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int8"
+      ]
+    },
+    "nullable": [
+      null,
+      false,
+      false,
+      null,
+      false,
+      null
+    ]
+  },
+  "hash": "5a4877b71e7f484a1fd185a7803cca95345a3eba6dbe434716d686723a336577"
+}

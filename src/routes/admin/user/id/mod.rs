@@ -21,7 +21,6 @@ struct UserForm {
 struct Index {
   user: UserRow,
   show_admin_link: bool,
-  oldest_active: Option<OldestActiveCharacter>,
 }
 
 async fn get_user(state: &'static State, user_id: i64) -> Result<UserRow, Error> {
@@ -39,14 +38,12 @@ async fn get_user(state: &'static State, user_id: i64) -> Result<UserRow, Error>
     .map_err(Error::from)
 }
 
-async fn index_get(state: &'static State, session: &SessionData, user_id: i64) -> Result<Response, Error> {
+async fn index_get(state: &'static State, user_id: i64) -> Result<Response, Error> {
   let user = get_user(state, user_id).await?;
-  let oldest_active = fetch_oldest_active(state, session.user_id).await?;
 
   html(Index {
     user,
     show_admin_link: true,
-    oldest_active,
   }.render()?)
 }
 
@@ -79,7 +76,6 @@ async fn index_post(
 
 pub async fn route(
   state: &'static State,
-  session: SessionData,
   req: Request,
   mut path_vec: Vec<String>,
   user_id: i64,
@@ -87,7 +83,7 @@ pub async fn route(
   match path_vec.pop().as_deref() {
     None => permanent_redirect(&format!("{}/", req.uri().path())),
     Some("") => match req.method() {
-      &Method::GET => index_get(state, &session, user_id).await,
+      &Method::GET => index_get(state, user_id).await,
       &Method::POST => index_post(state, req, user_id).await,
       _ => Err(Error::method_not_found(&req)),
     },

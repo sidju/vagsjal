@@ -1,0 +1,43 @@
+<tr>
+  <th>Stats</th>
+</tr>
+{% for s in stats %}
+<tr>
+  <td><a href="/wiki/{{ s.id }}/">{{ s.name }}</a></td>
+  {% if s.pending_review %}
+  <td>{{ s.value }}*</td>
+  {% else %}
+  <td>{{ s.value }}</td>
+  {% endif %}
+</tr>
+{% endfor %}
+<tr>
+  <th>Krafter</th>
+</tr>
+{% for p in powers %}
+<tr>
+  <td><a href="/wiki/{{ p.id }}/">{{ p.name }}</a></td>
+  {% if p.pending_review %}
+  <td>{{ p.value }}*</td>
+  {% else %}
+  <td>{{ p.value }}</td>
+  {% endif %}
+</tr>
+{% endfor %}
+<tr>
+  <th>Influenser</th>
+</tr>
+{% for i in influences %}
+<tr>
+  <td><a href="/wiki/{{ i.id }}/">{{ i.name }}</a></td>
+  {% if i.pending_review %}
+  <td>{{ i.value }}*</td>
+  {% else %}
+  <td>{{ i.value }}</td>
+  {% endif %}
+</tr>
+{% endfor %}
+<tr>
+  <th><a href="{{ character.vampire_id }}/">Återstående XP</a></th>
+  <th><a href="{{ character.vampire_id }}/">{{ character.remaining_xp }}</a></th>
+</tr>

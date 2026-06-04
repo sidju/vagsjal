@@ -3,10 +3,43 @@
 {% block title %}{{ character.name }} (utkast){% endblock %}
 
 {% block body %}
-  <h1>{{ character.name }}</h1>
-  {% if let Some(url) = character.character_description_url %}
-  <p>Karaktärsbeskrivning: <a href="{{ url }}">Länk</a></p>
-  {% endif %}
+  <table class="stat-table char-meta">
+    <tr>
+      <th>Namn:</th>
+      <th>{{ character.name }}</th>
+    </tr>
+    <tr>
+      <td>Ägare</td>
+      <td>{{ character.owner_name }}</td>
+    </tr>
+    <tr>
+      <td>Status</td>
+      <td>Utkast</td>
+    </tr>
+    <tr>
+      <td>Mänsklig ålder</td>
+      <td>{{ character.apparent_age }}</td>
+    </tr>
+    <tr>
+      <td><a href="/wiki/embrace/">Omfamningsdatum</a></td>
+      <td>{{ character.date_embraced }}</td>
+    </tr>
+    <tr>
+      <td><a href="/wiki/torpor/">Tid i torpor</a></td>
+      <td>{{ character.torpor_display }}</td>
+    </tr>
+    <tr>
+      <td><a href="/wiki/clan/">Klan</a></td>
+      <td><a href="/wiki/{{ character.clan_name | lower }}/">{{ character.clan_name }}</a></td>
+    </tr>
+    {% if let Some(url) = character.character_description_url %}
+    <tr>
+      <td><a href="/wiki/character-description/">Karaktärsbeskrivning</a></td>
+      <td><a href="{{ url }}">{{ url }}</a></td>
+    </tr>
+    {% endif %}
+  </table>
+
   <p>Denna karaktär väntar på godkännande från en spelledare.</p>
   <p><a href="/character/">Tillbaka till karaktärslistan</a></p>
 {% endblock %}

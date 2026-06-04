@@ -8,15 +8,23 @@ struct CharacterHeader {
   status: CharacterStatus,
   remaining_xp: i64,
   character_description_url: Option<String>,
+  owner_name: String,
+  apparent_age: i32,
+  date_embraced: String,
+  clan_name: String,
+  torpor_time: sqlx::postgres::types::PgInterval,
+  torpor_display: String,
 }
 #[derive(Debug, Serialize)]
 struct StatLine {
+  id: String,
   name: String,
   value: i64,
   pending_review: bool,
 }
 /// Combined row for a power: current state plus the in-clan flag for XP pricing.
 struct PowerRow {
+  id: String,
   name: String,
   value: i64,
   pending_review: bool,
@@ -24,20 +32,29 @@ struct PowerRow {
 }
 /// Combined row for an influence: current state plus its XP cost per level.
 struct InfluenceRow {
+  id: String,
   name: String,
   value: i64,
   pending_review: bool,
   xp_cost: Option<i32>,
 }
 /// Stat option with optional XP cost (options without a cost row are display-only).
+#[derive(Debug, Serialize)]
 struct StatOptionRow {
+  id: String,
   name: String,
   xp_cost: Option<i32>,
 }
-#[derive(Debug, Serialize)]
+#[derive(Debug, Clone, Serialize)]
 struct PowerOption {
+  id: String,
   name: String,
   in_clan: bool,
+}
+#[derive(Debug, Clone, Serialize)]
+struct InfluenceOption {
+  id: String,
+  name: String,
 }
 #[derive(Debug, Serialize)]
 struct XpCosts {
@@ -52,9 +69,9 @@ struct XpCosts {
 }
 #[derive(Debug, Serialize)]
 struct DraftOptions {
-  stats: Vec<String>,
+  stats: Vec<StatOptionRow>,
   powers: Vec<PowerOption>,
-  influences: Vec<String>,
+  influences: Vec<InfluenceOption>,
 }
 #[derive(Debug, Deserialize)]
 struct SaveForm {
@@ -68,8 +85,8 @@ struct SavedQuery {
 #[serde(tag = "kind", rename_all = "snake_case")]
 enum DraftOperation {
   Stat { stat: String, increase: i32 },
-  Power { power: String, increase: i32 },
-  Influence { influence: String, increase: i32 },
+  Power { power: String },
+  Influence { influence: String },
   Humanity { change: i32, note: String },
 }
 #[derive(Debug, Serialize)]
@@ -90,25 +107,24 @@ struct Index {
   stats: Vec<StatLine>,
   powers: Vec<StatLine>,
   influences: Vec<StatLine>,
+  power_options: Vec<PowerOption>,
+  influence_options: Vec<InfluenceOption>,
   /// Safe JSON embedded via <script type="application/json"> (</> escaped)
   initial_data_json: String,
   saved: bool,
   show_admin_link: bool,
-  oldest_active: Option<OldestActiveCharacter>,
 }
 #[derive(Debug, Template)]
 #[template(path = "character/id/draft.html")]
 struct DraftView {
   character: CharacterHeader,
   show_admin_link: bool,
-  oldest_active: Option<OldestActiveCharacter>,
 }
 #[derive(Debug, Template)]
 #[template(path = "character/id/inactive.html")]
 struct InactiveView {
   character: CharacterHeader,
   show_admin_link: bool,
-  oldest_active: Option<OldestActiveCharacter>,
 }
 
 async fn get_character(
@@ -119,18 +135,31 @@ async fn get_character(
 ) -> Result<CharacterHeader, Error> {
   sqlx::query_as!(
     CharacterHeader,
-    "
-SELECT vampire.name, vampire.status AS \"status: CharacterStatus\", COALESCE(xp_remaining.amount, 0) AS \"remaining_xp!\", vampire.character_description_url AS \"character_description_url?\"
+    r#"
+SELECT
+  vampire.name,
+  vampire.status AS "status: CharacterStatus",
+  COALESCE(xp_remaining.amount, 0) AS "remaining_xp!",
+  vampire.character_description_url AS "character_description_url?",
+  app_user.name AS "owner_name!",
+  vampire.apparent_age,
+  to_char(vampire.date_embraced, 'YYYY-MM-DD') AS "date_embraced!",
+  clan.name AS "clan_name!",
+  vampire.torpor_time,
+  '' AS "torpor_display!"
 FROM vampire
+JOIN app_user USING (user_id)
+JOIN clan USING (clan_id)
 LEFT JOIN xp_remaining USING (vampire_id)
 WHERE vampire.vampire_id = $1
   AND vampire.user_id = $2
-    ",
+    "#,
     vampire_id,
     user_id,
   )
     .fetch_optional(&state.db)
     .await?
+    .map(|mut c| { c.torpor_display = fmt_torpor(&c.torpor_time); c })
     .ok_or_else(|| Error::path_not_found(req))
 }
 /// Fetches computed stats from the view (includes Blood Potency/HP formula rows).
@@ -138,22 +167,27 @@ async fn fetch_stats(
   state: &'static State,
   vampire_id: i64,
 ) -> Result<Vec<StatLine>, Error> {
-  sqlx::query_as!(
-    StatLine,
-    "
+  let rows = sqlx::query!(
+    r#"
 SELECT
-  \"name!\" AS \"name!\",
-  \"value!\" AS \"value!\",
-  \"pending_review!\" AS \"pending_review!\"
+  "id!" AS "id!",
+  "name!" AS "name!",
+  "value!" AS "value!: i64",
+  "pending_review!" AS "pending_review!"
 FROM vampire_stat
 WHERE vampire_id = $1
-ORDER BY \"name!\"
-    ",
+ORDER BY CASE "id!" WHEN 'humanity' THEN 0 WHEN 'blood-potency' THEN 1 WHEN 'hp' THEN 2 WHEN 'physical-ability' THEN 3 WHEN 'mental-ability' THEN 4 WHEN 'organizational-ability' THEN 5 END
+    "#,
     vampire_id,
   )
     .fetch_all(&state.db)
-    .await
-    .map_err(Error::from)
+    .await?;
+  Ok(rows.into_iter().map(|r| StatLine {
+    id: r.id,
+    name: r.name,
+    value: r.value,
+    pending_review: r.pending_review,
+  }).collect())
 }
 /// Fetches all powers with current state (if any raises exist) and the in-clan flag
 /// for this vampire, joining all three tables in one round-trip.
@@ -164,6 +198,7 @@ async fn fetch_powers_combined(
   let rows = sqlx::query!(
     r#"
 SELECT
+  power.id AS "id!",
   power.name AS "name!",
   COALESCE(vp."value!", 0) AS "value!: i64",
   COALESCE(vp."pending_review!", false) AS "pending_review!",
@@ -172,12 +207,12 @@ SELECT
     FROM vampire
     JOIN clan USING (clan_id)
     WHERE vampire.vampire_id = $1
-      AND (power.name = clan.unique_power
-        OR power.name = clan.power_one
-        OR power.name = clan.power_two)
+      AND (power.id = clan.unique_power
+        OR power.id = clan.power_one
+        OR power.id = clan.power_two)
   ) AS "in_clan!"
 FROM power
-LEFT JOIN vampire_power vp ON vp."name!" = power.name AND vp.vampire_id = $1
+LEFT JOIN vampire_power vp ON vp."id!" = power.id AND vp.vampire_id = $1
 ORDER BY power.name
     "#,
     vampire_id,
@@ -185,6 +220,7 @@ ORDER BY power.name
     .fetch_all(&state.db)
     .await?;
   Ok(rows.into_iter().map(|r| PowerRow {
+    id: r.id,
     name: r.name,
     value: r.value,
     pending_review: r.pending_review,
@@ -200,13 +236,14 @@ async fn fetch_influences_combined(
   let rows = sqlx::query!(
     r#"
 SELECT
+  influence.id AS "id!",
   influence.name AS "name!",
   COALESCE(vi."value!", 0) AS "value!: i64",
   COALESCE(vi."pending_review!", false) AS "pending_review!",
   ixc.xp_cost AS "xp_cost?"
 FROM influence
-LEFT JOIN vampire_influence vi ON vi."name!" = influence.name AND vi.vampire_id = $1
-LEFT JOIN influence_xp_cost ixc ON ixc.influence = influence.name
+LEFT JOIN vampire_influence vi ON vi."id!" = influence.id AND vi.vampire_id = $1
+LEFT JOIN influence_xp_cost ixc ON ixc.influence = influence.id
 ORDER BY influence.name
     "#,
     vampire_id,
@@ -214,6 +251,7 @@ ORDER BY influence.name
     .fetch_all(&state.db)
     .await?;
   Ok(rows.into_iter().map(|r| InfluenceRow {
+    id: r.id,
     name: r.name,
     value: r.value,
     pending_review: r.pending_review,
@@ -226,15 +264,16 @@ async fn fetch_stat_options_and_costs(
 ) -> Result<Vec<StatOptionRow>, Error> {
   let rows = sqlx::query!(
     "
-SELECT stat.name, sxc.xp_cost AS \"xp_cost?\"
+SELECT stat.id, stat.name, sxc.xp_cost AS \"xp_cost?\"
 FROM stat
-LEFT JOIN stat_xp_cost sxc ON sxc.stat = stat.name
-ORDER BY stat.name
+LEFT JOIN stat_xp_cost sxc ON sxc.stat = stat.id
+ORDER BY stat.id
     ",
   )
     .fetch_all(&state.db)
     .await?;
   Ok(rows.into_iter().map(|r| StatOptionRow {
+    id: r.id,
     name: r.name,
     xp_cost: r.xp_cost,
   }).collect())
@@ -284,20 +323,16 @@ async fn index_get(
   character: CharacterHeader,
   vampire_id: i64,
 ) -> Result<Response, Error> {
-  let oldest_active = fetch_oldest_active(state, session.user_id).await?;
-
   if character.status.is_draft() {
     return html(DraftView {
       character,
       show_admin_link: session.role.is_storyteller(),
-      oldest_active,
     }.render()?);
   }
   if character.status.is_inactive() {
     return html(InactiveView {
       character,
       show_admin_link: session.role.is_storyteller(),
-      oldest_active,
     }.render()?);
   }
 
@@ -318,22 +353,22 @@ async fn index_get(
 
   let powers: Vec<StatLine> = power_rows.iter()
     .filter(|r| r.value > 0 || r.pending_review)
-    .map(|r| StatLine { name: r.name.clone(), value: r.value, pending_review: r.pending_review })
+    .map(|r| StatLine { id: r.id.clone(), name: r.name.clone(), value: r.value, pending_review: r.pending_review })
     .collect();
   let power_options: Vec<PowerOption> = power_rows.into_iter()
-    .map(|r| PowerOption { name: r.name, in_clan: r.in_clan })
+    .map(|r| PowerOption { id: r.id.clone(), name: r.name, in_clan: r.in_clan })
     .collect();
   let influences: Vec<StatLine> = influence_rows.iter()
     .filter(|r| r.value > 0 || r.pending_review)
-    .map(|r| StatLine { name: r.name.clone(), value: r.value, pending_review: r.pending_review })
+    .map(|r| StatLine { id: r.id.clone(), name: r.name.clone(), value: r.value, pending_review: r.pending_review })
     .collect();
-  let influence_options: Vec<String> = influence_rows.iter().map(|r| r.name.clone()).collect();
+  let influence_options: Vec<InfluenceOption> = influence_rows.iter().map(|r| InfluenceOption { id: r.id.clone(), name: r.name.clone() }).collect();
   let influence_xp_costs: HashMap<String, i32> = influence_rows.into_iter()
-    .filter_map(|r| r.xp_cost.map(|c| (r.name, c)))
+    .filter_map(|r| r.xp_cost.map(|c| (r.id, c)))
     .collect();
-  let stat_options: Vec<String> = stat_option_rows.iter().map(|r| r.name.clone()).collect();
+  let stat_options: Vec<StatOptionRow> = stat_option_rows.iter().map(|r| StatOptionRow { id: r.id.clone(), name: r.name.clone(), xp_cost: r.xp_cost }).collect();
   let stat_xp_costs: HashMap<String, i32> = stat_option_rows.into_iter()
-    .filter_map(|r| r.xp_cost.map(|c| (r.name, c)))
+    .filter_map(|r| r.xp_cost.map(|c| (r.id, c)))
     .collect();
 
   let initial_data_json = serde_json::to_string(&InitialData {
@@ -353,8 +388,8 @@ async fn index_get(
     },
     options: DraftOptions {
       stats: stat_options,
-      powers: power_options,
-      influences: influence_options,
+      powers: power_options.clone(),
+      influences: influence_options.clone(),
     },
   })?.replace("</", r"<\/");
 
@@ -363,10 +398,11 @@ async fn index_get(
     stats,
     powers,
     influences,
+    power_options,
+    influence_options,
     initial_data_json,
     saved: query.saved == Some(1),
     show_admin_link: session.role.is_storyteller(),
-    oldest_active,
   }.render()?)
 }
 async fn index_post(
@@ -405,45 +441,29 @@ WHERE stat_xp_cost.stat = $2::VARCHAR
           return Err(Error::invalid_builder_draft(&format!("Missing XP rule for stat '{stat}'")));
         }
       },
-      DraftOperation::Power { power, increase } => {
+      DraftOperation::Power { power } => {
         let result = sqlx::query!(
           "
-INSERT INTO power_raise(vampire_id, power, increase, xp_cost)
-WITH level_data AS (
-  SELECT
-    COALESCE((
-      SELECT \"value!\"::INT
-      FROM vampire_power
-      WHERE vampire_id = $1 AND \"name!\" = $2::VARCHAR
-    ), 0) AS current_level,
-    EXISTS(
+INSERT INTO power_raise(vampire_id, power, xp_cost)
+SELECT $1, $2::VARCHAR, power_xp_cost.xp_cost
+FROM power_xp_cost
+WHERE power_xp_cost.in_clan = (
+    SELECT EXISTS(
       SELECT 1
       FROM vampire
       JOIN clan USING (clan_id)
       WHERE vampire.vampire_id = $1
         AND ($2::VARCHAR = clan.unique_power OR $2::VARCHAR = clan.power_one OR $2::VARCHAR = clan.power_two)
-    ) AS in_clan
-),
-cost_data AS (
-  SELECT
-    COALESCE(SUM(power_xp_cost.xp_cost), 0) AS xp_cost,
-    COUNT(power_xp_cost.level)::INT AS matched_levels
-  FROM level_data
-  JOIN generate_series(level_data.current_level + 1, level_data.current_level + $3::INT) AS lvl(level) ON TRUE
-  JOIN power_xp_cost
-    ON power_xp_cost.in_clan = level_data.in_clan
-   AND power_xp_cost.level = lvl.level
-)
-SELECT
-  $1,
-  $2::VARCHAR,
-  $3::INT,
-  CASE WHEN cost_data.matched_levels = $3::INT THEN cost_data.xp_cost ELSE NULL END
-FROM cost_data
+    )
+  )
+  AND power_xp_cost.level = (
+    SELECT COALESCE(\"value!\"::INT, 0) + 1
+    FROM vampire_power
+    WHERE vampire_id = $1 AND \"name!\" = $2::VARCHAR
+  )
           ",
           vampire_id,
           power,
-          increase,
         )
           .execute(&mut *tx)
           .await?
@@ -452,17 +472,16 @@ FROM cost_data
           return Err(Error::invalid_builder_draft(&format!("Missing XP rule for power '{power}'")));
         }
       },
-      DraftOperation::Influence { influence, increase } => {
+      DraftOperation::Influence { influence } => {
         let result = sqlx::query!(
           "
-INSERT INTO influence_raise(vampire_id, influence, increase, xp_cost)
-SELECT $1, $2::VARCHAR, $3::INT, influence_xp_cost.xp_cost * $3::INT
+INSERT INTO influence_raise(vampire_id, influence, xp_cost)
+SELECT $1, $2::VARCHAR, influence_xp_cost.xp_cost
 FROM influence_xp_cost
 WHERE influence_xp_cost.influence = $2::VARCHAR
           ",
           vampire_id,
           influence,
-          increase,
         )
           .execute(&mut *tx)
           .await?

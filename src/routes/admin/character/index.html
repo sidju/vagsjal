@@ -54,11 +54,11 @@
     {% for character in draft_chars %}
     <tr>
       <td><a href="{{ character.vampire_id }}/">{{ character.vampire_id }}</a></td>
-      <td>{{ character.name }}</td>
+      <td><a href="{{ character.vampire_id }}/">{{ character.name }}</a></td>
       <td><a href="/admin/user/{{ character.user_id }}/">{{ character.owner_name }}</a></td>
       <td><a href="/wiki/{{ character.clan_name | lower }}/">{{ character.clan_name }}</a></td>
       <td>{{ character.remaining_xp }}</td>
-      <td>{% if let Some(url) = character.character_description_url %}<a href="{{ url }}">Länk</a>{% endif %}</td>
+      <td>{% if let Some(url) = character.character_description_url %}<a href="{{ url }}">{{ url }}</a>{% endif %}</td>
     </tr>
     {% endfor %}
   </table>
@@ -71,11 +71,11 @@
     {% for character in active_chars %}
     <tr>
       <td><a href="{{ character.vampire_id }}/">{{ character.vampire_id }}</a></td>
-      <td>{{ character.name }}</td>
+      <td><a href="{{ character.vampire_id }}/">{{ character.name }}</a></td>
       <td><a href="/admin/user/{{ character.user_id }}/">{{ character.owner_name }}</a></td>
       <td><a href="/wiki/{{ character.clan_name | lower }}/">{{ character.clan_name }}</a></td>
       <td>{{ character.remaining_xp }}</td>
-      <td>{% if let Some(url) = character.character_description_url %}<a href="{{ url }}">Länk</a>{% endif %}</td>
+      <td>{% if let Some(url) = character.character_description_url %}<a href="{{ url }}">{{ url }}</a>{% endif %}</td>
     </tr>
     {% endfor %}
   </table>
@@ -88,11 +88,11 @@
     {% for character in inactive_chars %}
     <tr class="inactive">
       <td><a href="{{ character.vampire_id }}/">{{ character.vampire_id }}</a></td>
-      <td>{{ character.name }}</td>
+      <td><a href="{{ character.vampire_id }}/">{{ character.name }}</a></td>
       <td><a href="/admin/user/{{ character.user_id }}/">{{ character.owner_name }}</a></td>
       <td><a href="/wiki/{{ character.clan_name | lower }}/">{{ character.clan_name }}</a></td>
       <td>{{ character.remaining_xp }}</td>
-      <td>{% if let Some(url) = character.character_description_url %}<a href="{{ url }}">Länk</a>{% endif %}</td>
+      <td>{% if let Some(url) = character.character_description_url %}<a href="{{ url }}">{{ url }}</a>{% endif %}</td>
     </tr>
     {% endfor %}
   </table>

@@ -2,8 +2,8 @@
 
 #lore #klaner
 
-Deras [krafter](blodets-krafter.md) är:
+Deras [krafter](blood-powers.md) är:
 
 - **[Auspex](auspex.md)**
 - [Celerity](celerity.md)
-- [Obfuscation](obfuscation.md)
+- [Obfuscation](obfuscate.md)

@@ -36,7 +36,7 @@ kan inte väljas medan en annan är aktiv.
 
 Genom att konsumera ett främst kött- eller blodätande djur till döds blir du
 kapabel att anta dess form under kommande nätter. Du kan minnas en form per 3
-[Mental Ability](mental-formaga.md); att lägga till en ny utöver dessa kräver
+[Mental Ability](mental-ability.md); att lägga till en ny utöver dessa kräver
 att du kastar bort en av de gamla. Förvandlingen är en våldsam process av
 knakande ben och krampartade rörelser som veckar ihop dig tills du når formen;
 den är smärtsam men inte överdrivet och inte skadlig. I formen får du
@@ -53,7 +53,7 @@ de inte påverkar samma kroppsdel.
 | Källa                       | Effekt                                                |
 | --------------------------- | ----------------------------------------------------- |
 | Klor, tänder eller bensporrar | +5 weapon bonus                                     |
-| Vitae-gift (svart)          | [Aggravated](forvarrad-skada.md) damage                    |
+| Vitae-gift (svart)          | [Aggravated](aggravated-damage.md) damage                    |
 | Vitae-gift (röd)            | Tvingar vitae-intag (blood bond)                      |
 | Extra lemmar                | Ytterligare lemmar för vapen eller brottning          |
 | Förlängda armar eller fingrar | Utökad närstridsräckvidd                            |
@@ -78,7 +78,7 @@ i tomma intet, men du kan inte orsaka någon skada.
 ### 3: Fruktansvärd form
 
 Du låter odjuret forma dig fullt ut och antar en monstruös form unik för dig.
-Denna form låter dig lägga till din [blood potency](blodpotens.md) i
+Denna form låter dig lägga till din [blood potency](blood-potency.md) i
 ytterligare Rovdjurs- eller Fruktansvärda aspekter ovanpå den grundläggande som
 redan ges (dvs. 2 + BP totalt).
 

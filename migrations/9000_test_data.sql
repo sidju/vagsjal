@@ -1,10 +1,5 @@
 BEGIN;
 
-INSERT INTO humanity_xp_cost (change_type, xp_cost) VALUES
-  ('gain', 7),
-  ('loss', 0)
-;
-
 INSERT INTO power_xp_cost (in_clan, level, xp_cost) VALUES
   (TRUE, 1, 9),
   (TRUE, 2, 12),
@@ -44,33 +39,36 @@ INSERT INTO humanity_change_review (humanity_change_id, state, reviewer_id) VALU
 
 -- Stat raises
 INSERT INTO stat_raise (stat_raise_id, vampire_id, stat, increase, xp_cost) VALUES
-  (1, 1, 'Physical Ability', 3, 12), -- approved
-  (2, 1, 'Mental Ability',   2,  8), -- denied
-  (3, 2, 'HP',               6, 18)  -- pending
+  (1, 1, 'physical-ability', 3, 12), -- approved
+  (2, 1, 'mental-ability',   2,  8), -- denied
+  (3, 2, 'hp',               6, 18)  -- pending
 ;
 INSERT INTO stat_raise_review (stat_raise_id, state, reviewer_id) VALUES
   (1, 'approved', 1),
   (2, 'denied',   1)
 ;
 
--- Power raises
-INSERT INTO power_raise (power_raise_id, vampire_id, power, increase, xp_cost) VALUES
-  (1, 1, 'Dominate',  1,  9), -- approved (clan power)
-  (2, 1, 'Presence',  1,  9), -- approved (clan power)
-  (3, 2, 'Obfuscate', 2, 21), -- approved (clan power lvl1+lvl2)
-  (4, 2, 'Nightmare', 1, 12)  -- pending
+-- Power raises (each row is always +1)
+INSERT INTO power_raise (power_raise_id, vampire_id, power, xp_cost) VALUES
+  (1, 1, 'dominate',  9), -- approved (clan power)
+  (2, 1, 'presence',  9), -- approved (clan power)
+  (3, 2, 'obfuscate', 9), -- approved (clan power, lvl1)
+  (4, 2, 'obfuscate', 12), -- approved (clan power, lvl2)
+  (5, 2, 'nightmare', 12)  -- pending
 ;
 INSERT INTO power_raise_review (power_raise_id, state, reviewer_id) VALUES
   (1, 'approved', 1),
   (2, 'approved', 1),
-  (3, 'approved', 1)
+  (3, 'approved', 1),
+  (4, 'approved', 1)
 ;
 
--- Influence raises
-INSERT INTO influence_raise (influence_raise_id, vampire_id, influence, increase, xp_cost) VALUES
-  (1, 1, 'Juridik',  2, 8), -- approved
-  (2, 2, 'Gatuliv',  1, 4), -- denied
-  (3, 1, 'Societet', 1, 4)  -- pending
+-- Influence raises (each row is always +1)
+INSERT INTO influence_raise (influence_raise_id, vampire_id, influence, xp_cost) VALUES
+  (1, 1, 'law',  4), -- approved
+  (2, 1, 'law',  4), -- approved
+  (3, 2, 'street-life',  4), -- denied
+  (4, 1, 'high-society', 4)  -- pending
 ;
 INSERT INTO influence_raise_review (influence_raise_id, state, reviewer_id) VALUES
   (1, 'approved', 1),

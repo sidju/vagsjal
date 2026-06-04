@@ -2,7 +2,7 @@
 
 #lore #klaner
 
-Deras [krafter](blodets-krafter.md) är:
+Deras [krafter](blood-powers.md) är:
 
 - **[Presence](presence.md)**
 - [Celerity](celerity.md)

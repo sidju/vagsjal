@@ -2,8 +2,8 @@
 
 #lore #klaner
 
-Deras [krafter](blodets-krafter.md) är:
+Deras [krafter](blood-powers.md) är:
 
 - **[Nightmare](nightmare.md)**
-- [Obfuscation](obfuscation.md)
+- [Obfuscation](obfuscate.md)
 - [Potence](potence.md)
