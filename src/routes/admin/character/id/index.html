@@ -42,7 +42,7 @@
     </tr>
     <tr>
       <td><a href="/wiki/torpor/">Tid i torpor</a></td>
-      <td>{{ character.torpor_time.months / 12 }} år, {{ character.torpor_time.months % 12 }} månader, {{ character.torpor_time.days }} dagar</td>
+      <td>{{ character.torpor_display }}</td>
     </tr>
     <tr>
       <td><a href="/wiki/klan/">Klan</a></td>
@@ -124,4 +124,30 @@
       {% endfor %}
     </table>
   {% endif %}
+
+  <h2>Blodpotensförändringar</h2>
+  {% if bp_changes.len() == 0 %}
+    <p>Inga registrerade.</p>
+  {% else %}
+    <table class="stat-table">
+      <tr><th>Datum</th><th>Förändring</th><th>Anteckning</th></tr>
+      {% for bpc in bp_changes %}
+      <tr>
+        <td>{{ bpc.creation_time }}</td>
+        <td>{{ bpc.change }}</td>
+        <td>{{ bpc.note }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  {% endif %}
+
+  <details>
+    <summary><h3 style="display:inline">Registrera BP-ändring</h3></summary>
+    <form method="post" enctype="application/x-www-form-urlencoded">
+      <input type="hidden" name="action" value="record_bp">
+      <p><label>Förändring <input name="bp_change" type="number" required></label></p>
+      <p><label>Anteckning <input name="bp_note" maxlength="256"></label></p>
+      <button type="submit">Registrera</button>
+    </form>
+  </details>
 {% endblock %}

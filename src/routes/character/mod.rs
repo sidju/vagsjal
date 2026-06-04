@@ -16,6 +16,18 @@ struct Character {
   clan_name: String,
   remaining_xp: i64,
   character_description_url: Option<String>,
+  torpor_display: String,
+}
+
+fn fmt_torpor(t: &sqlx::postgres::types::PgInterval) -> String {
+  let years = t.months / 12;
+  let months = t.months % 12;
+  let days = t.days;
+  let mut parts = Vec::new();
+  if years > 0 { parts.push(format!("{years} år")); }
+  if months > 0 { parts.push(format!("{months} månader")); }
+  if days > 0 { parts.push(format!("{days} dagar")); }
+  if parts.is_empty() { "0 dagar".into() } else { parts.join(", ") }
 }
 #[derive(Debug)]
 struct Stat {
@@ -86,7 +98,7 @@ async fn index_get(
   session: SessionData,
   saved: bool,
 ) -> Result<Response, Error> {
-  let characters = sqlx::query_as!(Character,
+  let mut characters = sqlx::query_as!(Character,
     "
 SELECT
   vampire.vampire_id,
@@ -97,7 +109,8 @@ SELECT
   vampire.torpor_time,
       clan.name AS clan_name,
       COALESCE(xp_remaining.amount, 0) AS \"remaining_xp!\",
-      vampire.character_description_url AS \"character_description_url?\"
+      vampire.character_description_url AS \"character_description_url?\",
+      '' AS \"torpor_display!\"
 FROM vampire
 JOIN clan USING (clan_id)
 LEFT JOIN xp_remaining USING (vampire_id)
@@ -109,6 +122,9 @@ ORDER BY vampire.name
     .fetch_all(&state.db)
     .await?
   ;
+  for c in &mut characters {
+    c.torpor_display = fmt_torpor(&c.torpor_time);
+  }
   // Fetch the stats for each character
   let mut character_stats = Vec::new();
   for c in characters {

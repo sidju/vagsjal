@@ -18,6 +18,18 @@ struct CharacterRow {
   clan_name: String,
   remaining_xp: i64,
   character_description_url: Option<String>,
+  torpor_display: String,
+}
+
+fn fmt_torpor(t: &sqlx::postgres::types::PgInterval) -> String {
+  let years = t.months / 12;
+  let months = t.months % 12;
+  let days = t.days;
+  let mut parts = Vec::new();
+  if years > 0 { parts.push(format!("{years} år")); }
+  if months > 0 { parts.push(format!("{months} månader")); }
+  if days > 0 { parts.push(format!("{days} dagar")); }
+  if parts.is_empty() { "0 dagar".into() } else { parts.join(", ") }
 }
 
 #[derive(sqlx::FromRow, Debug)]
@@ -49,6 +61,12 @@ struct SummaryStat {
   pending_review: bool,
 }
 
+#[derive(sqlx::FromRow, Debug)]
+struct BpChange {
+  change: i32,
+  note: String,
+  creation_time: String,
+}
 
 #[derive(Template)]
 #[template(path = "admin/character/id/index.html")]
@@ -58,6 +76,7 @@ struct Index {
   powers: Vec<SummaryStat>,
   influences: Vec<SummaryStat>,
   pending: Vec<PendingUsageRow>,
+  bp_changes: Vec<BpChange>,
   show_admin_link: bool,
   oldest_active: Option<OldestActiveCharacter>,
 }
@@ -84,7 +103,8 @@ async fn get_character(state: &'static State, vampire_id: i64) -> Result<Charact
       vampire.clan_id,
       clan.name AS clan_name,
       COALESCE(xp_remaining.amount, 0) AS "remaining_xp!",
-      vampire.character_description_url AS "character_description_url?"
+      vampire.character_description_url AS "character_description_url?",
+      '' AS "torpor_display!"
     FROM vampire
     JOIN app_user USING (user_id)
     JOIN clan USING (clan_id)
@@ -95,6 +115,7 @@ async fn get_character(state: &'static State, vampire_id: i64) -> Result<Charact
   )
     .fetch_one(&state.db)
     .await
+    .map(|mut c| { c.torpor_display = fmt_torpor(&c.torpor_time); c })
     .map_err(Error::from)
 }
 
@@ -153,6 +174,25 @@ async fn fetch_influences(
       .fetch_all(&state.db)
       .await?;
     Ok(influences)
+}
+
+async fn fetch_bp_changes(state: &'static State, vampire_id: i64) -> Result<Vec<BpChange>, Error> {
+  sqlx::query_as!(
+    BpChange,
+    r#"
+    SELECT
+      change,
+      note,
+      to_char(creation_time, 'YYYY-MM-DD HH24:MI:SS') AS "creation_time!"
+    FROM bp_change
+    WHERE vampire_id = $1
+    ORDER BY creation_time
+    "#,
+    vampire_id,
+  )
+    .fetch_all(&state.db)
+    .await
+    .map_err(Error::from)
 }
 
 async fn fetch_pending_usage(state: &'static State, vampire_id: i64) -> Result<Vec<PendingUsageRow>, Error> {
@@ -237,12 +277,13 @@ async fn fetch_pending_usage(state: &'static State, vampire_id: i64) -> Result<V
 }
 
 async fn index_get(state: &'static State, session: &SessionData, vampire_id: i64) -> Result<Response, Error> {
-  let (character, stats, powers, influences, pending) = tokio::try_join!(
+  let (character, stats, powers, influences, pending, bp_changes) = tokio::try_join!(
     get_character(state, vampire_id),
     fetch_stats(state, vampire_id),
     fetch_powers(state, vampire_id),
     fetch_influences(state, vampire_id),
     fetch_pending_usage(state, vampire_id),
+    fetch_bp_changes(state, vampire_id),
   )?;
   let oldest_active = fetch_oldest_active(state, session.user_id).await?;
 
@@ -252,6 +293,7 @@ async fn index_get(state: &'static State, session: &SessionData, vampire_id: i64
     powers,
     influences,
     pending,
+    bp_changes,
     show_admin_link: true,
     oldest_active,
   }.render()?)
@@ -394,6 +436,24 @@ async fn approve_draft(
   see_other(&format!("/admin/character/{vampire_id}/"))
 }
 
+async fn record_bp_change(
+  state: &'static State,
+  vampire_id: i64,
+  form: CharacterForm,
+) -> Result<Response, Error> {
+  let change = form.bp_change.ok_or_else(|| Error::invalid_builder_draft("Missing bp_change"))?;
+  let note = form.bp_note.unwrap_or_default();
+  sqlx::query!(
+    "INSERT INTO bp_change (vampire_id, change, note) VALUES ($1, $2, $3)",
+    vampire_id,
+    change,
+    note,
+  )
+    .execute(&state.db)
+    .await?;
+  see_other(&format!("/admin/character/{vampire_id}/"))
+}
+
 async fn index_post(
   state: &'static State,
   session: SessionData,
@@ -405,6 +465,7 @@ async fn index_post(
     "update" => update_character(state, vampire_id, form).await,
     "review" => review_pending(state, &session, vampire_id, form).await,
     "approve" => approve_draft(state, &session, vampire_id).await,
+    "record_bp" => record_bp_change(state, vampire_id, form).await,
     _ => Err(Error::invalid_builder_draft("Unknown character action")),
   }
 }

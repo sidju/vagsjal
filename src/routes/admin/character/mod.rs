@@ -45,6 +45,8 @@ struct CharacterForm {
   review_kind: Option<String>,
   usage_id: Option<i64>,
   decision: Option<String>,
+  bp_change: Option<i32>,
+  bp_note: Option<String>,
 }
 
 #[derive(Template)]
