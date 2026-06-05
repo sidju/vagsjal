@@ -17,6 +17,8 @@ INSERT INTO app_role (name) VALUES ('user'), ('storyteller');
 CREATE TABLE app_user (
 user_id BIGSERIAL PRIMARY KEY,
 oidc_subject VARCHAR(256) NOT NULL UNIQUE,
+name VARCHAR(256) NOT NULL DEFAULT '',
+email VARCHAR(320) NOT NULL DEFAULT '',
 role VARCHAR(64) NOT NULL DEFAULT 'user',
 
 FOREIGN KEY (role) REFERENCES app_role

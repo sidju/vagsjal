@@ -5,11 +5,12 @@
 {% block body %}
   <h1>Användare</h1>
   <table class="stat-table">
-    <tr><th>ID</th><th>Namn</th><th>OIDC-subjekt</th><th>Roll</th></tr>
+    <tr><th>ID</th><th>Namn</th><th>E-post</th><th>OIDC-subjekt</th><th>Roll</th></tr>
     {% for user in users %}
     <tr>
       <td><a href="{{ user.user_id }}/">{{ user.user_id }}</a></td>
       <td>{{ user.name }}</td>
+      <td>{{ user.email }}</td>
       <td>{{ user.oidc_subject }}</td>
       <td>{{ user.role }}</td>
     </tr>

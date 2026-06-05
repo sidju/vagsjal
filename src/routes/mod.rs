@@ -76,6 +76,7 @@ pub async fn route(
   let cookies = parse_cookies(&req)?;
   let auth = authenticate_from_cookies(state, &cookies).await?;
   let session = auth.session;
+  let mut prevent_cache = true;
   let mut response = match path_vec.pop().as_deref() {
     // Means a missing trailing slash, redirect to with slash
     None => permanent_redirect(&format!("{}/", req.uri().path())),
@@ -124,12 +125,17 @@ pub async fn route(
         Some(session) => admin::route(state, session, req, path_vec).await,
       }
     },
-    Some("wiki") => wiki::route(session, req, path_vec).await,
+    Some("wiki") => {
+      prevent_cache = false;
+      wiki::route(session, req, path_vec).await
+    },
     Some("styles.css") => {
+      prevent_cache = false;
       verify_method_path_end(&path_vec, &req, &Method::GET)?;
       css(CSS)
     },
     Some("vs-rr.png") => {
+      prevent_cache = false;
       verify_method_path_end(&path_vec, &req, &Method::GET)?;
       add_header(png(LOGO), hyper::header::CACHE_CONTROL, HeaderValue::from_static("public, max-age=2592000, immutable"))
     },
@@ -137,6 +143,13 @@ pub async fn route(
   };
   for cookie in auth.set_cookies {
     response = add_header(response, hyper::header::SET_COOKIE, cookie);
+  }
+  if prevent_cache {
+    response = add_header(
+      response,
+      hyper::header::CACHE_CONTROL,
+      HeaderValue::from_static("no-store"),
+    );
   }
   response
 }

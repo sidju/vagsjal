@@ -13,10 +13,10 @@ INSERT INTO power_xp_cost (in_clan, level, xp_cost) VALUES
   (FALSE, 5, 24)
 ;
 
-INSERT INTO app_user (user_id, name, oidc_subject, role) VALUES
-  (0, 'Storyteller', 'storyteller-subject', 'storyteller'),
-  (1, 'Reviewer',    'reviewer-subject',    'storyteller'),
-  (2, 'Player',      'player-subject',      'user')
+INSERT INTO app_user (user_id, name, oidc_subject, email, role) VALUES
+  (0, 'Storyteller', 'storyteller-subject', 'storyteller@example.com', 'storyteller'),
+  (1, 'Reviewer',    'reviewer-subject',    'reviewer@example.com',   'storyteller'),
+  (2, 'Player',      'player-subject',      'player@example.com',     'user')
 ;
 
 INSERT INTO vampire (vampire_id, user_id, status, name, apparent_age, date_embraced, torpor_time, clan_id) VALUES

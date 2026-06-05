@@ -89,9 +89,9 @@ pub async fn init_state() -> &'static State {
   ;
   sqlx::query!(
     "
-INSERT INTO app_user(user_id, oidc_subject, name, role) VALUES(0, $1, 'Admin', 'storyteller')
+INSERT INTO app_user(user_id, oidc_subject, name, email, role) VALUES(0, $1, '', '', 'storyteller')
   ON CONFLICT (user_id)
-  DO UPDATE SET oidc_subject = $1, name = 'Admin', role = 'storyteller' WHERE app_user.user_id = 0
+  DO UPDATE SET oidc_subject = $1, name = CASE WHEN app_user.name = '' THEN '' ELSE app_user.name END, email = CASE WHEN app_user.email = '' THEN '' ELSE app_user.email END, role = 'storyteller' WHERE app_user.user_id = 0
     ",
     admin_oidc_subject,
   )

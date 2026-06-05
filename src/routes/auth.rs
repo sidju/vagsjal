@@ -80,10 +80,9 @@ fn display_name_from_claims(
     .and_then(|name| name.get(None))
     .map(|name| name.as_str().to_owned())
     .or_else(|| claims.preferred_username().map(|username| username.as_str().to_owned()))
-    .or_else(|| claims.email().map(|email| email.as_str().to_owned()))
     .unwrap_or_else(|| claims.subject().as_str().to_owned())
 }
-async fn session_for_claims(
+async fn upsert_user_from_claims(
   state: &'static State,
   claims: &openidconnect::IdTokenClaims<
     openidconnect::EmptyAdditionalClaims,
@@ -91,19 +90,45 @@ async fn session_for_claims(
   >,
 ) -> Result<SessionData, Error> {
   let display_name = display_name_from_claims(claims);
+  let email = claims.email().map(|email| email.as_str().to_owned()).unwrap_or_default();
   let row = sqlx::query!(
     "
-INSERT INTO app_user(oidc_subject, name, role)
-VALUES ($1, $2, 'user')
+INSERT INTO app_user(oidc_subject, name, email, role)
+VALUES ($1, $2, $3, 'user')
 ON CONFLICT (oidc_subject)
-DO UPDATE SET name = CASE
-  WHEN app_user.name = '' THEN EXCLUDED.name
-  ELSE app_user.name
-END
+DO UPDATE SET
+  name = $2,
+  email = $3
 RETURNING user_id, role AS \"role!:Role\"
     ",
     claims.subject().as_str(),
     display_name,
+    email,
+  )
+    .fetch_one(&state.db)
+    .await
+    .map_err(Error::from)?
+  ;
+  Ok(SessionData {
+    user_id: row.user_id,
+    role: row.role,
+  })
+}
+
+async fn fetch_session(
+  state: &'static State,
+  claims: &openidconnect::IdTokenClaims<
+    openidconnect::EmptyAdditionalClaims,
+    openidconnect::core::CoreGenderClaim,
+  >,
+) -> Result<SessionData, Error> {
+  let row = sqlx::query!(
+    "
+SELECT user_id, role AS \"role!:Role\"
+FROM app_user
+WHERE oidc_subject = $1
+    ",
+    claims.subject().as_str(),
   )
     .fetch_one(&state.db)
     .await
@@ -135,7 +160,7 @@ async fn refresh_session_from_cookie(
     Ok(claims) => claims,
     Err(_) => return Ok(None),
   };
-  let session = session_for_claims(state, claims).await?;
+  let session = upsert_user_from_claims(state, claims).await?;
   let refresh_token = token_response
     .refresh_token()
     .map(|t| t.secret().to_owned())
@@ -235,7 +260,7 @@ pub async fn authenticate_from_cookies(
       });
     },
   };
-  let session = session_for_claims(state, claims).await?;
+  let session = fetch_session(state, claims).await?;
   Ok(AuthResult {
     session: Some(session),
     set_cookies: vec![],
@@ -275,7 +300,7 @@ RETURNING nonce
     &state.oidc_client.id_token_verifier(),
     &openidconnect::Nonce::new(nonce),
   )?;
-  let _session = session_for_claims(state, id_token_claims).await?;
+  let _session = upsert_user_from_claims(state, id_token_claims).await?;
   let refresh_token = token_response
     .refresh_token()
     .ok_or(ClientError::OIDCGaveNoRefreshToken)?
