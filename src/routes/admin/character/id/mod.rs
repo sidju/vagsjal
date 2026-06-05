@@ -16,9 +16,17 @@ struct CharacterRow {
   torpor_time: sqlx::postgres::types::PgInterval,
   clan_id: i64,
   clan_name: String,
+  covenant_id: i64,
+  covenant_name: String,
+  covenant_slug: String,
   remaining_xp: i64,
   character_description_url: Option<String>,
-  torpor_display: String,
+}
+
+impl CharacterRow {
+  fn torpor_display(&self) -> String {
+    fmt_torpor(&self.torpor_time)
+  }
 }
 
 fn fmt_torpor(t: &sqlx::postgres::types::PgInterval) -> String {
@@ -102,12 +110,15 @@ async fn get_character(state: &'static State, vampire_id: i64) -> Result<Charact
       vampire.torpor_time,
       vampire.clan_id,
       clan.name AS clan_name,
+      COALESCE(vampire.covenant_id, 0) AS "covenant_id!",
+      COALESCE(covenant.name, '') AS "covenant_name!",
+      COALESCE(covenant.id, '') AS "covenant_slug!",
       COALESCE(xp_remaining.amount, 0) AS "remaining_xp!",
-      vampire.character_description_url AS "character_description_url?",
-      '' AS "torpor_display!"
+      vampire.character_description_url AS "character_description_url?"
     FROM vampire
     JOIN app_user USING (user_id)
     JOIN clan USING (clan_id)
+    LEFT JOIN covenant USING (covenant_id)
     LEFT JOIN xp_remaining USING (vampire_id)
     WHERE vampire_id = $1
     "#,
@@ -115,7 +126,6 @@ async fn get_character(state: &'static State, vampire_id: i64) -> Result<Charact
   )
     .fetch_one(&state.db)
     .await
-    .map(|mut c| { c.torpor_display = fmt_torpor(&c.torpor_time); c })
     .map_err(Error::from)
 }
 
@@ -302,6 +312,7 @@ async fn update_character(
     microseconds: 0,
   };
   let clan_id = form.clan_id.ok_or_else(|| Error::invalid_builder_draft("Missing clan_id"))?;
+  let covenant_id = form.covenant_id;
   let status = form.status.as_deref().unwrap_or("draft");
   let character_description_url = form.character_description_url.map(|u| u.trim().to_string()).filter(|u| !u.is_empty());
   if let Some(ref url) = character_description_url {
@@ -317,7 +328,8 @@ async fn update_character(
         date_embraced = $6,
         torpor_time = $7,
         clan_id = $8,
-        character_description_url = $9
+        covenant_id = $9,
+        character_description_url = $10
     WHERE vampire_id = $1
     "#,
     vampire_id,
@@ -328,6 +340,7 @@ async fn update_character(
     date_embraced,
     torpor_time,
     clan_id,
+    covenant_id,
     character_description_url,
   )
     .execute(&state.db)

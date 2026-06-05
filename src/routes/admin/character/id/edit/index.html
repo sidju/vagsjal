@@ -32,6 +32,16 @@
         </select>
       </label>
     </p>
+    <p>
+      <label>Förbund
+        <select name="covenant_id">
+          <option value="">Inget</option>
+          {% for covenant in covenants %}
+          <option value="{{ covenant.covenant_id }}" {% if covenant.covenant_id == character.covenant_id %}selected{% endif %}>{{ covenant.name }}</option>
+          {% endfor %}
+        </select>
+      </label>
+    </p>
     <p><label>Länk till karaktärsbeskrivning <input name="character_description_url" type="url" {% if let Some(url) = character.character_description_url %}value="{{ url }}"{% else %}placeholder="https://docs.google.com/..."{% endif %}></label></p>
     <p>
       <label>Status

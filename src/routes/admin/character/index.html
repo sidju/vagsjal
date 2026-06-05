@@ -33,6 +33,16 @@
         </select>
       </label>
     </p>
+    <p>
+      <label>Förbund
+        <select name="covenant_id">
+          <option value="">Inget</option>
+          {% for covenant in covenants %}
+          <option value="{{ covenant.covenant_id }}">{{ covenant.name }}</option>
+          {% endfor %}
+        </select>
+      </label>
+    </p>
     <p><label>Länk till karaktärsbeskrivning <input name="character_description_url" type="url" placeholder="https://docs.google.com/..."></label></p>
     <p>
       <label>Status

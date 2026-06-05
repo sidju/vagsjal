@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "\n    SELECT user_id, name, oidc_subject, role\n    FROM app_user\n    WHERE user_id = $1\n    ",
+  "query": "\n    SELECT user_id, name, email, oidc_subject, role\n    FROM app_user\n    WHERE user_id = $1\n    ",
   "describe": {
     "columns": [
       {
@@ -15,11 +15,16 @@
       },
       {
         "ordinal": 2,
-        "name": "oidc_subject",
+        "name": "email",
         "type_info": "Varchar"
       },
       {
         "ordinal": 3,
+        "name": "oidc_subject",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 4,
         "name": "role",
         "type_info": "Varchar"
       }
@@ -33,8 +38,9 @@
       false,
       false,
       false,
+      false,
       false
     ]
   },
-  "hash": "f20c1016b5e6fea13a2ad05bf56d95d3bf7497ffe4831cbc26e25e50c8df04ba"
+  "hash": "91e63fe7520104f0671ffe28032d8f30185bd8f95a51e61e3a476ac137541798"
 }

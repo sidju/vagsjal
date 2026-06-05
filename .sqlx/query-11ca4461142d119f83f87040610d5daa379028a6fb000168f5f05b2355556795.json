@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "\n    SELECT\n      vampire.vampire_id,\n      vampire.user_id,\n      app_user.name AS owner_name,\n      vampire.status AS \"status: CharacterStatus\",\n      vampire.name,\n      vampire.apparent_age,\n      vampire.date_embraced,\n      vampire.torpor_time,\n      vampire.clan_id,\n      clan.name AS clan_name,\n      COALESCE(xp_remaining.amount, 0) AS \"remaining_xp!\",\n      vampire.character_description_url AS \"character_description_url?\",\n      '' AS \"torpor_display!\"\n    FROM vampire\n    JOIN app_user USING (user_id)\n    JOIN clan USING (clan_id)\n    LEFT JOIN xp_remaining USING (vampire_id)\n    WHERE vampire_id = $1\n    ",
+  "query": "\n    SELECT\n      vampire.vampire_id,\n      vampire.user_id,\n      app_user.name AS owner_name,\n      vampire.status AS \"status: CharacterStatus\",\n      vampire.name,\n      vampire.apparent_age,\n      vampire.date_embraced,\n      vampire.torpor_time,\n      vampire.clan_id,\n      clan.name AS clan_name,\n      COALESCE(vampire.covenant_id, 0) AS \"covenant_id!\",\n      COALESCE(covenant.name, '') AS \"covenant_name!\",\n      COALESCE(covenant.id, '') AS \"covenant_slug!\",\n      COALESCE(xp_remaining.amount, 0) AS \"remaining_xp!\",\n      vampire.character_description_url AS \"character_description_url?\"\n    FROM vampire\n    JOIN app_user USING (user_id)\n    JOIN clan USING (clan_id)\n    LEFT JOIN covenant USING (covenant_id)\n    LEFT JOIN xp_remaining USING (vampire_id)\n    WHERE vampire_id = $1\n    ",
   "describe": {
     "columns": [
       {
@@ -55,17 +55,27 @@
       },
       {
         "ordinal": 10,
-        "name": "remaining_xp!",
+        "name": "covenant_id!",
         "type_info": "Int8"
       },
       {
         "ordinal": 11,
-        "name": "character_description_url?",
-        "type_info": "Text"
+        "name": "covenant_name!",
+        "type_info": "Varchar"
       },
       {
         "ordinal": 12,
-        "name": "torpor_display!",
+        "name": "covenant_slug!",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 13,
+        "name": "remaining_xp!",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 14,
+        "name": "character_description_url?",
         "type_info": "Text"
       }
     ],
@@ -86,9 +96,11 @@
       false,
       false,
       null,
-      true,
-      null
+      null,
+      null,
+      null,
+      true
     ]
   },
-  "hash": "796b23cf5ccb3a9d07095233094d27a9064c067b78ad6cd1ec2b96cecbac865f"
+  "hash": "11ca4461142d119f83f87040610d5daa379028a6fb000168f5f05b2355556795"
 }

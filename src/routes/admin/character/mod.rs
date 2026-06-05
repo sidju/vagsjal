@@ -24,6 +24,12 @@ struct ClanRow {
 }
 
 #[derive(sqlx::FromRow, Debug)]
+struct CovenantRow {
+  covenant_id: i64,
+  name: String,
+}
+
+#[derive(sqlx::FromRow, Debug)]
 struct UserRow {
   user_id: i64,
   name: String,
@@ -40,6 +46,7 @@ struct CharacterForm {
   torpor_months: Option<i32>,
   torpor_days: Option<i32>,
   clan_id: Option<i64>,
+  covenant_id: Option<i64>,
   character_description_url: Option<String>,
   status: Option<String>,
   review_kind: Option<String>,
@@ -56,6 +63,7 @@ struct Index {
   active_chars: Vec<CharacterRow>,
   inactive_chars: Vec<CharacterRow>,
   clans: Vec<ClanRow>,
+  covenants: Vec<CovenantRow>,
   users: Vec<UserRow>,
   show_admin_link: bool,
 }
@@ -66,7 +74,7 @@ fn parse_date(date: &str) -> Result<Date, Error> {
   Date::parse(date, &fmt).map_err(|e| Error::invalid_builder_draft(&format!("Invalid date: {e}")))
 }
 
-async fn fetch_index_data(state: &'static State) -> Result<(Vec<CharacterRow>, Vec<ClanRow>, Vec<UserRow>), Error> {
+async fn fetch_index_data(state: &'static State) -> Result<(Vec<CharacterRow>, Vec<ClanRow>, Vec<CovenantRow>, Vec<UserRow>), Error> {
   let characters = sqlx::query_as!(
     CharacterRow,
     r#"
@@ -104,6 +112,16 @@ async fn fetch_index_data(state: &'static State) -> Result<(Vec<CharacterRow>, V
   )
     .fetch_all(&state.db)
     .await?;
+  let covenants = sqlx::query_as!(
+    CovenantRow,
+    r#"
+    SELECT covenant_id, name
+    FROM covenant
+    ORDER BY name
+    "#
+  )
+    .fetch_all(&state.db)
+    .await?;
   let users = sqlx::query_as!(
     UserRow,
     r#"
@@ -114,11 +132,11 @@ async fn fetch_index_data(state: &'static State) -> Result<(Vec<CharacterRow>, V
   )
     .fetch_all(&state.db)
     .await?;
-  Ok((characters, clans, users))
+  Ok((characters, clans, covenants, users))
 }
 
 async fn index_get(state: &'static State) -> Result<Response, Error> {
-  let (characters, clans, users) = fetch_index_data(state).await?;
+  let (characters, clans, covenants, users) = fetch_index_data(state).await?;
   let mut draft_chars = Vec::new();
   let mut active_chars = Vec::new();
   let mut inactive_chars = Vec::new();
@@ -135,6 +153,7 @@ async fn index_get(state: &'static State) -> Result<Response, Error> {
     active_chars,
     inactive_chars,
     clans,
+    covenants,
     users,
     show_admin_link: true,
   }.render()?)
@@ -159,19 +178,21 @@ async fn index_post(state: &'static State, mut req: Request) -> Result<Response,
       if let Some(ref url) = character_description_url {
         validate_description_url(&state.http_client, url).await?;
       }
-      sqlx::query!(
-        r#"
-        INSERT INTO vampire (user_id, status, name, apparent_age, date_embraced, torpor_time, clan_id, character_description_url)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-        "#,
-        user_id,
-        status,
-        name,
-        apparent_age,
-        date_embraced,
-        torpor_time,
-        clan_id,
-        character_description_url,
+  let covenant_id = form.covenant_id;
+  sqlx::query!(
+    r#"
+    INSERT INTO vampire (user_id, status, name, apparent_age, date_embraced, torpor_time, clan_id, covenant_id, character_description_url)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+    "#,
+    user_id,
+    status,
+    name,
+    apparent_age,
+    date_embraced,
+    torpor_time,
+    clan_id,
+    covenant_id,
+    character_description_url,
       )
         .execute(&state.db)
         .await?;

@@ -1,0 +1,103 @@
+{% extends "base.html" %}
+
+{% block title %}Karaktärer{% endblock %}
+
+{% block body %}
+  <h1>Karaktärer</h1>
+
+  {% if active_chars.len() > 0 %}
+    <h2>Aktiva karaktärer</h2>
+    <ul>
+    {% for c in active_chars %}
+      <li>
+        <table class="stat-table">
+          <tr>
+            <th>Namn:</th>
+            <th>{{ c.name }}</th>
+          </tr>
+          <tr>
+            <td>Mänsklig ålder</td>
+            <td>{{ c.apparent_age }}</td>
+          </tr>
+          <tr>
+            <td>Klan</td>
+            <td>{{ c.clan_name }}</td>
+          </tr>
+          <tr>
+            <td>Förbund</td>
+            <td>{% if c.covenant_slug.len() > 0 %}<a href="/wiki/{{ c.covenant_slug }}/">{{ c.covenant_name }}</a>{% endif %}</td>
+          </tr>
+          {% if c.home_domain.len() > 0 %}
+          <tr>
+            <td>Hemdomän</td>
+            <td>{{ c.home_domain }}</td>
+          </tr>
+          {% endif %}
+          {% if c.known_age.len() > 0 %}
+          <tr>
+            <td>Känd ålder</td>
+            <td>{{ c.known_age }}</td>
+          </tr>
+          {% endif %}
+          {% if c.public_knowledge.len() > 0 %}
+          <tr>
+            <td>Offentlig beskrivning</td>
+            <td>{{ c.public_knowledge }}</td>
+          </tr>
+          {% endif %}
+        </table>
+      </li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+
+  {% if inactive_chars.len() > 0 %}
+    <h2>Inaktiva karaktärer</h2>
+    <ul>
+    {% for c in inactive_chars %}
+      <li>
+        <table class="stat-table inactive">
+          <tr>
+            <th>Namn:</th>
+            <th>{{ c.name }}</th>
+          </tr>
+          <tr>
+            <td>Mänsklig ålder</td>
+            <td>{{ c.apparent_age }}</td>
+          </tr>
+          <tr>
+            <td>Klan</td>
+            <td>{{ c.clan_name }}</td>
+          </tr>
+          <tr>
+            <td>Förbund</td>
+            <td>{% if c.covenant_slug.len() > 0 %}<a href="/wiki/{{ c.covenant_slug }}/">{{ c.covenant_name }}</a>{% endif %}</td>
+          </tr>
+          {% if c.home_domain.len() > 0 %}
+          <tr>
+            <td>Hemdomän</td>
+            <td>{{ c.home_domain }}</td>
+          </tr>
+          {% endif %}
+          {% if c.known_age.len() > 0 %}
+          <tr>
+            <td>Känd ålder</td>
+            <td>{{ c.known_age }}</td>
+          </tr>
+          {% endif %}
+          {% if c.public_knowledge.len() > 0 %}
+          <tr>
+            <td>Offentlig beskrivning</td>
+            <td>{{ c.public_knowledge }}</td>
+          </tr>
+          {% endif %}
+        </table>
+      </li>
+    {% endfor %}
+    </ul>
+  {% endif %}
+
+  {% if active_chars.len() == 0 && inactive_chars.len() == 0 %}
+    <p>Inga karaktärer är registrerade än.</p>
+  {% endif %}
+{% endblock %}

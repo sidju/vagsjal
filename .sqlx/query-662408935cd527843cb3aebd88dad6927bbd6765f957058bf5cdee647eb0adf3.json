@@ -1,0 +1,62 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n    SELECT\n      vampire.name,\n      vampire.apparent_age,\n      clan.name AS clan_name,\n      COALESCE(covenant.name, '') AS \"covenant_name!\",\n      COALESCE(covenant.id, '') AS \"covenant_slug!\",\n      vampire.public_knowledge,\n      vampire.home_domain,\n      vampire.known_age\n    FROM vampire\n    JOIN clan USING (clan_id)\n    LEFT JOIN covenant USING (covenant_id)\n    WHERE vampire.status = 'active'\n    ORDER BY vampire.name\n    ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "name",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 1,
+        "name": "apparent_age",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 2,
+        "name": "clan_name",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 3,
+        "name": "covenant_name!",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 4,
+        "name": "covenant_slug!",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 5,
+        "name": "public_knowledge",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 6,
+        "name": "home_domain",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 7,
+        "name": "known_age",
+        "type_info": "Varchar"
+      }
+    ],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      null,
+      null,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "662408935cd527843cb3aebd88dad6927bbd6765f957058bf5cdee647eb0adf3"
+}

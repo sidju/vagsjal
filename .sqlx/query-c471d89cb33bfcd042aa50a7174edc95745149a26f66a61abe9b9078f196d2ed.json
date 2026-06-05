@@ -1,0 +1,23 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n    UPDATE vampire\n    SET user_id = $2,\n        status = $3,\n        name = $4,\n        apparent_age = $5,\n        date_embraced = $6,\n        torpor_time = $7,\n        clan_id = $8,\n        covenant_id = $9,\n        character_description_url = $10\n    WHERE vampire_id = $1\n    ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Int8",
+        "Int8",
+        "Varchar",
+        "Varchar",
+        "Int4",
+        "Date",
+        "Interval",
+        "Int8",
+        "Int8",
+        "Text"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "c471d89cb33bfcd042aa50a7174edc95745149a26f66a61abe9b9078f196d2ed"
+}

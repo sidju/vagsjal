@@ -38,6 +38,7 @@ impl CharacterStatus {
 // And the actual route modules
 mod admin;
 mod character;
+mod characters;
 mod wiki;
 use wiki::WikiPageTemplate;
 
@@ -113,6 +114,7 @@ pub async fn route(
         hyper::header::HeaderValue::from_static("no-store")
       )
     },
+    Some("characters") => characters::route(state, session, req, path_vec).await,
     Some("character") => {
       match session {
         None => start_oidc_login_flow(state).await,

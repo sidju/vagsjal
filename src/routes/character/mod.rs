@@ -14,9 +14,19 @@ struct Character {
   date_embraced: Date,
   torpor_time: sqlx::postgres::types::PgInterval,
   clan_name: String,
+  covenant_name: String,
+  covenant_slug: String,
   remaining_xp: i64,
   character_description_url: Option<String>,
-  torpor_display: String,
+  public_knowledge: String,
+  home_domain: String,
+  known_age: String,
+}
+
+impl Character {
+  fn torpor_display(&self) -> String {
+    fmt_torpor(&self.torpor_time)
+  }
 }
 
 fn fmt_torpor(t: &sqlx::postgres::types::PgInterval) -> String {
@@ -41,6 +51,11 @@ struct ClanRow {
   clan_id: i64,
   name: String,
 }
+#[derive(Debug)]
+struct CovenantRow {
+  covenant_id: i64,
+  name: String,
+}
 #[derive(Deserialize)]
 struct CreateCharacterForm {
   name: Option<String>,
@@ -50,7 +65,11 @@ struct CreateCharacterForm {
   torpor_months: Option<i32>,
   torpor_days: Option<i32>,
   clan_id: Option<i64>,
+  covenant_id: Option<i64>,
   character_description_url: Option<String>,
+  public_knowledge: Option<String>,
+  home_domain: Option<String>,
+  known_age: Option<String>,
 }
 #[derive(Template)]
 #[template(path = "character/index.html")]
@@ -68,6 +87,7 @@ struct Index {
     Vec<Stat>, Vec<Stat>, Vec<Stat>
   )>,
   clans: Vec<ClanRow>,
+  covenants: Vec<CovenantRow>,
   show_form: bool,
   saved: bool,
   show_admin_link: bool,
@@ -93,12 +113,26 @@ async fn fetch_clans(state: &'static State) -> Result<Vec<ClanRow>, Error> {
   Ok(clans)
 }
 
+async fn fetch_covenants(state: &'static State) -> Result<Vec<CovenantRow>, Error> {
+  let covenants = sqlx::query_as!(
+    CovenantRow,
+    r#"
+    SELECT covenant_id, name
+    FROM covenant
+    ORDER BY name
+    "#
+  )
+    .fetch_all(&state.db)
+    .await?;
+  Ok(covenants)
+}
+
 async fn index_get(
   state: &'static State,
   session: SessionData,
   saved: bool,
 ) -> Result<Response, Error> {
-  let mut characters = sqlx::query_as!(Character,
+  let characters = sqlx::query_as!(Character,
     "
 SELECT
   vampire.vampire_id,
@@ -108,11 +142,16 @@ SELECT
   vampire.date_embraced,
   vampire.torpor_time,
       clan.name AS clan_name,
+      COALESCE(covenant.name, '') AS \"covenant_name!\",
+      COALESCE(covenant.id, '') AS \"covenant_slug!\",
       COALESCE(xp_remaining.amount, 0) AS \"remaining_xp!\",
       vampire.character_description_url AS \"character_description_url?\",
-      '' AS \"torpor_display!\"
+      vampire.public_knowledge,
+      vampire.home_domain,
+      vampire.known_age
 FROM vampire
 JOIN clan USING (clan_id)
+LEFT JOIN covenant USING (covenant_id)
 LEFT JOIN xp_remaining USING (vampire_id)
 WHERE vampire.user_id = $1
 ORDER BY vampire.name
@@ -122,9 +161,6 @@ ORDER BY vampire.name
     .fetch_all(&state.db)
     .await?
   ;
-  for c in &mut characters {
-    c.torpor_display = fmt_torpor(&c.torpor_time);
-  }
   // Fetch the stats for each character
   let mut character_stats = Vec::new();
   for c in characters {
@@ -202,7 +238,10 @@ WHERE vampire_id = $1
     }
   }
 
-  let clans = fetch_clans(state).await?;
+  let (clans, covenants) = tokio::join!(
+    fetch_clans(state),
+    fetch_covenants(state),
+  );
   let show_form = active_chars.is_empty() && draft_chars.is_empty();
 
   // Render and return
@@ -210,7 +249,8 @@ WHERE vampire_id = $1
     active_chars,
     draft_chars,
     inactive_chars,
-    clans,
+    clans: clans?,
+    covenants: covenants?,
     show_form,
     saved,
     show_admin_link: session.role.is_storyteller(),
@@ -236,10 +276,14 @@ async fn index_post(
     microseconds: 0,
   };
   let clan_id = form.clan_id.ok_or_else(|| Error::invalid_builder_draft("Missing clan_id"))?;
+  let covenant_id = form.covenant_id;
+  let public_knowledge = form.public_knowledge.map(|u| u.trim().to_string()).filter(|u| !u.is_empty());
+  let home_domain = form.home_domain.map(|u| u.trim().to_string()).filter(|u| !u.is_empty()).unwrap_or_default();
+  let known_age = form.known_age.map(|u| u.trim().to_string()).filter(|u| !u.is_empty()).unwrap_or_default();
   sqlx::query!(
     r#"
-    INSERT INTO vampire (user_id, status, name, apparent_age, date_embraced, torpor_time, clan_id, character_description_url)
-    VALUES ($1, 'draft', $2, $3, $4, $5, $6, $7)
+    INSERT INTO vampire (user_id, status, name, apparent_age, date_embraced, torpor_time, clan_id, covenant_id, character_description_url, public_knowledge, home_domain, known_age)
+    VALUES ($1, 'draft', $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
     "#,
     session.user_id,
     name,
@@ -247,7 +291,11 @@ async fn index_post(
     date_embraced,
     torpor_time,
     clan_id,
+    covenant_id,
     character_description_url,
+    public_knowledge,
+    home_domain,
+    known_age,
   )
     .execute(&state.db)
     .await?;

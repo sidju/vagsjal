@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "\nINSERT INTO app_user(oidc_subject, name, role)\nVALUES ($1, $2, 'user')\nON CONFLICT (oidc_subject)\nDO UPDATE SET name = CASE\n  WHEN app_user.name = '' THEN EXCLUDED.name\n  ELSE app_user.name\nEND\nRETURNING user_id, role AS \"role!:Role\"\n    ",
+  "query": "\nINSERT INTO app_user(oidc_subject, name, email, role)\nVALUES ($1, $2, $3, 'user')\nON CONFLICT (oidc_subject)\nDO UPDATE SET\n  name = $2,\n  email = $3\nRETURNING user_id, role AS \"role!:Role\"\n    ",
   "describe": {
     "columns": [
       {
@@ -17,6 +17,7 @@
     "parameters": {
       "Left": [
         "Varchar",
+        "Varchar",
         "Varchar"
       ]
     },
@@ -25,5 +26,5 @@
       false
     ]
   },
-  "hash": "fe8c58ad1b5ab93fdfbe92e2c89937828d0ceaa3cc3ab58b6de2f91895f08d9f"
+  "hash": "5d1cd17954837bc3070c1a808f6562bb9fc7f22c93fca5287105243434b42843"
 }

@@ -12,8 +12,18 @@ struct CharacterHeader {
   apparent_age: i32,
   date_embraced: String,
   clan_name: String,
+  covenant_name: String,
+  covenant_slug: String,
   torpor_time: sqlx::postgres::types::PgInterval,
-  torpor_display: String,
+  public_knowledge: String,
+  home_domain: String,
+  known_age: String,
+}
+
+impl CharacterHeader {
+  fn torpor_display(&self) -> String {
+    fmt_torpor(&self.torpor_time)
+  }
 }
 #[derive(Debug, Serialize)]
 struct StatLine {
@@ -145,11 +155,16 @@ SELECT
   vampire.apparent_age,
   to_char(vampire.date_embraced, 'YYYY-MM-DD') AS "date_embraced!",
   clan.name AS "clan_name!",
+  COALESCE(covenant.name, '') AS "covenant_name!",
+  COALESCE(covenant.id, '') AS "covenant_slug!",
   vampire.torpor_time,
-  '' AS "torpor_display!"
+  vampire.public_knowledge,
+  vampire.home_domain,
+  vampire.known_age
 FROM vampire
 JOIN app_user USING (user_id)
 JOIN clan USING (clan_id)
+LEFT JOIN covenant USING (covenant_id)
 LEFT JOIN xp_remaining USING (vampire_id)
 WHERE vampire.vampire_id = $1
   AND vampire.user_id = $2
@@ -159,7 +174,6 @@ WHERE vampire.vampire_id = $1
   )
     .fetch_optional(&state.db)
     .await?
-    .map(|mut c| { c.torpor_display = fmt_torpor(&c.torpor_time); c })
     .ok_or_else(|| Error::path_not_found(req))
 }
 /// Fetches computed stats from the view (includes Blood Potency/HP formula rows).

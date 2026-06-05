@@ -25,12 +25,34 @@
           </tr>
           <tr>
             <td><a href="/wiki/torpor/">Tid i torpor</a></td>
-            <td>{{ character.torpor_display }}</td>
+            <td>{{ character.torpor_display() }}</td>
           </tr>
           <tr>
             <td><a href="/wiki/clan/">Klan</a></td>
             <td><a href="/wiki/{{ character.clan_name | lower }}/">{{ character.clan_name }}</a></td>
           </tr>
+          <tr>
+            <td><a href="/wiki/covenants/">Förbund</a></td>
+            <td>{% if character.covenant_slug.len() > 0 %}<a href="/wiki/{{ character.covenant_slug }}/">{{ character.covenant_name }}</a>{% endif %}</td>
+          </tr>
+          {% if character.home_domain.len() > 0 %}
+          <tr>
+            <td>Hemdomän</td>
+            <td>{{ character.home_domain }}</td>
+          </tr>
+          {% endif %}
+          {% if character.known_age.len() > 0 %}
+          <tr>
+            <td>Känd ålder</td>
+            <td>{{ character.known_age }}</td>
+          </tr>
+          {% endif %}
+          {% if character.public_knowledge.len() > 0 %}
+          <tr>
+            <td>Offentlig kunskap</td>
+            <td>{{ character.public_knowledge }}</td>
+          </tr>
+          {% endif %}
           {% if let Some(url) = character.character_description_url %}
           <tr>
             <td><a href="/wiki/character-description/">Karaktärsbeskrivning</a></td>
@@ -46,8 +68,14 @@
 
   {% if show_form %}
     <h2>Skapa karaktär</h2>
-    <p>Fyll i grundläggande information för att skapa en ny karaktär. En spelledare kommer att godkänna den innan den blir aktiv.</p>
+    <p>
+      <a href="/wiki/character-creation/">Läs om karaktärsskapande</a> innan du börjar.
+      <br>
+      Fyll i formuläret för att skapa en karaktär.
+      En spelledare kommer behöva godkänna den innan den blir aktiv.</p>
     <form method="post" enctype="application/x-www-form-urlencoded">
+      <h3>Offentliga fält</h3>
+      <p>Visas på <a href="/characters/">/karaktärer/</a> för alla besökare.</p>
       <table class="stat-table">
         <tr>
           <td><label for="name">Namn</label></td>
@@ -56,22 +84,6 @@
         <tr>
           <td><label for="apparent_age">Mänsklig ålder</label></td>
           <td><input id="apparent_age" name="apparent_age" type="number" min="0" required></td>
-        </tr>
-        <tr>
-          <td><label for="date_embraced">Datum för omfamning</label></td>
-          <td><input id="date_embraced" name="date_embraced" type="date" required></td>
-        </tr>
-        <tr>
-          <td><label for="torpor_years">Torpor år</label></td>
-          <td><input id="torpor_years" name="torpor_years" type="number" value="0"></td>
-        </tr>
-        <tr>
-          <td><label for="torpor_months">Torpor månader</label></td>
-          <td><input id="torpor_months" name="torpor_months" type="number" value="0"></td>
-        </tr>
-        <tr>
-          <td><label for="torpor_days">Torpor dagar</label></td>
-          <td><input id="torpor_days" name="torpor_days" type="number" value="0"></td>
         </tr>
         <tr>
           <td><label for="clan_id">Klan</label></td>
@@ -85,8 +97,55 @@
           </td>
         </tr>
         <tr>
+          <td><label for="home_domain">Hemdomän</label></td>
+          <td><input id="home_domain" name="home_domain" placeholder="t.ex. Göteborg, Paris"></td>
+        </tr>
+        <tr>
+          <td><label for="known_age">Känd ålder</label></td>
+          <td><input id="known_age" name="known_age" placeholder="t.ex. omkring 50"></td>
+        </tr>
+        <tr>
+          <td><label for="covenant_id">Förbund</label></td>
+          <td>
+            <select id="covenant_id" name="covenant_id">
+              <option value="">Inget</option>
+              {% for covenant in covenants %}
+              <option value="{{ covenant.covenant_id }}">{{ covenant.name }}</option>
+              {% endfor %}
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td><label for="public_knowledge">Offentlig kunskap</label></td>
+          <td><textarea id="public_knowledge" name="public_knowledge" rows="3" cols="60"></textarea></td>
+        </tr>
+      </table>
+
+      <h3 style="opacity:0.5">Privata fält</h3>
+      <p style="opacity:0.5">Visas inte på den publika karaktärslistan.</p>
+      <table class="stat-table" style="opacity:0.5">
+        <tr>
           <td><label for="character_description_url">Länk till karaktärsbeskrivning</label></td>
           <td><input id="character_description_url" name="character_description_url" type="url" placeholder="https://docs.google.com/..."></td>
+        </tr>
+        <tr>
+          <td><label for="date_embraced">Datum för omfamning</label></td>
+          <td><input id="date_embraced" name="date_embraced" type="date" required></td>
+        </tr>
+        <tr>
+          <td colspan="2">Torpor</td>
+        </tr>
+        <tr>
+          <td><label for="torpor_years">år</label></td>
+          <td><input id="torpor_years" name="torpor_years" type="number" value="0"></td>
+        </tr>
+        <tr>
+          <td><label for="torpor_months">månader</label></td>
+          <td><input id="torpor_months" name="torpor_months" type="number" value="0"></td>
+        </tr>
+        <tr>
+          <td><label for="torpor_days">dagar</label></td>
+          <td><input id="torpor_days" name="torpor_days" type="number" value="0"></td>
         </tr>
       </table>
       <br>
@@ -116,12 +175,34 @@
           </tr>
           <tr>
             <td><a href="/wiki/torpor/">Tid i torpor</a></td>
-            <td>{{ c.torpor_display }}</td>
+            <td>{{ c.torpor_display() }}</td>
           </tr>
           <tr>
             <td><a href="/wiki/clan/">Klan</a></td>
             <td><a href="/wiki/{{ c.clan_name | lower }}/">{{ c.clan_name }}</a></td>
           </tr>
+          <tr>
+            <td><a href="/wiki/covenants/">Förbund</a></td>
+            <td>{% if c.covenant_slug.len() > 0 %}<a href="/wiki/{{ c.covenant_slug }}/">{{ c.covenant_name }}</a>{% endif %}</td>
+          </tr>
+          {% if c.home_domain.len() > 0 %}
+          <tr>
+            <td>Hemdomän</td>
+            <td>{{ c.home_domain }}</td>
+          </tr>
+          {% endif %}
+          {% if c.known_age.len() > 0 %}
+          <tr>
+            <td>Känd ålder</td>
+            <td>{{ c.known_age }}</td>
+          </tr>
+          {% endif %}
+          {% if c.public_knowledge.len() > 0 %}
+          <tr>
+            <td>Offentlig kunskap</td>
+            <td>{{ c.public_knowledge }}</td>
+          </tr>
+          {% endif %}
           {% if let Some(url) = c.character_description_url %}
           <tr>
             <td><a href="/wiki/character-description/">Karaktärsbeskrivning</a></td>
@@ -154,12 +235,34 @@
           </tr>
           <tr>
             <td><a href="/wiki/torpor/">Tid i torpor</a></td>
-            <td>{{ c.torpor_display }}</td>
+            <td>{{ c.torpor_display() }}</td>
           </tr>
           <tr>
             <td><a href="/wiki/clan/">Klan</a></td>
             <td><a href="/wiki/{{ c.clan_name | lower }}/">{{ c.clan_name }}</a></td>
           </tr>
+          <tr>
+            <td><a href="/wiki/covenants/">Förbund</a></td>
+            <td>{% if c.covenant_slug.len() > 0 %}<a href="/wiki/{{ c.covenant_slug }}/">{{ c.covenant_name }}</a>{% endif %}</td>
+          </tr>
+          {% if c.home_domain.len() > 0 %}
+          <tr>
+            <td>Hemdomän</td>
+            <td>{{ c.home_domain }}</td>
+          </tr>
+          {% endif %}
+          {% if c.known_age.len() > 0 %}
+          <tr>
+            <td>Känd ålder</td>
+            <td>{{ c.known_age }}</td>
+          </tr>
+          {% endif %}
+          {% if c.public_knowledge.len() > 0 %}
+          <tr>
+            <td>Offentlig kunskap</td>
+            <td>{{ c.public_knowledge }}</td>
+          </tr>
+          {% endif %}
           {% if let Some(url) = c.character_description_url %}
           <tr>
             <td><a href="/wiki/character-description/">Karaktärsbeskrivning</a></td>

@@ -1,11 +1,11 @@
 {
   "db_name": "PostgreSQL",
-  "query": "\nSELECT vampire_id, name\nFROM vampire\nWHERE user_id = $1 AND status = 'active'\nORDER BY vampire_id\nLIMIT 1\n    ",
+  "query": "\n    SELECT covenant_id, name\n    FROM covenant\n    ORDER BY name\n    ",
   "describe": {
     "columns": [
       {
         "ordinal": 0,
-        "name": "vampire_id",
+        "name": "covenant_id",
         "type_info": "Int8"
       },
       {
@@ -15,14 +15,12 @@
       }
     ],
     "parameters": {
-      "Left": [
-        "Int8"
-      ]
+      "Left": []
     },
     "nullable": [
       false,
       false
     ]
   },
-  "hash": "677a8669396e88dd025c0d5a18e7bf7f8b58adc8b85c23a11714115e21470181"
+  "hash": "7264369cf2eacfeec95d093e8ed6de1ebd2bfcd4502a50524630779e2ba633a7"
 }

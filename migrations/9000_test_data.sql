@@ -19,9 +19,9 @@ INSERT INTO app_user (user_id, name, oidc_subject, email, role) VALUES
   (2, 'Player',      'player-subject',      'player@example.com',     'user')
 ;
 
-INSERT INTO vampire (vampire_id, user_id, status, name, apparent_age, date_embraced, torpor_time, clan_id) VALUES
-  (1, 2, 'active', 'John Smith', 32, '1999-01-08', '0 years', 1),
-  (2, 2, 'active', 'Jane Doe',   28, '1985-06-15', '5 years', 2)
+INSERT INTO vampire (vampire_id, user_id, status, name, apparent_age, date_embraced, torpor_time, clan_id, covenant_id) VALUES
+  (1, 2, 'active', 'John Smith', 32, '1999-01-08', '0 years', 1, 1),
+  (2, 2, 'active', 'Jane Doe',   28, '1985-06-15', '5 years', 2, 3)
 ;
 
 

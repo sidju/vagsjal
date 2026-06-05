@@ -42,11 +42,15 @@
     </tr>
     <tr>
       <td><a href="/wiki/torpor/">Tid i torpor</a></td>
-      <td>{{ character.torpor_display }}</td>
+      <td>{{ character.torpor_display() }}</td>
     </tr>
     <tr>
       <td><a href="/wiki/clan/">Klan</a></td>
       <td><a href="/wiki/{{ character.clan_name | lower }}/">{{ character.clan_name }}</a></td>
+    </tr>
+    <tr>
+      <td><a href="/wiki/covenants/">Förbund</a></td>
+      <td>{% if character.covenant_slug.len() > 0 %}<a href="/wiki/{{ character.covenant_slug }}/">{{ character.covenant_name }}</a>{% endif %}</td>
     </tr>
     {% if let Some(url) = character.character_description_url %}
     <tr>

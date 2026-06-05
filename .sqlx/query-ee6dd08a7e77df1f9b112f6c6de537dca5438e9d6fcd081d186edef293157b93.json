@@ -1,0 +1,100 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\nSELECT\n  vampire.vampire_id,\n  vampire.status AS \"status: CharacterStatus\",\n  vampire.name,\n  vampire.apparent_age,\n  vampire.date_embraced,\n  vampire.torpor_time,\n      clan.name AS clan_name,\n      COALESCE(covenant.name, '') AS \"covenant_name!\",\n      COALESCE(covenant.id, '') AS \"covenant_slug!\",\n      COALESCE(xp_remaining.amount, 0) AS \"remaining_xp!\",\n      vampire.character_description_url AS \"character_description_url?\",\n      vampire.public_knowledge,\n      vampire.home_domain,\n      vampire.known_age\nFROM vampire\nJOIN clan USING (clan_id)\nLEFT JOIN covenant USING (covenant_id)\nLEFT JOIN xp_remaining USING (vampire_id)\nWHERE vampire.user_id = $1\nORDER BY vampire.name\n    ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "vampire_id",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 1,
+        "name": "status: CharacterStatus",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 2,
+        "name": "name",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 3,
+        "name": "apparent_age",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 4,
+        "name": "date_embraced",
+        "type_info": "Date"
+      },
+      {
+        "ordinal": 5,
+        "name": "torpor_time",
+        "type_info": "Interval"
+      },
+      {
+        "ordinal": 6,
+        "name": "clan_name",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 7,
+        "name": "covenant_name!",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 8,
+        "name": "covenant_slug!",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 9,
+        "name": "remaining_xp!",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 10,
+        "name": "character_description_url?",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 11,
+        "name": "public_knowledge",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 12,
+        "name": "home_domain",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 13,
+        "name": "known_age",
+        "type_info": "Varchar"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int8"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      null,
+      null,
+      null,
+      true,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "ee6dd08a7e77df1f9b112f6c6de537dca5438e9d6fcd081d186edef293157b93"
+}
