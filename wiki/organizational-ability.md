@@ -1,6 +1,6 @@
 # Organisatorisk förmåga
 
-#regler
+#rules
 
 Organisatorisk förmåga beskriver din förmåga att organisera en större
 inflytelsesfär. Varje investering du kontrollerar måste hanteras; detta anger

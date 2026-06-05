@@ -1,6 +1,6 @@
 # Nightmare
 
-#blodskrafter
+#blood-powers
 
 ### 1: Dread Presence
 

@@ -1,6 +1,6 @@
 # Auspex
 
-#blodskrafter
+#blood-powers
 
 ## 1: Uncanny Perception
 

@@ -7,7 +7,7 @@
 
   {% if active_chars.len() > 0 %}
     <h2>Aktiva karaktärer</h2>
-    <ul>
+    <ul class="character-list">
     {% for c in active_chars %}
       <li>
         <table class="stat-table">
@@ -24,7 +24,7 @@
             <td>{{ c.clan_name }}</td>
           </tr>
           <tr>
-            <td>Förbund</td>
+            <td>Kovenant</td>
             <td>{% if c.covenant_slug.len() > 0 %}<a href="/wiki/{{ c.covenant_slug }}/">{{ c.covenant_name }}</a>{% endif %}</td>
           </tr>
           {% if c.home_domain.len() > 0 %}
@@ -53,7 +53,7 @@
 
   {% if inactive_chars.len() > 0 %}
     <h2>Inaktiva karaktärer</h2>
-    <ul>
+    <ul class="character-list">
     {% for c in inactive_chars %}
       <li>
         <table class="stat-table inactive">
@@ -70,7 +70,7 @@
             <td>{{ c.clan_name }}</td>
           </tr>
           <tr>
-            <td>Förbund</td>
+            <td>Kovenant</td>
             <td>{% if c.covenant_slug.len() > 0 %}<a href="/wiki/{{ c.covenant_slug }}/">{{ c.covenant_name }}</a>{% endif %}</td>
           </tr>
           {% if c.home_domain.len() > 0 %}

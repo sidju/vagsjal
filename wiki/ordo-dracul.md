@@ -1,6 +1,6 @@
 # Ordo Dracul
 
-#lore #kovenanter
+#lore #covenants
 
 Ordo Dracul är lärda och asketer, kovenanteret för dem som vägrar acceptera
 begränsningarna i sitt tillstånd. Där andra [kovenanter](covenants.md) sluter fred

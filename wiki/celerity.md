@@ -1,6 +1,6 @@
 # Celerity
 
-#blodskrafter
+#blood-powers
 
 ### Passiv effekt
 

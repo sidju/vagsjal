@@ -1,6 +1,6 @@
 # Blodpotens (BP)
 
-#regler
+#rules
 
 Blodpotens är styrkan i det vampyriska blodet. Högre blodpotens tillåter en
 vampyr att ha fler ghouls, använda flera krafter samtidigt, tåla mer skada och

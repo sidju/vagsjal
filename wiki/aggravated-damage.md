@@ -1,6 +1,6 @@
 # Förvärrad skada
 
-#regler
+#rules
 
 Förvärrad skada är inte bara fysisk skada — det är en förgiftning, en
 infektion av vampyrkroppen av en skadlig ande eller essens. Såret bär med sig

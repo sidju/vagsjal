@@ -1,6 +1,6 @@
 # Karaktärsskapande
 
-#index #regler
+#index #rules
 
 ## Steg 1 - [Karaktärsbeskrivning](character-description.md)
 

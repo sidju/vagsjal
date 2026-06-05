@@ -2,8 +2,9 @@ use std::borrow::Cow;
 use std::collections::{BTreeMap, BTreeSet};
 use std::path::Path;
 
+use comrak::html::collect_text;
 use comrak::nodes::{AstNode, NodeLink, NodeValue};
-use comrak::{Arena, Options, format_html, parse_document};
+use comrak::{Arena, Anchorizer, Options, format_html, parse_document};
 
 fn main() {
   println!("cargo:rerun-if-changed=build.rs");
@@ -46,6 +47,11 @@ fn main() {
     translate_links(root);
     analyzer.analyze_ast(root);
   }
+
+  // Generate search index from first-pass analysis
+  let search_data_js = analyzer.search_data_js();
+  let out_dir = std::env::var("OUT_DIR").unwrap();
+  std::fs::write(Path::new(&out_dir).join("search_data.js"), &search_data_js).unwrap();
 
   // SECOND PASS: render each page with full analysis data
   let mut pages: Vec<(String, String, String)> = Vec::new();
@@ -330,6 +336,8 @@ struct Analyzer {
   backlinks: BTreeMap<String, BTreeSet<String>>,
   categories: BTreeMap<String, BTreeSet<String>>,
   current_file: String,
+  current_headings: Vec<(String, String)>,
+  documents: Vec<(String, Vec<(String, String)>)>,
 }
 
 impl Analyzer {
@@ -338,14 +346,23 @@ impl Analyzer {
       backlinks: BTreeMap::new(),
       categories: BTreeMap::new(),
       current_file: String::new(),
+      current_headings: Vec::new(),
+      documents: Vec::new(),
     }
   }
 
   fn set_current_file(&mut self, filename: String) {
+    if !self.current_file.is_empty() && !self.current_headings.is_empty() {
+      self.documents.push((
+        self.current_file.clone(),
+        std::mem::take(&mut self.current_headings),
+      ));
+    }
     self.current_file = filename;
   }
 
   fn analyze_ast<'a>(&mut self, root: &'a AstNode<'a>) {
+    let mut anchorizer = Anchorizer::new();
     for node in root.descendants() {
       match &node.data().value {
         NodeValue::Link(link) => {
@@ -373,9 +390,24 @@ impl Analyzer {
               .insert(self.current_file.clone());
           });
         }
+        NodeValue::Heading(_) => {
+          let text = collect_text(node);
+          let id = anchorizer.anchorize(&text);
+          self.current_headings.push((text, id));
+        }
         _ => {}
       }
     }
+  }
+
+  fn search_data_js(&mut self) -> String {
+    if !self.current_file.is_empty() && !self.current_headings.is_empty() {
+      self.documents.push((
+        self.current_file.clone(),
+        std::mem::take(&mut self.current_headings),
+      ));
+    }
+    build_search_index_js(&self.documents)
   }
 }
 
@@ -387,4 +419,50 @@ fn extract_title(content: &str) -> Option<String> {
     }
   }
   None
+}
+
+fn escape_json_str(s: &str) -> String {
+  let mut out = String::with_capacity(s.len() + 2);
+  out.push('"');
+  for ch in s.chars() {
+    match ch {
+      '"' => out.push_str("\\\""),
+      '\\' => out.push_str("\\\\"),
+      '\n' => out.push_str("\\n"),
+      '\r' => out.push_str("\\r"),
+      '\t' => out.push_str("\\t"),
+      c if c.is_control() => {
+        out.push_str(&format!("\\u{:04x}", c as u32));
+      }
+      c => out.push(c),
+    }
+  }
+  out.push('"');
+  out
+}
+
+fn build_search_index_js(docs: &[(String, Vec<(String, String)>)]) -> String {
+  let mut js = String::from("window.SEARCH_INDEX_DATA={\"documents\":[");
+  for (i, (path, headings)) in docs.iter().enumerate() {
+    if i > 0 {
+      js.push(',');
+    }
+    js.push_str(&format!(
+      "{{\"path\":{}, \"headings\":[",
+      escape_json_str(path)
+    ));
+    for (j, (text, id)) in headings.iter().enumerate() {
+      if j > 0 {
+        js.push(',');
+      }
+      js.push_str(&format!(
+        "{{\"text\":{}, \"id\":{}}}",
+        escape_json_str(text),
+        escape_json_str(id)
+      ));
+    }
+    js.push_str("]}");
+  }
+  js.push_str("]};");
+  js
 }

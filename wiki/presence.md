@@ -1,6 +1,6 @@
 # Närvaro
 
-#blodskrafter
+#blood-powers
 
 ### 1: Awe
 

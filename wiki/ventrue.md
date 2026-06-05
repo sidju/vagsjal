@@ -1,6 +1,6 @@
 # Ventrue
 
-#lore #klaner
+#lore #clans
 
 Deras [krafter](blood-powers.md) är:
 

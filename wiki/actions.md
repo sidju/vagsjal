@@ -1,6 +1,6 @@
 # Handlingar
 
-#influenssystem
+#influence-system
 
 Handlingar är omedelbara, engångsanvändningar av influenser. Prata med en
 spelledare under lajvet för att omedelbart påverka spelvärlden med dina

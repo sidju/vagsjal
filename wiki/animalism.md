@@ -1,6 +1,6 @@
 # Animalism
 
-#blodskrafter
+#blood-powers
 
 ## 1: Bestial Sympathy
 

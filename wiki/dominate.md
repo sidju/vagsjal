@@ -1,6 +1,6 @@
 # Dominate
 
-#blodskrafter
+#blood-powers
 
 ### 1: Request
 

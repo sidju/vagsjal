@@ -1,6 +1,6 @@
 # HP
 
-#regler
+#rules
 
 HP är det klassiska värdet för skada innan man faller i strid.
 

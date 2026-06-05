@@ -1,6 +1,6 @@
 # Obfuscate
 
-#blodskrafter
+#blood-powers
 
 Obfuscate är en mental effekt som projiceras in i sinnena hos dem som
 uppfattar utövaren. Den täcker därför alla sinnen, men en bild kommer visa

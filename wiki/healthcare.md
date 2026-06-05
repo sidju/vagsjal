@@ -1,5 +1,5 @@
 # Sjukvård
 
-#influenser
+#influences
 
 Sjukhus, kliniker, apotek och deras personal.

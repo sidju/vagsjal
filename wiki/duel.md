@@ -1,6 +1,6 @@
 # Duell
 
-#regler
+#rules
 
 Duellregler används för icke-dödliga uppgörelser där syftet är att avgöra en konflikt
 utan att driva mot slutgiltig skada.

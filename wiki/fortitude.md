@@ -1,6 +1,6 @@
 # Fortitude
 
-#blodskrafter
+#blood-powers
 
 ### Strid
 

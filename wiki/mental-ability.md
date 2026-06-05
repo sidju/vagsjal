@@ -1,6 +1,6 @@
 # Mental förmåga
 
-#regler
+#rules
 
 Mental förmåga beskriver din förmåga att vinna mentala utmaningar. Den omfattar
 både viljestyrka och vilka mentala tekniker som än kan hjälpa i en mental

@@ -1,6 +1,6 @@
 # Potence
 
-#blodskrafter
+#blood-powers
 
 ### Strid
 

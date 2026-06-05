@@ -80,6 +80,21 @@ pub fn css(
   );
   Ok(re)
 }
+// Return given string as javascript
+pub fn js(
+  data: &'static str,
+) -> Result<Response, Error> {
+  let mut re = Response::new(data.into());
+  re.headers_mut().insert(
+    "Content-Type",
+    HeaderValue::from_static("application/javascript; charset=utf-8")
+  );
+  re.headers_mut().insert(
+    "Cache-Control",
+    HeaderValue::from_static("public, max-age=2592000, immutable"),
+  );
+  Ok(re)
+}
 // Return given bytes as a PNG image
 pub fn png(
   data: &'static [u8],

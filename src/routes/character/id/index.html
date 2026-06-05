@@ -35,7 +35,7 @@
       <td><a href="/wiki/{{ character.clan_name | lower }}/">{{ character.clan_name }}</a></td>
     </tr>
     <tr>
-      <td><a href="/wiki/covenants/">Förbund</a></td>
+      <td><a href="/wiki/covenants/">Kovenant</a></td>
       <td>{% if character.covenant_slug.len() > 0 %}<a href="/wiki/{{ character.covenant_slug }}/">{{ character.covenant_name }}</a>{% endif %}</td>
     </tr>
     {% if character.home_domain.len() > 0 %}
@@ -52,7 +52,7 @@
     {% endif %}
     {% if character.public_knowledge.len() > 0 %}
     <tr>
-      <td>Offentlig kunskap</td>
+      <td><a href="/wiki/public-knowledge/">Allmänt känt</a></td>
       <td>{{ character.public_knowledge }}</td>
     </tr>
     {% endif %}

@@ -31,6 +31,7 @@
         </nav>
         <div class="page-paths" id="page-paths" aria-label="Sökväg"></div>
       </header>
+      {% block header_extra %}{% endblock %}
       <script>
         (() => {
           const container = document.getElementById('page-paths');
@@ -70,5 +71,6 @@
         {% block body %}Innehåll{% endblock %}
       </main>
     </div>
+    {% block scripts %}{% endblock %}
   </body>
 </html>

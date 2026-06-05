@@ -49,7 +49,7 @@
       <td><a href="/wiki/{{ character.clan_name | lower }}/">{{ character.clan_name }}</a></td>
     </tr>
     <tr>
-      <td><a href="/wiki/covenants/">Förbund</a></td>
+      <td><a href="/wiki/covenants/">Kovenant</a></td>
       <td>{% if character.covenant_slug.len() > 0 %}<a href="/wiki/{{ character.covenant_slug }}/">{{ character.covenant_name }}</a>{% endif %}</td>
     </tr>
     {% if let Some(url) = character.character_description_url %}

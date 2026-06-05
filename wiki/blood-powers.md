@@ -1,6 +1,6 @@
 # Blodets krafter
 
-#index #regler
+#index #rules
 
 ## Medfödda
 

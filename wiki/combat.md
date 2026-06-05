@@ -1,19 +1,24 @@
 # Strid
 
-#index #regler
+#index #rules
 
-Strid är uppbyggd i [stridsrundor](#stridsrundor), där varje runda låter varje
-sida agera i [initiativ](#initiativ)-ordning.
-
-För att förstå detta bör du känna till grundkoncepten:
-
-- [Att ta skada](#taking-damage)
-- [Närstridsskada](#melee-damage)
-- [Distansskada](#ranged-damage)
+Strider är uppdelade i [stridsrundor](#stridsrundor), där var sida agerar
+(attackerar eller försöker lämna striden) en gång per runda i
+[initiativ](#initiativ)-ordning.
 
 Strid är en faktisk kamp där rollpersoner skadar varandra. För icke-dödliga
 uppgörelser, se i stället [duellreglerna](duel.md) som täcker sådana fall
 bättre.
+
+## Gruppstrid
+
+Gruppstrid är brutalt enkel, alla stats summeras ihop för vardera sida och
+striden beräknas som om de summorna var en karakär. Notervärt är dock:
+
+- Fortitude appliceras för gruppen som helhet, inte för karaktärerna.
+- Skada fördelas inte jämnt utan kvarvarande HP fördelas jämnt, varmed
+  ingen i en grupp dör innan HP summan för gruppen är lägre än antalet
+  karakärer i gruppen.
 
 ## Initiativ
 
@@ -34,21 +39,30 @@ När din tur kommer i en runda kan du _förflytta dig_ en gång och göra en av
 följande:
 
 - Närstridsattack, om ditt mål är inom räckhåll.
-- Distansattack, om du inte är i närstrid.
+- Distansattack, om du inte är i närstrid (eller ditt 
+  [vapen](equipment.md#avstandsvapen) tillåter ändå).
 - Använd en [kraft](blood-powers.md), om den går att använda i hast.
 
-## Närstridsskada
+## Skada
+
+Skada tas som man skulle vänta sig, karaktärens HP reduceras med mängden skada
+som tas. Notervärt är dock:
+
+- Karaktärer med [Potence](potence.md) reducerar skadan de tar.
+- [Förvärrad skada](aggravated.md)
+
+### Närstridsskada
 
 Närstridsskada = ([Physical Ability](physical-ability.md) +
-[Weapon Bonus](utrustning.md#melee-weapons) (om någon)) / 3 (avrunda nedåt) +
+[Weapon Bonus](equipment.md#närstridsvapen) (om någon)) / 3 (avrunda nedåt) +
 nivån av [Potence](potence.md)
 
-## Distansskada
+### Distansskada
 
-### Skada på nära håll
+#### Skada på nära håll
 
-Vapenskada \* 2
+[Vapenskada](equipment.md#avstandsvapen) \* 2
 
-### Skada på långt håll
+#### Skada på långt håll
 
-Vapenskada \* 1
+[Vapenskada](equipment.md#avstandsvapen) \* 1

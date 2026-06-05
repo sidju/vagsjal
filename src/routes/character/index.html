@@ -32,7 +32,7 @@
             <td><a href="/wiki/{{ character.clan_name | lower }}/">{{ character.clan_name }}</a></td>
           </tr>
           <tr>
-            <td><a href="/wiki/covenants/">Förbund</a></td>
+            <td><a href="/wiki/covenants/">Kovenant</a></td>
             <td>{% if character.covenant_slug.len() > 0 %}<a href="/wiki/{{ character.covenant_slug }}/">{{ character.covenant_name }}</a>{% endif %}</td>
           </tr>
           {% if character.home_domain.len() > 0 %}
@@ -49,7 +49,7 @@
           {% endif %}
           {% if character.public_knowledge.len() > 0 %}
           <tr>
-            <td>Offentlig kunskap</td>
+            <td><a href="/wiki/public-knowledge/">Allmänt känt</a></td>
             <td>{{ character.public_knowledge }}</td>
           </tr>
           {% endif %}
@@ -105,7 +105,7 @@
           <td><input id="known_age" name="known_age" placeholder="t.ex. omkring 50"></td>
         </tr>
         <tr>
-          <td><label for="covenant_id">Förbund</label></td>
+          <td><label for="covenant_id">Kovenant</label></td>
           <td>
             <select id="covenant_id" name="covenant_id">
               <option value="">Inget</option>
@@ -116,14 +116,14 @@
           </td>
         </tr>
         <tr>
-          <td><label for="public_knowledge">Offentlig kunskap</label></td>
+          <td><label for="public_knowledge"><a href="/wiki/public-knowledge/">Allmänt känt</a></label></td>
           <td><textarea id="public_knowledge" name="public_knowledge" rows="3" cols="60"></textarea></td>
         </tr>
       </table>
 
-      <h3 style="opacity:0.5">Privata fält</h3>
-      <p style="opacity:0.5">Visas inte på den publika karaktärslistan.</p>
-      <table class="stat-table" style="opacity:0.5">
+      <h3 style="opacity:0.8">Privata fält</h3>
+      <p style="opacity:0.8">Visas inte på den publika karaktärslistan.</p>
+      <table class="stat-table" style="opacity:0.8">
         <tr>
           <td><label for="character_description_url">Länk till karaktärsbeskrivning</label></td>
           <td><input id="character_description_url" name="character_description_url" type="url" placeholder="https://docs.google.com/..."></td>
@@ -182,7 +182,7 @@
             <td><a href="/wiki/{{ c.clan_name | lower }}/">{{ c.clan_name }}</a></td>
           </tr>
           <tr>
-            <td><a href="/wiki/covenants/">Förbund</a></td>
+            <td><a href="/wiki/covenants/">Kovenant</a></td>
             <td>{% if c.covenant_slug.len() > 0 %}<a href="/wiki/{{ c.covenant_slug }}/">{{ c.covenant_name }}</a>{% endif %}</td>
           </tr>
           {% if c.home_domain.len() > 0 %}
@@ -199,7 +199,7 @@
           {% endif %}
           {% if c.public_knowledge.len() > 0 %}
           <tr>
-            <td>Offentlig kunskap</td>
+            <td><a href="/wiki/public-knowledge/">Allmänt känt</a></td>
             <td>{{ c.public_knowledge }}</td>
           </tr>
           {% endif %}
@@ -242,7 +242,7 @@
             <td><a href="/wiki/{{ c.clan_name | lower }}/">{{ c.clan_name }}</a></td>
           </tr>
           <tr>
-            <td><a href="/wiki/covenants/">Förbund</a></td>
+            <td><a href="/wiki/covenants/">Kovenant</a></td>
             <td>{% if c.covenant_slug.len() > 0 %}<a href="/wiki/{{ c.covenant_slug }}/">{{ c.covenant_name }}</a>{% endif %}</td>
           </tr>
           {% if c.home_domain.len() > 0 %}
@@ -259,7 +259,7 @@
           {% endif %}
           {% if c.public_knowledge.len() > 0 %}
           <tr>
-            <td>Offentlig kunskap</td>
+            <td><a href="/wiki/public-knowledge/">Allmänt känt</a></td>
             <td>{{ c.public_knowledge }}</td>
           </tr>
           {% endif %}

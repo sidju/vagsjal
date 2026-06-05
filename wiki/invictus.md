@@ -1,4 +1,4 @@
 # Invictus
 
-#lore #kovenanter
+#lore #covenants
 

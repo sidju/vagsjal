@@ -1,6 +1,6 @@
 # Banes
 
-#regler
+#rules
 
 Banes är kindreds universella svagheter. Skada från förbannelser
 multipliceras med [BlodPotens](blood-potency.md), vilket gör äldre vampyrer

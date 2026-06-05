@@ -1,5 +1,5 @@
 # Teknik
 
-#influenser
+#influences
 
 IT, kemi osv. De avancerade delarna av samhället och experterna som sköter dem.

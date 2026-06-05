@@ -1,6 +1,6 @@
 # Investeringar
 
-#influenssystem
+#influence-system
 
 Investeringar är konkreta, pågående strukturer som byggs från dina influenser.
 Vanliga exempel är en fristad, en hjord av villiga människor eller kontakter i

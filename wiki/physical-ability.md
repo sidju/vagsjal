@@ -1,6 +1,6 @@
 # Fysisk förmåga
 
-#regler
+#rules
 
 Fysisk förmåga beskriver din förmåga att övervinna fysiska utmaningar. Den
 omfattar både grundstyrka och de tekniker som används.
