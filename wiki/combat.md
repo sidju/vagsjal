@@ -16,9 +16,9 @@ Gruppstrid är brutalt enkel, alla stats summeras ihop för vardera sida och
 striden beräknas som om de summorna var en karakär. Notervärt är dock:
 
 - Fortitude appliceras för gruppen som helhet, inte för karaktärerna.
-- Skada fördelas inte jämnt utan kvarvarande HP fördelas jämnt, varmed
-  ingen i en grupp dör innan HP summan för gruppen är lägre än antalet
-  karakärer i gruppen.
+- Skada fördelas inte jämnt utan kvarvarande HP fördelas jämnt, varmed ingen i
+  en grupp dör innan HP summan för gruppen är lägre än antalet karakärer i
+  gruppen.
 
 ## Initiativ
 
@@ -39,7 +39,7 @@ När din tur kommer i en runda kan du _förflytta dig_ en gång och göra en av
 följande:
 
 - Närstridsattack, om ditt mål är inom räckhåll.
-- Distansattack, om du inte är i närstrid (eller ditt 
+- Distansattack, om du inte är i närstrid (eller ditt
   [vapen](equipment.md#avstandsvapen) tillåter ändå).
 - Använd en [kraft](blood-powers.md), om den går att använda i hast.
 

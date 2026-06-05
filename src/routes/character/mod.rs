@@ -93,6 +93,12 @@ struct Index {
   show_admin_link: bool,
 }
 
+impl Index {
+  fn xp_link(&self) -> bool {
+    true
+  }
+}
+
 fn parse_date(date: &str) -> Result<Date, Error> {
   let fmt = time::format_description::parse("[year]-[month]-[day]")
     .map_err(|e| Error::invalid_builder_draft(&format!("Invalid date format: {e}")))?;

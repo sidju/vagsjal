@@ -9,7 +9,8 @@ Du kan uppfatta primära känslor.
 ## 1: Predator's Eye
 
 Din best bedömer omedelbart ett mål och ger dig en magkänsla för hur farliga de
-är, om de är beväpnade eller skadade, och hur lätt de skulle kunna oskadliggöras.
+är, om de är beväpnade eller skadade, och hur lätt de skulle kunna
+oskadliggöras.
 
 ## 2: The Spirit's Touch
 

@@ -46,9 +46,10 @@ Detta motsvarar följande tabell:
 
 Då blodpotensens svagheter blir nästan ohanterliga kring 120 års ålder finns det
 ett givet behov av att kunna minska den igen. Det finns i essens två kända sätt:
-- Om man spenderar fler år i torpor än man har blodpotens har man en god chans att
-  reducera den, men det är inte det enda man förlorar. Minnen och ibland andra
-  egenskaper går ofta förlorade i en längre dvala, utöver att den tenderar att vara
-  fylld av mindre än behagliga drömmar.
+
+- Om man spenderar fler år i torpor än man har blodpotens har man en god chans
+  att reducera den, men det är inte det enda man förlorar. Minnen och ibland
+  andra egenskaper går ofta förlorade i en längre dvala, utöver att den tenderar
+  att vara fylld av mindre än behagliga drömmar.
 - Ordo Dracul har ritualer som kan sänka blodets potens, men de säljer dem inte
   billigt.

@@ -4,8 +4,8 @@
 
 ### 1: Dread Presence
 
-Du kan utstråla en aura av rädsla som oroar alla omkring dig och får det
-att verka som en dålig idé att göra dig missnöjd.
+Du kan utstråla en aura av rädsla som oroar alla omkring dig och får det att
+verka som en dålig idé att göra dig missnöjd.
 
 ### 1: Vision of Fear
 
@@ -18,16 +18,15 @@ flera mål att försöka projicera den till.
 ### 2: Face of the Beast
 
 Du kan fylla ett måls sinne med enorm rädsla och tvinga dem med lägre
-[Mental Förmåga](mental-ability.md) att fly från din närvaro, och få även
-dem som står emot att rygga undan från dig i några minuter.
+[Mental Förmåga](mental-ability.md) att fly från din närvaro, och få även dem
+som står emot att rygga undan från dig i några minuter.
 
 ### 2: Haunting
 
 Du kan plantera en rå, formlös rädsla i sinnet hos ett mål med lägre
-[Mental Förmåga](mental-ability.md) än du, vilket får dem att känna sig
-oroliga och ängsliga så länge effekten varar. Den påverkar kindred resten av
-natten, men människor påverkas i en vecka och kommer ha svårt att sova alls
-under den tiden.
+[Mental Förmåga](mental-ability.md) än du, vilket får dem att känna sig oroliga
+och ängsliga så länge effekten varar. Den påverkar kindred resten av natten, men
+människor påverkas i en vecka och kommer ha svårt att sova alls under den tiden.
 
 ### 3: Waking Nightmare
 

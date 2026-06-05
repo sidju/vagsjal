@@ -2,5 +2,4 @@
 
 #influences
 
-Myndighetsanställda och politiker, användbara för bygglov,
-miljökvoter osv.
+Myndighetsanställda och politiker, användbara för bygglov, miljökvoter osv.

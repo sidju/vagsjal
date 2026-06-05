@@ -5,27 +5,28 @@
 ### 1: Unmarked Grave
 
 Med en tyst befallning låter du jorden placera dig där du hör hemma, i en grav.
-Du smälter in i marken, säker från skada och sol, och stannar där tills
-du spenderar vitae för att släppas ut eller någon stör marken tillräckligt för
-att avsluta effekten. Detta görs lättast i mjukare mark, men även betong kan du
-smälta in i till priset av att behöva spendera all vitae du besitter för att
-släppas ut. Du kan uppfatta marken precis ovanför dig och blod eller vitae som
-spills på marken kan absorberas utan att du kommer upp.
+Du smälter in i marken, säker från skada och sol, och stannar där tills du
+spenderar [vitae](vitae.md) för att släppas ut eller någon stör marken
+tillräckligt för att avsluta effekten. Detta görs lättast i mjukare mark, men
+även betong kan du smälta in i till priset av att behöva spendera all
+[vitae](vitae.md) du besitter för att släppas ut. Du kan uppfatta marken precis
+ovanför dig och blod eller [vitae](vitae.md) som spills på marken kan absorberas
+utan att du kommer upp.
 
 ### 1: Predatory Aspect
 
 Du låter besten sippra genom din form i form av en djurlik förändring av din
 kropp som gör dig bättre lämpad att jaga i natten. Typiska förändringar är:
 
-| Källa             | Effekt                                            |
-| ----------------- | ------------------------------------------------- |
-| Sinnen            | Förhöjd perception                                |
-| Klor/bett/sporrar | +2 [weapon bonus](utrustning.md#melee-weapons)    |
-| Tålig hud         | +4 [HP](hp.md)                                    |
-| Fyrfotade lemmar  | Förbättrad stabilitet och löphastighet            |
-| Patagium/vingar   | Glidflygförmåga, ingen fallskada                  |
-| Väggklättring     | Spindellik vidhäftning till vertikala ytor        |
-| Gripande svans    | Förbättrad balans och en extra brottningslem      |
+| Källa             | Effekt                                         |
+| ----------------- | ---------------------------------------------- |
+| Sinnen            | Förhöjd perception                             |
+| Klor/bett/sporrar | +2 [weapon bonus](utrustning.md#melee-weapons) |
+| Tålig hud         | +4 [HP](hp.md)                                 |
+| Fyrfotade lemmar  | Förbättrad stabilitet och löphastighet         |
+| Patagium/vingar   | Glidflygförmåga, ingen fallskada               |
+| Väggklättring     | Spindellik vidhäftning till vertikala ytor     |
+| Gripande svans    | Förbättrad balans och en extra brottningslem   |
 
 Förändringen kan inte återställas; den försvinner naturligt vid soluppgången men
 kan skäras av och skadan läkas för att återställa. En ny förändring kan inte
@@ -49,29 +50,29 @@ mänsklig, och korrumperar den med en fasansfull övernaturlig aspekt.
 Fruktansvärd aspekt kan vara aktiv samtidigt som Rovdjursaspekt, förutsatt att
 de inte påverkar samma kroppsdel.
 
-| Källa                         | Effekt                                                  |
-| ----------------------------- | ------------------------------------------------------- |
-| Klor, tänder eller bensporrar | +5 weapon bonus                                         |
-| Vitae-gift (svart)            | [Aggravated](aggravated-damage.md) damage               |
-| Vitae-gift (röd)              | Tvingar vitae-intag [(blodsband)](blood-bond.md)        |
-| Extra lemmar                  | Ytterligare lemmar för vapen eller brottning            |
-| Förlängda armar eller fingrar | Utökad närstridsräckvidd                                |
-| Obegränsad käke               | Vidare, vildsintt bett                                  |
-| Tentakler                     | Lemmar för fasthållning och brottning                   |
-| Skal                          | +6 [HP](hp.md)                                          |
-| Tjockt slem                   | +4 [HP](hp.md), betydligt svårare att greppa eller påla |
-| Avgrundsögon                  | Förbättrad syn, ögonkontakt omöjlig                     |
+| Källa                          | Effekt                                                       |
+| ------------------------------ | ------------------------------------------------------------ |
+| Klor, tänder eller bensporrar  | +5 weapon bonus                                              |
+| [Vitae](vitae.md)-gift (svart) | [Aggravated](aggravated-damage.md) damage                    |
+| [Vitae](vitae.md)-gift (röd)   | Tvingar [vitae](vitae.md)-intag [(blodsband)](blood-bond.md) |
+| Extra lemmar                   | Ytterligare lemmar för vapen eller brottning                 |
+| Förlängda armar eller fingrar  | Utökad närstridsräckvidd                                     |
+| Obegränsad käke                | Vidare, vildsintt bett                                       |
+| Tentakler                      | Lemmar för fasthållning och brottning                        |
+| Skal                           | +6 [HP](hp.md)                                               |
+| Tjockt slem                    | +4 [HP](hp.md), betydligt svårare att greppa eller påla      |
+| Avgrundsögon                   | Förbättrad syn, ögonkontakt omöjlig                          |
 
-Vitae-gift förblir aktivt i ungefär en minut efter att kontakten med den som
-producerar det har brutits.
+[Vitae](vitae.md)-gift förblir aktivt i ungefär en minut efter att kontakten med
+den som producerar det har brutits.
 
 ### 3: Primal Miasma
 
 Du släpper din mänskliga forms bojor och avdunstar till ett moln av hungrig
 dimma. Du kan uppfatta allt inuti din rök och är immun mot all skada utom
-[Banes](banes.md). Du kan förbli i denna form genom dagsömn. Du kan dricka blod som
-är öppet mot luften (öppna sår/behållare), vilket tycks avdunsta och försvinna
-i tomma intet, men du kan inte orsaka någon skada.
+[Banes](banes.md). Du kan förbli i denna form genom dagsömn. Du kan dricka blod
+som är öppet mot luften (öppna sår/behållare), vilket tycks avdunsta och
+försvinna i tomma intet, men du kan inte orsaka någon skada.
 
 ### 3: Horrid Form
 

@@ -38,6 +38,6 @@
 </tr>
 {% endfor %}
 <tr>
-  <th><a href="{{ character.vampire_id }}/">Återstående XP</a></th>
-  <th><a href="{{ character.vampire_id }}/">{{ character.remaining_xp }}</a></th>
+  <th>{% if xp_link() %}<a href="{{ character.vampire_id }}/">{% endif %}Återstående XP{% if xp_link() %}</a>{% endif %}</th>
+  <th>{% if xp_link() %}<a href="{{ character.vampire_id }}/">{% endif %}{{ character.remaining_xp }}{% if xp_link() %}</a>{% endif %}</th>
 </tr>

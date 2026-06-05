@@ -2,8 +2,8 @@
 
 #index #rules
 
-Torpor är ett tillstånd av djupt vampyriskt medvetslöshet, liknande en dvala.
-En vampyr i torpor är medvetslös, kall som döden och vaknar inte förrän den har
+Torpor är ett tillstånd av djupt vampyriskt medvetslöshet, liknande en dvala. En
+vampyr i torpor är medvetslös, kall som döden och vaknar inte förrän den har
 fått i sig tillräckligt med blod eller tillräckligt lång tid har gått.
 
 ## När inträder torpor?
@@ -12,14 +12,14 @@ En vampyr kan hamna i torpor av flera anledningar:
 
 - **Blodbrist:** När en vampyr inte får i sig blod under en längre tid sjunker
   den ner i torpor. Kroppen stänger ner alla funktioner för att överleva.
-- **Skada:** Om en vampyr tar så mycket skada att den inte längre kan
-  fungera hamnar den i torpor.
+- **Skada:** Om en vampyr tar så mycket skada att den inte längre kan fungera
+  hamnar den i torpor.
 
 ## Att vakna ur torpor
 
 Att vakna ur torpor kräver blod. En vampyr i torpor kan väckas av att någon
-häller blod i dess mun, alternativt kan den vakna av sig själv efter tillräckligt
-lång tid. Ju mer blod som finns kvar i kroppen, desto kortare tid.
+häller blod i dess mun, alternativt kan den vakna av sig själv efter
+tillräckligt lång tid. Ju mer blod som finns kvar i kroppen, desto kortare tid.
 
 ## Effekter av torpor
 

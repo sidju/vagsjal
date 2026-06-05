@@ -8,8 +8,8 @@ Skriv en [karaktärsbeskrivning](character-description.md) i ett google dokument
 Ta nytta av [wikin](/wiki/), [publik karaktärsinfo](/characters/), och i
 synnerhet [världen](setting.md).
 
-Se till att dokumentet börjar med *Off Information* och *Plot hooks*, så att
-den informationen är lätt att hitta.
+Se till att dokumentet börjar med _Off Information_ och _Plot hooks_, så att den
+informationen är lätt att hitta.
 
 ## Steg 2 - Skriv en karaktärsansökan
 
@@ -25,9 +25,11 @@ karaktären är godkänd:
 - **Mänsklig ålder** - hur gammal karaktären ser ut (i år).
 - **Klan** - karaktärens [klan](clan.md).
 - **Kovenant** - Uttalad kovenant-tillhörighet
-- **Hemdomän** - var karaktären huvudsakligen hållit till, t.ex. Göteborg eller Paris.
+- **Hemdomän** - var karaktären huvudsakligen hållit till, t.ex. Göteborg eller
+  Paris.
 - **Känd ålder** - ungefär hur gammal karaktären tros vara, t.ex. "omkring 50".
-- **Offentlig kunskap** - vad allmänheten (eller andra vampyrer) vet om karaktären.
+- **Offentlig kunskap** - vad allmänheten (eller andra vampyrer) vet om
+  karaktären.
 
 ### Privata fält
 
@@ -35,7 +37,8 @@ Dessa syns endast för karaktärens ägare och spelledare:
 
 - **Omfamningsdatum** — när karaktären [omfamnades](embrace.md).
 - **Torpor** — hur lång tid karaktären tillbringat i [torpor](torpor.md).
-- **Karaktärsbeskrivning** — länk till en utförlig beskrivning (t.ex. Google Docs).
+- **Karaktärsbeskrivning** — länk till en utförlig beskrivning (t.ex. Google
+  Docs).
 
 ## Steg 2 — Färdigheter
 

@@ -89,6 +89,12 @@ struct Index {
   show_admin_link: bool,
 }
 
+impl Index {
+  fn xp_link(&self) -> bool {
+    false
+  }
+}
+
 fn parse_date(date: &str) -> Result<Date, Error> {
   let fmt = time::format_description::parse("[year]-[month]-[day]")
     .map_err(|e| Error::invalid_builder_draft(&format!("Invalid date format: {e}")))?;
@@ -420,7 +426,7 @@ async fn review_pending(
   if rows_affected != 1 {
     return Err(Error::invalid_builder_draft("That XP usage has already been reviewed"));
   }
-  see_other(&format!("/admin/character/{vampire_id}/"))
+  see_other(&format!("/admin/character/{vampire_id}/#pending-xp-changes"))
 }
 
 async fn approve_draft(

@@ -20,8 +20,8 @@ eller till soluppgång.
 ## 2: Raise the Familiar
 
 Du kan göra ditt blod kapabelt att resa ett nyligen dött djur till ett tillstånd
-av odöd. Det liknar kindred men kan endast upprätthållas på vitae och såren som
-dödade det förblir synliga.
+av odöd. Det liknar kindred men kan endast upprätthållas på [vitae](vitae.md)
+och såren som dödade det förblir synliga.
 
 ## 3: Feral Infection
 
@@ -35,8 +35,8 @@ slåss de påverkade inbördes.
 
 ## 3: Lord of the Land
 
-Du kan märka territorium genom att omringa det med märken av vitae. Detta ger
-dig kontroll över territoriet i en vecka per
+Du kan märka territorium genom att omringa det med märken av [vitae](vitae.md).
+Detta ger dig kontroll över territoriet i en vecka per
 [Blood Potency](blood-potency.md), även om du fritt kan underhålla det medan du
 är inom området. Om de inte bjudits in känner varelser inom området en djup
 skräck och en drift att fly. Om de står emot och hur länge de uthärdar är en
@@ -44,4 +44,5 @@ fråga om karaktär och omständigheter, men ingen är undantagen från känslan
 är instinktivt medveten om varelser som träder in i territoriet, och blind
 endast för dem som döljs av [Obfuscate](obfuscate.md). Inom området kan du se
 genom ögonen på djuriska blods-tjänare och agera genom dem, om än begränsad av
-deras kropp. Om territorier överlappar har det med högre Blood Potency företräde.
+deras kropp. Om territorier överlappar har det med högre Blood Potency
+företräde.

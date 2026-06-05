@@ -10,6 +10,6 @@ per punkt [Blood Potency](blood-potency.md).
 
 Människor har en Organizational Ability mellan 1 och 3, normalt 1.
 
-Du kan ersätta Organizational Ability med en eller flera ghouls, som då är nästan
-fullt uppbokade med att hantera dessa investeringar och därmed lägger sin
+Du kan ersätta Organizational Ability med en eller flera ghouls, som då är
+nästan fullt uppbokade med att hantera dessa investeringar och därmed lägger sin
 Organizational Ability till din.

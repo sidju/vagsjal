@@ -17,16 +17,16 @@ sant."
 ### 2: Confidant
 
 Med en djup blick kan du charma ett mål med lägre
-[Mental Förmåga](mental-ability.md) än du att se dig som pålitlig
-och vänlig, vilket gör dem mer benägna att anförtro dig sina hemligheter.
+[Mental Förmåga](mental-ability.md) än du att se dig som pålitlig och vänlig,
+vilket gör dem mer benägna att anförtro dig sina hemligheter.
 
 ### 2: Obsession
 
 Med en beröring kan du plantera en besatthet i ett mål med lägre
-[Mental Förmåga](mental-ability.md) än du som varar i en vecka. Kindred
-tänker på dig några gånger per natt, men det finns ingen garanti att de tänker
-på dig med värme, medan människor i allmänhet tror sig vara förälskade och
-lätt kan manipuleras att göra vad som helst som inte direkt skadar dem.
+[Mental Förmåga](mental-ability.md) än du som varar i en vecka. Kindred tänker
+på dig några gånger per natt, men det finns ingen garanti att de tänker på dig
+med värme, medan människor i allmänhet tror sig vara förälskade och lätt kan
+manipuleras att göra vad som helst som inte direkt skadar dem.
 
 ### 3: Majesty
 
