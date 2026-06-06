@@ -65,7 +65,7 @@ struct CreateCharacterForm {
   torpor_months: Option<i32>,
   torpor_days: Option<i32>,
   clan_id: Option<i64>,
-  covenant_id: Option<i64>,
+  covenant_id: Option<String>,
   character_description_url: Option<String>,
   public_knowledge: Option<String>,
   home_domain: Option<String>,
@@ -282,8 +282,8 @@ async fn index_post(
     microseconds: 0,
   };
   let clan_id = form.clan_id.ok_or_else(|| Error::invalid_builder_draft("Missing clan_id"))?;
-  let covenant_id = form.covenant_id;
-  let public_knowledge = form.public_knowledge.map(|u| u.trim().to_string()).filter(|u| !u.is_empty());
+  let covenant_id: Option<i64> = form.covenant_id.and_then(|s| { let s = s.trim(); if s.is_empty() { None } else { s.parse().ok() } });
+  let public_knowledge = form.public_knowledge.map(|u| u.trim().to_string()).filter(|u| !u.is_empty()).unwrap_or_default();
   let home_domain = form.home_domain.map(|u| u.trim().to_string()).filter(|u| !u.is_empty()).unwrap_or_default();
   let known_age = form.known_age.map(|u| u.trim().to_string()).filter(|u| !u.is_empty()).unwrap_or_default();
   sqlx::query!(

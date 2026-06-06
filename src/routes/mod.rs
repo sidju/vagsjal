@@ -77,6 +77,7 @@ pub async fn route(
   let cookies = parse_cookies(&req)?;
   let auth = authenticate_from_cookies(state, &cookies).await?;
   let session = auth.session;
+  let mut set_cookies = auth.set_cookies;
   let mut prevent_cache = true;
   let mut response = match path_vec.pop().as_deref() {
     // Means a missing trailing slash, redirect to with slash
@@ -108,6 +109,10 @@ pub async fn route(
 //    },
     Some("post-login") => {
       verify_method_path_end(&path_vec, &req, &Method::GET)?;
+      // Discard stale-cookie-clearing headers — finish_oidc_login_flow
+      // sets its own fresh session/refresh cookies and we must not
+      // append clearing headers after them.
+      set_cookies.clear();
       add_header(
         finish_oidc_login_flow(state, req).await,
         hyper::header::CACHE_CONTROL,
@@ -143,7 +148,7 @@ pub async fn route(
     },
     _ => Err(Error::path_not_found(&req)),
   };
-  for cookie in auth.set_cookies {
+  for cookie in set_cookies {
     response = add_header(response, hyper::header::SET_COOKIE, cookie);
   }
   if prevent_cache {

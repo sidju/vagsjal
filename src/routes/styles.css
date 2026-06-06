@@ -213,6 +213,14 @@ table.stat-table.char-meta th:last-child {
   text-align: left;
 }
 
+/* Combat value tables */
+.combat-details {
+  margin: 1rem 0;
+}
+.combat-details[open] {
+  margin: 1rem 0;
+}
+
 /* Button column in XP editor tables */
 table.stat-table td:nth-child(4),
 table.stat-table th:nth-child(4) {

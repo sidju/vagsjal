@@ -46,7 +46,7 @@ struct CharacterForm {
   torpor_months: Option<i32>,
   torpor_days: Option<i32>,
   clan_id: Option<i64>,
-  covenant_id: Option<i64>,
+  covenant_id: Option<String>,
   character_description_url: Option<String>,
   status: Option<String>,
   review_kind: Option<String>,
@@ -178,7 +178,7 @@ async fn index_post(state: &'static State, mut req: Request) -> Result<Response,
       if let Some(ref url) = character_description_url {
         validate_description_url(&state.http_client, url).await?;
       }
-  let covenant_id = form.covenant_id;
+  let covenant_id: Option<i64> = form.covenant_id.and_then(|s| { let s = s.trim(); if s.is_empty() { None } else { s.parse().ok() } });
   sqlx::query!(
     r#"
     INSERT INTO vampire (user_id, status, name, apparent_age, date_embraced, torpor_time, clan_id, covenant_id, character_description_url)

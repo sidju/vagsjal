@@ -41,3 +41,5 @@
   <th>{% if xp_link() %}<a href="{{ character.vampire_id }}/">{% endif %}Återstående XP{% if xp_link() %}</a>{% endif %}</th>
   <th>{% if xp_link() %}<a href="{{ character.vampire_id }}/">{% endif %}{{ character.remaining_xp }}{% if xp_link() %}</a>{% endif %}</th>
 </tr>
+</table>
+{% include "character/_combat_controls.html" %}

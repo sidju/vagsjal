@@ -117,8 +117,6 @@ struct Index {
   stats: Vec<StatLine>,
   powers: Vec<StatLine>,
   influences: Vec<StatLine>,
-  power_options: Vec<PowerOption>,
-  influence_options: Vec<InfluenceOption>,
   /// Safe JSON embedded via <script type="application/json"> (</> escaped)
   initial_data_json: String,
   saved: bool,
@@ -366,14 +364,12 @@ async fn index_get(
   let (humanity_gain, humanity_loss) = fetch_humanity_xp_costs(state).await?;
 
   let powers: Vec<StatLine> = power_rows.iter()
-    .filter(|r| r.value > 0 || r.pending_review)
     .map(|r| StatLine { id: r.id.clone(), name: r.name.clone(), value: r.value, pending_review: r.pending_review })
     .collect();
   let power_options: Vec<PowerOption> = power_rows.into_iter()
     .map(|r| PowerOption { id: r.id.clone(), name: r.name, in_clan: r.in_clan })
     .collect();
   let influences: Vec<StatLine> = influence_rows.iter()
-    .filter(|r| r.value > 0 || r.pending_review)
     .map(|r| StatLine { id: r.id.clone(), name: r.name.clone(), value: r.value, pending_review: r.pending_review })
     .collect();
   let influence_options: Vec<InfluenceOption> = influence_rows.iter().map(|r| InfluenceOption { id: r.id.clone(), name: r.name.clone() }).collect();
@@ -412,8 +408,6 @@ async fn index_get(
     stats,
     powers,
     influences,
-    power_options,
-    influence_options,
     initial_data_json,
     saved: query.saved == Some(1),
     show_admin_link: session.role.is_storyteller(),
@@ -470,10 +464,9 @@ WHERE power_xp_cost.in_clan = (
         AND ($2::VARCHAR = clan.unique_power OR $2::VARCHAR = clan.power_one OR $2::VARCHAR = clan.power_two)
     )
   )
-  AND power_xp_cost.level = (
-    SELECT COALESCE(\"value!\"::INT, 0) + 1
-    FROM vampire_power
-    WHERE vampire_id = $1 AND \"name!\" = $2::VARCHAR
+  AND power_xp_cost.level = COALESCE(
+    (SELECT \"value!\"::INT + 1 FROM vampire_power WHERE vampire_id = $1 AND \"name!\" = $2::VARCHAR),
+    1
   )
           ",
           vampire_id,

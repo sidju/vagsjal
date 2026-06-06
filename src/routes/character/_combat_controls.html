@@ -1,0 +1,175 @@
+<details class="combat-details">
+  <summary>Stridsvärden</summary>
+  <table class="stat-table combat-values"
+{% for s in stats %}    data-{{ s.id }}="{{ s.value }}"
+{%- endfor %}{% for p in powers %}    data-{{ p.id }}="{{ p.value }}"
+{%- endfor %}>
+    <tr class="combat-weapon-row">
+      <th>Närstridsvapen</th>
+      <td class="combat-weapon-cell"></td>
+    </tr>
+    <tr>
+      <th>Rustning</th>
+      <td>
+        <select class="combat-armor" data-bonus="0">
+          <option value="0">Ingen</option>
+          <option value="2">Diskret skyddsväst (+2)</option>
+          <option value="4">Tjock skyddsväst (+4)</option>
+          <option value="6">Modern helkroppsrustning (+6)</option>
+          <option value="8">Medeltida helplåtsrustning (+8)</option>
+        </select>
+      </td>
+    </tr>
+{% for p in powers %}
+{% if p.id == "potence" && p.value > 0 %}
+    <tr class="combat-potence-row">
+      <th>Potence (aktiv)</th>
+      <td>
+        <input type="number" class="combat-potence" min="0" max="{{ p.value }}" value="0">
+        <span> / {{ p.value }}</span>
+      </td>
+    </tr>
+{% endif %}
+{% if p.id == "protean" && p.value > 0 %}
+    <tr class="combat-protean-row">
+      <th>Protean aspekter</th>
+      <td>
+{% if p.value >= 1 %}
+        <label><input type="checkbox" class="combat-protean" data-level="1" data-part="claws" data-hp="0" data-weapon="2"> Predatory: Klor/bett (+2 vapen)</label><br>
+        <label><input type="checkbox" class="combat-protean" data-level="1" data-part="skin" data-hp="4" data-weapon="0"> Predatory: Tålig hud (+4 HP)</label><br>
+{% endif %}
+{% if p.value >= 2 %}
+        <label><input type="checkbox" class="combat-protean" data-level="2" data-part="claws" data-hp="0" data-weapon="5"> Horrid: Klor/tänder (+5 vapen)</label><br>
+        <label><input type="checkbox" class="combat-protean" data-level="2" data-part="skin" data-hp="6" data-weapon="0"> Horrid: Skal (+6 HP)</label><br>
+        <label><input type="checkbox" class="combat-protean" data-level="2" data-part="skin" data-hp="4" data-weapon="0"> Horrid: Tjockt slem (+4 HP)</label>
+{% endif %}
+      </td>
+    </tr>
+{% endif %}
+{% endfor %}
+    <tr>
+      <th>HP</th>
+      <td class="combat-display-hp"></td>
+    </tr>
+    <tr>
+      <th>Skada</th>
+      <td class="combat-display-damage"></td>
+    </tr>
+    <tr>
+      <th>Försvar</th>
+      <td class="combat-display-defense"></td>
+    </tr>
+  </table>
+</details>
+
+<script>
+(function () {
+  if (window.__combatGuard) return;
+  window.__combatGuard = true;
+
+  function readValues(el) {
+    return {
+      hp: parseInt(el.dataset.hp) || 0,
+      physicalAbility: parseInt(el.dataset.physicalAbility) || 0,
+      potence: parseInt(el.dataset.potence) || 0,
+      fortitude: parseInt(el.dataset.fortitude) || 0,
+      protean: parseInt(el.dataset.protean) || 0,
+    };
+  }
+
+  function setupWeapon(el) {
+    var phys = readValues(el).physicalAbility;
+    var mod = phys % 3;
+    var minBonus = mod === 0 ? 3 : 3 - mod;
+    var cell = el.querySelector(".combat-weapon-cell");
+    if (minBonus <= 3) {
+      var label = document.createElement("label");
+      var cb = document.createElement("input");
+      cb.type = "checkbox";
+      cb.className = "combat-weapon";
+      cb.dataset.bonus = minBonus;
+      label.appendChild(cb);
+      label.appendChild(document.createTextNode(" Vapen (+" + minBonus + ")"));
+      cell.appendChild(label);
+    } else {
+      cell.textContent = "Inget vapen gör skillnad";
+    }
+  }
+
+  function enforceProteanConstraints(el, changed) {
+    var proteanLevel = readValues(el).protean;
+    var part = changed.dataset.part;
+    var level = parseInt(changed.dataset.level) || 0;
+
+    // Body part conflict: uncheck others with same body part
+    el.querySelectorAll(".combat-protean").forEach(function (cb) {
+      if (cb !== changed && cb.dataset.part === part) cb.checked = false;
+    });
+
+    // Level conflict at protean < 3: at most one per power level
+    if (proteanLevel < 3) {
+      el.querySelectorAll(".combat-protean").forEach(function (cb) {
+        if (cb !== changed && parseInt(cb.dataset.level) === level) cb.checked = false;
+      });
+    }
+
+    // Claws/weapon conflict: can't have claws while wielding a weapon
+    if (part === "claws") {
+      var weaponCb = el.querySelector(".combat-weapon");
+      if (weaponCb) weaponCb.checked = false;
+    }
+  }
+
+  function enforceWeaponConstraint(el) {
+    // Weapon/claws conflict: weapon prevents protean claws
+    el.querySelectorAll(".combat-protean").forEach(function (cb) {
+      if (cb.dataset.part === "claws") cb.checked = false;
+    });
+  }
+
+  function compute(el) {
+    var data = readValues(el);
+    var weapon = 0;
+    var weaponCb = el.querySelector(".combat-weapon");
+    if (weaponCb && weaponCb.checked) weapon = parseInt(weaponCb.dataset.bonus) || 0;
+    var armor = parseInt(el.querySelector(".combat-armor").value) || 0;
+    var pot = 0;
+    var potRow = el.querySelector(".combat-potence");
+    if (potRow) pot = parseInt(potRow.value) || 0;
+    if (pot > data.potence) pot = data.potence;
+    var proteanHp = 0;
+    var proteanWeapon = 0;
+    el.querySelectorAll(".combat-protean:checked").forEach(function (cb) {
+      proteanHp += parseInt(cb.dataset.hp) || 0;
+      proteanWeapon += parseInt(cb.dataset.weapon) || 0;
+    });
+    var hp = data.hp + armor + proteanHp;
+    var phys = data.physicalAbility;
+    var damage = Math.floor((phys + weapon + proteanWeapon) / 3) + pot;
+    var defense = data.fortitude;
+    el.querySelector(".combat-display-hp").textContent = hp;
+    el.querySelector(".combat-display-damage").textContent = damage;
+    el.querySelector(".combat-display-defense").textContent = defense;
+  }
+
+  document.addEventListener("change", function (e) {
+    var el = e.target.closest(".combat-values");
+    if (!el) return;
+    if (e.target.classList.contains("combat-protean") && e.target.checked) {
+      enforceProteanConstraints(el, e.target);
+    }
+    if (e.target.classList.contains("combat-weapon") && e.target.checked) {
+      enforceWeaponConstraint(el);
+    }
+    compute(el);
+  });
+  document.addEventListener("input", function (e) {
+    var el = e.target.closest(".combat-values");
+    if (el) compute(el);
+  });
+  document.querySelectorAll(".combat-values").forEach(function (el) {
+    setupWeapon(el);
+    compute(el);
+  });
+})();
+</script>

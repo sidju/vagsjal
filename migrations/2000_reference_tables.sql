@@ -50,6 +50,19 @@ xp_cost INT CHECK (xp_cost >= 0) NOT NULL,
 PRIMARY KEY (in_clan, level)
 );
 
+INSERT INTO power_xp_cost (in_clan, level, xp_cost) VALUES
+  (TRUE, 1, 9),
+  (TRUE, 2, 12),
+  (TRUE, 3, 15),
+  (TRUE, 4, 18),
+  (TRUE, 5, 21),
+  (FALSE, 1, 12),
+  (FALSE, 2, 15),
+  (FALSE, 3, 18),
+  (FALSE, 4, 21),
+  (FALSE, 5, 24)
+;
+
 CREATE TABLE clan (
 clan_id BIGSERIAL PRIMARY KEY NOT NULL,
 name VARCHAR(64) UNIQUE NOT NULL,

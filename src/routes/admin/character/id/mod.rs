@@ -318,7 +318,7 @@ async fn update_character(
     microseconds: 0,
   };
   let clan_id = form.clan_id.ok_or_else(|| Error::invalid_builder_draft("Missing clan_id"))?;
-  let covenant_id = form.covenant_id;
+  let covenant_id: Option<i64> = form.covenant_id.and_then(|s| { let s = s.trim(); if s.is_empty() { None } else { s.parse().ok() } });
   let status = form.status.as_deref().unwrap_or("draft");
   let character_description_url = form.character_description_url.map(|u| u.trim().to_string()).filter(|u| !u.is_empty());
   if let Some(ref url) = character_description_url {

@@ -75,11 +75,19 @@ fn display_name_from_claims(
     openidconnect::core::CoreGenderClaim,
   >,
 ) -> String {
-  claims
+  let name = claims
     .name()
     .and_then(|name| name.get(None))
-    .map(|name| name.as_str().to_owned())
-    .or_else(|| claims.preferred_username().map(|username| username.as_str().to_owned()))
+    .map(|name| name.as_str().to_owned());
+  let username = claims.preferred_username().map(|u| u.as_str().to_owned());
+  if name.is_none() {
+    eprintln!("WARNING: OIDC token did not contain 'name' claim. Make sure 'profile' scope is enabled.");
+  }
+  if claims.email().is_none() {
+    eprintln!("WARNING: OIDC token did not contain 'email' claim. Make sure 'email' scope is enabled.");
+  }
+  name
+    .or_else(|| username)
     .unwrap_or_else(|| claims.subject().as_str().to_owned())
 }
 async fn upsert_user_from_claims(
@@ -192,6 +200,8 @@ pub async fn start_oidc_login_flow(
       openidconnect::CsrfToken::new_random,
       openidconnect::Nonce::new_random,
     )
+    .add_scope(openidconnect::Scope::new("profile".to_string()))
+    .add_scope(openidconnect::Scope::new("email".to_string()))
     .add_extra_param("access_type", "offline")
     .add_extra_param("prompt", "consent")
     .url()
@@ -219,13 +229,10 @@ pub async fn authenticate_from_cookies(
   let session_cookie = match cookies.get(SESSION_COOKIE_NAME) {
     Some(cookie) => *cookie,
     None => {
-      // Session cookie absent (most likely expired and purged by the browser).
-      // Try the refresh cookie before falling back to the login flow.
       if let Some(refresh_cookie) = cookies.get(REFRESH_COOKIE_NAME) {
         if let Some((session, set_cookies)) = refresh_session_from_cookie(state, refresh_cookie).await? {
           return Ok(AuthResult { session: Some(session), set_cookies });
         }
-        // Refresh present but failed — clear it so the browser doesn't keep sending it.
         return Ok(AuthResult { session: None, set_cookies: clear_auth_cookies()? });
       }
       return Ok(AuthResult { session: None, set_cookies: vec![] });
