@@ -225,7 +225,7 @@ async fn fetch_pending_usage(state: &'static State, vampire_id: i64) -> Result<V
       'Kraft' AS "kind!",
       power_raise.power_raise_id AS "usage_id!",
       power.name AS "name!",
-      1 AS "increase!",
+      power_raise.increase AS "increase!",
       power_raise.xp_cost AS "xp_cost!",
       to_char(power_raise.creation_time, 'YYYY-MM-DD HH24:MI:SS') AS "created_at!"
     FROM power_raise
@@ -244,7 +244,7 @@ async fn fetch_pending_usage(state: &'static State, vampire_id: i64) -> Result<V
       'Inflytande' AS "kind!",
       influence_raise.influence_raise_id AS "usage_id!",
       influence.name AS "name!",
-      1 AS "increase!",
+      influence_raise.increase AS "increase!",
       influence_raise.xp_cost AS "xp_cost!",
       to_char(influence_raise.creation_time, 'YYYY-MM-DD HH24:MI:SS') AS "created_at!"
     FROM influence_raise
@@ -312,9 +312,10 @@ async fn update_character(
   let name = form.name.ok_or_else(|| Error::invalid_builder_draft("Missing name"))?;
   let apparent_age = form.apparent_age.ok_or_else(|| Error::invalid_builder_draft("Missing apparent_age"))?;
   let date_embraced = parse_date(form.date_embraced.as_deref().ok_or_else(|| Error::invalid_builder_draft("Missing date_embraced"))?)?;
+  let parse_torpor = |s: Option<String>| -> i32 { s.and_then(|s| { let s = s.trim().to_string(); if s.is_empty() { None } else { s.parse().ok() } }).unwrap_or(0) };
   let torpor_time = sqlx::postgres::types::PgInterval {
-    months: form.torpor_years.unwrap_or(0) * 12 + form.torpor_months.unwrap_or(0),
-    days: form.torpor_days.unwrap_or(0),
+    months: parse_torpor(form.torpor_years) * 12 + parse_torpor(form.torpor_months),
+    days: parse_torpor(form.torpor_days),
     microseconds: 0,
   };
   let clan_id = form.clan_id.ok_or_else(|| Error::invalid_builder_draft("Missing clan_id"))?;

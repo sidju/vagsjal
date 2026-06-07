@@ -19,6 +19,7 @@ CREATE TABLE power_raise (
 power_raise_id BIGSERIAL PRIMARY KEY NOT NULL,
 vampire_id BIGINT NOT NULL,
 power VARCHAR(64) NOT NULL,
+increase INT CHECK (increase > 0) NOT NULL DEFAULT 1,
 xp_cost INT CHECK (xp_cost > 0) NOT NULL,
 creation_time TIMESTAMPTZ DEFAULT NOW() NOT NULL,
 
@@ -30,6 +31,7 @@ CREATE TABLE influence_raise (
 influence_raise_id BIGSERIAL PRIMARY KEY NOT NULL,
 vampire_id BIGINT NOT NULL,
 influence VARCHAR(64) NOT NULL,
+increase INT CHECK (increase > 0) NOT NULL DEFAULT 1,
 xp_cost INT CHECK (xp_cost > 0) NOT NULL,
 creation_time TIMESTAMPTZ DEFAULT NOW() NOT NULL,
 

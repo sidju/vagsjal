@@ -274,4 +274,10 @@
     </ul>
   {% endif %}
 
+<script>
+(function() {
+  const el = document.getElementById("date_embraced");
+  if (el) el.max = new Date().toISOString().split("T")[0];
+})();
+</script>
 {% endblock %}

@@ -1,0 +1,16 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\nINSERT INTO power_raise(vampire_id, power, increase, xp_cost)\nSELECT $1, $2::VARCHAR, $3::INT, SUM(power_xp_cost.xp_cost)::INT\nFROM power_xp_cost\nJOIN generate_series(1, $3::INT) AS g(lev)\n  ON power_xp_cost.level = COALESCE(\n    (SELECT \"value!\"::INT FROM vampire_power WHERE vampire_id = $1 AND \"name!\" = $2::VARCHAR),\n    0\n  ) + g.lev\nWHERE power_xp_cost.in_clan = (\n    SELECT EXISTS(\n      SELECT 1\n      FROM vampire\n      JOIN clan USING (clan_id)\n      WHERE vampire.vampire_id = $1\n        AND ($2::VARCHAR = clan.unique_power OR $2::VARCHAR = clan.power_one OR $2::VARCHAR = clan.power_two)\n    )\n  )\n          ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Int8",
+        "Varchar",
+        "Int4"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "8d3b7089f699357fd345bce9ecb0cb019d44fe75b67ebca96d4e5b1ef5b1d85c"
+}

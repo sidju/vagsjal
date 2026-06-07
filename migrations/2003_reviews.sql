@@ -45,4 +45,29 @@ FOREIGN KEY (humanity_change_id) REFERENCES humanity_change,
 FOREIGN KEY (reviewer_id) REFERENCES app_user
 );
 
+-- Constraint trigger: prevent a second pending power raise for the same power.
+-- A pending raise is one where no review row exists.
+-- Counts AFTER insert so the just-inserted row is included, then rejects if > 1.
+CREATE FUNCTION check_pending_power_raise() RETURNS TRIGGER AS $$
+BEGIN
+  IF (
+    SELECT COUNT(*) FROM power_raise pr
+    LEFT JOIN power_raise_review prr USING (power_raise_id)
+    WHERE pr.vampire_id = NEW.vampire_id
+      AND pr.power = NEW.power
+      AND prr.power_raise_id IS NULL
+  ) > 1 THEN
+    RAISE EXCEPTION 'Det finns redan en pågående höjning för kraften %', NEW.power
+      USING ERRCODE = '23514';
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE CONSTRAINT TRIGGER trg_check_pending_power_raise
+  AFTER INSERT ON power_raise
+  DEFERRABLE INITIALLY IMMEDIATE
+  FOR EACH ROW
+  EXECUTE FUNCTION check_pending_power_raise();
+
 COMMIT;

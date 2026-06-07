@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "\n    SELECT\n      'Inflytande' AS \"kind!\",\n      influence_raise.influence_raise_id AS \"usage_id!\",\n      influence.name AS \"name!\",\n      1 AS \"increase!\",\n      influence_raise.xp_cost AS \"xp_cost!\",\n      to_char(influence_raise.creation_time, 'YYYY-MM-DD HH24:MI:SS') AS \"created_at!\"\n    FROM influence_raise\n    JOIN influence ON influence.id = influence_raise.influence\n    LEFT JOIN influence_raise_review USING (influence_raise_id)\n    WHERE influence_raise.vampire_id = $1 AND influence_raise_review.state IS NULL\n    ORDER BY influence_raise.creation_time, influence_raise.influence_raise_id\n    ",
+  "query": "\n    SELECT\n      'Inflytande' AS \"kind!\",\n      influence_raise.influence_raise_id AS \"usage_id!\",\n      influence.name AS \"name!\",\n      influence_raise.increase AS \"increase!\",\n      influence_raise.xp_cost AS \"xp_cost!\",\n      to_char(influence_raise.creation_time, 'YYYY-MM-DD HH24:MI:SS') AS \"created_at!\"\n    FROM influence_raise\n    JOIN influence ON influence.id = influence_raise.influence\n    LEFT JOIN influence_raise_review USING (influence_raise_id)\n    WHERE influence_raise.vampire_id = $1 AND influence_raise_review.state IS NULL\n    ORDER BY influence_raise.creation_time, influence_raise.influence_raise_id\n    ",
   "describe": {
     "columns": [
       {
@@ -43,10 +43,10 @@
       null,
       false,
       false,
-      null,
+      false,
       false,
       null
     ]
   },
-  "hash": "6234d2db53b6b107c942a44081dcae06b7b33eb084f177ff645c8da849336449"
+  "hash": "f12e5a5418dcbf172ca737acfe8068362f93bc5954e9470fd3cb32cc689e310b"
 }

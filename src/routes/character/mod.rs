@@ -61,9 +61,9 @@ struct CreateCharacterForm {
   name: Option<String>,
   apparent_age: Option<i32>,
   date_embraced: Option<String>,
-  torpor_years: Option<i32>,
-  torpor_months: Option<i32>,
-  torpor_days: Option<i32>,
+  torpor_years: Option<String>,
+  torpor_months: Option<String>,
+  torpor_days: Option<String>,
   clan_id: Option<i64>,
   covenant_id: Option<String>,
   character_description_url: Option<String>,
@@ -276,9 +276,10 @@ async fn index_post(
   let name = form.name.ok_or_else(|| Error::invalid_builder_draft("Missing name"))?;
   let apparent_age = form.apparent_age.ok_or_else(|| Error::invalid_builder_draft("Missing apparent_age"))?;
   let date_embraced = parse_date(form.date_embraced.as_deref().ok_or_else(|| Error::invalid_builder_draft("Missing date_embraced"))?)?;
+  let parse_torpor = |s: Option<String>| -> i32 { s.and_then(|s| { let s = s.trim().to_string(); if s.is_empty() { None } else { s.parse().ok() } }).unwrap_or(0) };
   let torpor_time = sqlx::postgres::types::PgInterval {
-    months: form.torpor_years.unwrap_or(0) * 12 + form.torpor_months.unwrap_or(0),
-    days: form.torpor_days.unwrap_or(0),
+    months: parse_torpor(form.torpor_years) * 12 + parse_torpor(form.torpor_months),
+    days: parse_torpor(form.torpor_days),
     microseconds: 0,
   };
   let clan_id = form.clan_id.ok_or_else(|| Error::invalid_builder_draft("Missing clan_id"))?;
@@ -304,7 +305,17 @@ async fn index_post(
     known_age,
   )
     .execute(&state.db)
-    .await?;
+    .await
+    .map_err(|e| {
+      if let sqlx::Error::Database(ref dbe) = e {
+        if let Some(code) = dbe.code() {
+          if code == "23514" {
+            return Error::invalid_builder_draft("Ogiltig karaktär. Omfamningsdatumet kan inte vara i framtiden, torpor-tid kan inte vara negativ och mänsklig ålder måste vara positiv.");
+          }
+        }
+      }
+      Error::from(e)
+    })?;
   see_other("/character/?saved=1")
 }
 

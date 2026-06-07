@@ -95,8 +95,8 @@ struct SavedQuery {
 #[serde(tag = "kind", rename_all = "snake_case")]
 enum DraftOperation {
   Stat { stat: String, increase: i32 },
-  Power { power: String },
-  Influence { influence: String },
+  Power { power: String, increase: i32 },
+  Influence { influence: String, increase: i32 },
   Humanity { change: i32, note: String },
 }
 #[derive(Debug, Serialize)]
@@ -449,12 +449,17 @@ WHERE stat_xp_cost.stat = $2::VARCHAR
           return Err(Error::invalid_builder_draft(&format!("Missing XP rule for stat '{stat}'")));
         }
       },
-      DraftOperation::Power { power } => {
+      DraftOperation::Power { power, increase } => {
         let result = sqlx::query!(
           "
-INSERT INTO power_raise(vampire_id, power, xp_cost)
-SELECT $1, $2::VARCHAR, power_xp_cost.xp_cost
+INSERT INTO power_raise(vampire_id, power, increase, xp_cost)
+SELECT $1, $2::VARCHAR, $3::INT, SUM(power_xp_cost.xp_cost)::INT
 FROM power_xp_cost
+JOIN generate_series(1, $3::INT) AS g(lev)
+  ON power_xp_cost.level = COALESCE(
+    (SELECT \"value!\"::INT FROM vampire_power WHERE vampire_id = $1 AND \"name!\" = $2::VARCHAR),
+    0
+  ) + g.lev
 WHERE power_xp_cost.in_clan = (
     SELECT EXISTS(
       SELECT 1
@@ -464,31 +469,41 @@ WHERE power_xp_cost.in_clan = (
         AND ($2::VARCHAR = clan.unique_power OR $2::VARCHAR = clan.power_one OR $2::VARCHAR = clan.power_two)
     )
   )
-  AND power_xp_cost.level = COALESCE(
-    (SELECT \"value!\"::INT + 1 FROM vampire_power WHERE vampire_id = $1 AND \"name!\" = $2::VARCHAR),
-    1
-  )
           ",
           vampire_id,
           power,
+          increase,
         )
           .execute(&mut *tx)
-          .await?
+          .await
+          .map_err(|e| {
+            if let sqlx::Error::Database(ref dbe) = e {
+              if let Some(code) = dbe.code() {
+                if code == "23514" {
+                  return Error::invalid_builder_draft(
+                    "Det finns redan en pågående höjning för denna kraft som väntar på granskning",
+                  );
+                }
+              }
+            }
+            Error::from(e)
+          })?
         ;
         if result.rows_affected() != 1 {
           return Err(Error::invalid_builder_draft(&format!("Missing XP rule for power '{power}'")));
         }
       },
-      DraftOperation::Influence { influence } => {
+      DraftOperation::Influence { influence, increase } => {
         let result = sqlx::query!(
           "
-INSERT INTO influence_raise(vampire_id, influence, xp_cost)
-SELECT $1, $2::VARCHAR, influence_xp_cost.xp_cost
+INSERT INTO influence_raise(vampire_id, influence, increase, xp_cost)
+SELECT $1, $2::VARCHAR, $3::INT, influence_xp_cost.xp_cost * $3::INT
 FROM influence_xp_cost
 WHERE influence_xp_cost.influence = $2::VARCHAR
           ",
           vampire_id,
           influence,
+          increase,
         )
           .execute(&mut *tx)
           .await?
