@@ -15,7 +15,7 @@
 </div>
 {% endblock %}
 
-{% block body %}{{ content|safe }}{% endblock %}
+{% block body %}<div class="wiki-content">{{ content|safe }}</div>{% endblock %}
 
 {% block scripts %}
 <script src="/wiki/search.js"></script>
