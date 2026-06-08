@@ -2,9 +2,9 @@
 
 ## Kort om lajvet
 
-- Det är ett Vamyrlajv baserat på Vamprie: The Requiem.
+- Det är ett Vampyrlajv baserat på Vamprie: The Requiem.
 - Lajvet sker 21:a och 22:a augusti från 18 till 00
-- Lokalen är öppen mellan 16 och 02 för upsättning/nedplockning.
+- Lokalen är öppen mellan 16 och 02 för uppsättning/nedplockning.
 
 ## Kort om hemsidan
 
