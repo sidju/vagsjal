@@ -9,6 +9,6 @@ utmaning.
 Detta är inte kopplat till intelligens; om något relaterar det till visdom och
 självförtroende.
 
-Djur kan ha Mental Ability 1 eller 2, möjligen 3 i exceptionella fall.
+Djur kan ha Mental förmåga 1 eller 2, möjligen 3 i exceptionella fall.
 
-Människors Mental Ability varierar med deras psykiska välmående mellan 1 och 6.
+Människors Mental förmåga varierar med deras psykiska välmående mellan 1 och 6.

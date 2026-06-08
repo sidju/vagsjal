@@ -2,25 +2,25 @@
 
 #index
 
-För att ha en karaktär som är trevlig att LARPa behöver du mer än ett
-[karaktärsblad](character-sheet.md), oftast behöver du inte ens några stats
-alls. Istället behöver du _karaktär_, något som beskrivs i
+För att ha en karaktär som är trevlig att lajva behöver du mer än ett
+[karaktärsblad](/character/), oftast behöver du inte ens några stats
+alls. Istället behöver du _karaktär_, något som givetvis beskrivs i
 karaktärsbeskrivningen.
 
 Se till att ditt dokument börjar med sektionerna
 [Off information](#off-information) och [Plot hooks](#plot-hooks) för att göra
-det enklare för spelledarna att komma åt dessa sektioner när de planerar LARPet
+det enklare för spelledarna att komma åt dessa sektioner när de planerar lajvet
 och intriger däri.
 
 ## Off information
 
-### Ditt LARP-mål
+### Ditt lajvmål
 
 Vad är ditt mål med den här karaktären? Vilken spelstil söker du?
 
-### Karaktärens LARP-mål
+### Karaktärens lajvmål
 
-Med tanke på LARPets setting, varför är den här karaktären här och vad försöker
+Med tanke på lajvets setting, varför är den här karaktären här och vad försöker
 de uppnå?
 
 ## Utseende
@@ -36,7 +36,7 @@ En mening som beskriver vad karaktären är.
 
 ### Rädslor
 
-Odjuret förstärker både rädsla och ilska, så en stark obehagskänsla kan mycket
+Besten förstärker både rädsla och ilska, så en stark obehagskänsla kan mycket
 väl förvandlas till en full fobi. Du bör välja en eller två rädslor för
 karaktären.
 
@@ -78,10 +78,10 @@ varje karaktärs beskrivning fritt och använder följande frågor som inspirati
 
 #### Mål
 
-De flesta stabila kindred har något slags mål i sin tillvaro, något ideal de
+De flesta stabila besläktade har något slags mål i sin tillvaro, något ideal de
 kämpar för att upprätthålla eller något de vill och arbetar för att uppnå.
 Karaktärer utan ett mål som bara strävar efter kortsiktig överlevnad är giltiga,
-men kommer sannolikt att kämpa tills de finner ett syfte.
+men kommer sannolikt att ha det svårt tills de finner ett syfte.
 
 #### Brist
 
@@ -92,11 +92,11 @@ den är fullt kontrollerad och dold ger den mycket nyans.
 
 #### Etik
 
-Fundera över vilken etik och moral karaktären prenumererar på. Stämmer de
-överens med normerna för deras [klan](clan.md) och/eller
+Fundera över vilken etik och moral karaktären efterföljer. Stämmer de
+överens med normerna för deras [klan](clans.md) och/eller
 [kovenant](covenants.md)?
 
-#### [Vampyrens tillstånd](kindred-condition.md)
+#### Det vampyriska livet
 
 Vad tycker karaktären om att vara en vampyr? Vad tycker de om andra vampyrer?
 
@@ -115,12 +115,11 @@ känner de inför det?
 #### Omfamningen
 
 Hur blev de omfamnade? Träffade de sin skapare, hur var deras relation? Notera
-att omfamningen i allmänhet är traumatisk på grund av den extrema smärtan av
-förvandlingen, dess oåterkallelighet och att de flesta kommer att
-[svälta ut](vampiric-condition.md#frenzy) omedelbart efteråt och ofta döda
-någon.
+att omfamningen i allmänhet är traumatisk, dess oåterkallelighet och att de
+flesta [förlorar sig till hunger](frenzy.md) omedelbart
+efteråt och ofta dödar någon.
 
-#### Spädbarnstid
+#### Tiden som fledgeling
 
 De första åren efter omfamningen är ofta förvirrande, hur överlevde din karaktär
 dem? Hade de stöd från en mentor?

@@ -25,7 +25,7 @@ som står emot att rygga undan från dig i några minuter.
 
 Du kan plantera en rå, formlös rädsla i sinnet hos ett mål med lägre
 [Mental Förmåga](mental-ability.md) än du, vilket får dem att känna sig oroliga
-och ängsliga så länge effekten varar. Den påverkar kindred resten av natten, men
+och ängsliga så länge effekten varar. Den påverkar en besläktad resten av natten, men
 människor påverkas i en vecka och kommer ha svårt att sova alls under den tiden.
 
 ### 3: Waking Nightmare

@@ -7,7 +7,7 @@ sire) tömmer en människa på blod och låter sedan offret dricka av sitt blod.
 allt går rätt vaknar människan som en nyfödd vampyr — ofta kallad fledgeling.
 
 Omfamningen är en traumatisk upplevelse som varierar beroende på
-[klan](clan.md). Bandet mellan sire och dess childre är djupt och ofta
+[klan](clans.md). Bandet mellan sire och dess childre är djupt och ofta
 komplicerat. Många vampyrer ser sin sire som en förälder, medan andra hatar sin
 skapare för att de dömts till ett evigt liv som monster.
 

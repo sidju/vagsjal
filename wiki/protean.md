@@ -21,7 +21,7 @@ kropp som gör dig bättre lämpad att jaga i natten. Typiska förändringar är
 | Källa             | Effekt                                         |
 | ----------------- | ---------------------------------------------- |
 | Sinnen            | Förhöjd perception                             |
-| Klor/bett/sporrar | +2 [weapon bonus](utrustning.md#melee-weapons) |
+| Klor/bett/sporrar | +2 [vapenbonus](equipment.md#närstridsvapen) |
 | Tålig hud         | +4 [HP](hp.md)                                 |
 | Fyrfotade lemmar  | Förbättrad stabilitet och löphastighet         |
 | Patagium/vingar   | Glidflygförmåga, ingen fallskada               |
@@ -52,8 +52,8 @@ de inte påverkar samma kroppsdel.
 
 | Källa                          | Effekt                                                       |
 | ------------------------------ | ------------------------------------------------------------ |
-| Klor, tänder eller bensporrar  | +5 weapon bonus                                              |
-| [Vitae](vitae.md)-gift (svart) | [Aggravated](aggravated-damage.md) damage                    |
+| Klor, tänder eller bensporrar  | +5 vapenbonus                                              |
+| [Vitae](vitae.md)-gift (svart) | [Förvärrad](aggravated-damage.md) skada                    |
 | [Vitae](vitae.md)-gift (röd)   | Tvingar [vitae](vitae.md)-intag [(blodsband)](blood-bond.md) |
 | Extra lemmar                   | Ytterligare lemmar för vapen eller brottning                 |
 | Förlängda armar eller fingrar  | Utökad närstridsräckvidd                                     |
@@ -79,7 +79,7 @@ försvinna i tomma intet, men du kan inte orsaka någon skada.
 Du låter besten forma dig fullt ut och antar en monstruös form unik för dig.
 Denna form låter dig lägga till en ytterligare [Horrid](#horrid-aspect) eller
 [Predatory Aspect](#predatory-aspect) (utöver de 2 som fås från lägre nivåer)
-per 2 nivåer i [blodspotens](blood-potency.md). (dvs. 2 + BP/2 totalt)
+per 2 nivåer i [blodpotens](blood-potency.md). (dvs. 2 + BP/2 totalt)
 
 Spelare uppmuntras att skriva ner en beskrivning av sin valda kombination och
 dess resulterande utseende (och bör gärna lägga till valfritt antal extra

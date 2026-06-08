@@ -4,7 +4,7 @@
 
 Ordo Dracul är lärda och asketer, kovenanteret för dem som vägrar acceptera
 begränsningarna i sitt tillstånd. Där andra [kovenanter](covenants.md) sluter
-fred med vad det innebär att vara Kindred — genom religiös inramning, politisk
+fred med vad det innebär att vara Besläktad — genom religiös inramning, politisk
 struktur eller filosofiskt accepterande — betraktar Ordo Dracul vampyrisk
 existens som ett problem som ska lösas. Framför allt är de en kovenant för
 förvandling.
@@ -13,7 +13,7 @@ förvandling.
 
 Förbundet grundades, hävdar de, av Vlad Tepes — Dracula — som efter sin död och
 återuppståndelse ägnade sig åt att förstå och till slut överskrida vampyrskapets
-begränsningar. Den centrala tanker är att Kindred är fångade: bundna av solen,
+begränsningar. Den centrala tanker är att Besläktade är fångade: bundna av solen,
 av eld, av hunger, av Odjurets dragningskraft. Detta är inte gudomliga påbud
 eller naturliga fakta utan kedjor. Och kedjor kan brytas eller lossas.
 
@@ -22,7 +22,7 @@ Detta ger Ordo Dracul en inriktning som är unik bland
 inriktad på självbehärskning än makt över andra. Det gör dem inte ofarliga, en
 kovenant av vampyrer som ägnar sig åt ett stort verk av självförädling kan vara
 hänsynslös i sin strävan, men det skiljer dem något från den politiska kamp som
-upptar större delen av Kindred-samhället.
+upptar större delen av det besläktade samhället.
 
 ## Coils of the Dragon
 
@@ -38,9 +38,9 @@ verklig och personlig seger över vampyrskapet.
 ## Historia
 
 Huruvida Ordo Dracul verkligen kan spåra sin härstamning till Vlad Tepes är en
-fråga som även medlemmarna debatterar. Vad som är säkert är att kovenanteret är
+fråga som även medlemmarna debatterar. Vad som är säkert är att kovenanten är
 gammalt, hemlighetsfullt och har producerat en mängd esoterisk kunskap utan
-motstycke i omfattning. De har aldrig försökt dominera Kindred-politiken, deras
+motstycke i omfattning. De har aldrig försökt dominera Besläktad-politiken, deras
 ambitioner går ju i en annan riktning, men de är noga med vilka domäner de
 involverar sig i och varför. När deras uppmärksamhet faller på en plats betyder
 det nog att de har hittat något värt att studera där.

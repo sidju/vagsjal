@@ -36,6 +36,13 @@ fn main() {
 
   entries.sort_by(|a, b| a.0.cmp(&b.0));
 
+  let display_titles: BTreeMap<String, String> = entries.iter()
+    .map(|(name, content)| {
+      let title = extract_title(content).unwrap_or_else(|| name.clone());
+      (name.clone(), title)
+    })
+    .collect();
+
   let options = build_comrak_options();
 
   // FIRST PASS: analyze all files for backlinks and categories
@@ -74,9 +81,10 @@ fn main() {
       let mut cat_list: Vec<&str> = pages_in_cat.iter().map(|s| s.as_str()).collect();
       cat_list.sort();
       if !cat_list.is_empty() {
-        body.push_str("<hr>\n<section class=\"wiki-section\">\n<h2>Pages in this category:</h2>\n<ul>\n");
+        body.push_str("<hr>\n<section class=\"wiki-section\">\n<h2>Sidor i denna kategori:</h2>\n<ul>\n");
         for page in &cat_list {
-          body.push_str(&format!("<li><a href=\"/wiki/{page}/\">{page}</a></li>\n"));
+          let display = display_titles.get(*page).map(|s| s.as_str()).unwrap_or(page);
+          body.push_str(&format!("<li><a href=\"/wiki/{page}/\">{display}</a></li>\n"));
         }
         body.push_str("</ul>\n</section>\n");
       }
@@ -87,9 +95,10 @@ fn main() {
       let mut link_list: Vec<&str> = links.iter().map(|s| s.as_str()).collect();
       link_list.sort();
       if !link_list.is_empty() {
-        body.push_str("<hr>\n<section class=\"wiki-section\">\n<h2>Linked from:</h2>\n<ul>\n");
+        body.push_str("<hr>\n<section class=\"wiki-section\">\n<h2>Sidor som länkar hit:</h2>\n<ul>\n");
         for link in &link_list {
-          body.push_str(&format!("<li><a href=\"/wiki/{link}/\">{link}</a></li>\n"));
+          let display = display_titles.get(*link).map(|s| s.as_str()).unwrap_or(link);
+          body.push_str(&format!("<li><a href=\"/wiki/{link}/\">{display}</a></li>\n"));
         }
         body.push_str("</ul>\n</section>\n");
       }
@@ -110,11 +119,12 @@ fn main() {
       continue;
     }
     let mut body = String::from("<h1>") + category + "</h1>\n";
-    body.push_str("<hr>\n<section class=\"wiki-section\">\n<h2>Pages in this category:</h2>\n<ul>\n");
+    body.push_str("<hr>\n<section class=\"wiki-section\">\n<h2>Sidor i denna kategori:</h2>\n<ul>\n");
     let mut member_list: Vec<&str> = members.iter().map(|s| s.as_str()).collect();
     member_list.sort();
     for page in &member_list {
-      body.push_str(&format!("<li><a href=\"/wiki/{page}/\">{page}</a></li>\n"));
+      let display = display_titles.get(*page).map(|s| s.as_str()).unwrap_or(page);
+      body.push_str(&format!("<li><a href=\"/wiki/{page}/\">{display}</a></li>\n"));
     }
     body.push_str("</ul>\n</section>\n");
 
@@ -123,9 +133,10 @@ fn main() {
       let mut link_list: Vec<&str> = links.iter().map(|s| s.as_str()).collect();
       link_list.sort();
       if !link_list.is_empty() {
-        body.push_str("<hr>\n<section class=\"wiki-section\">\n<h2>Linked from:</h2>\n<ul>\n");
+        body.push_str("<hr>\n<section class=\"wiki-section\">\n<h2>Sidor som länkar hit:</h2>\n<ul>\n");
         for link in &link_list {
-          body.push_str(&format!("<li><a href=\"/wiki/{link}/\">{link}</a></li>\n"));
+          let display = display_titles.get(*link).map(|s| s.as_str()).unwrap_or(link);
+          body.push_str(&format!("<li><a href=\"/wiki/{link}/\">{display}</a></li>\n"));
         }
         body.push_str("</ul>\n</section>\n");
       }

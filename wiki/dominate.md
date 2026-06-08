@@ -6,7 +6,7 @@
 
 Med ögonkontakt och en mjuk begäran binder du ett mål med lägre
 [Mental Förmåga](mental-ability.md) än dig och gör dem undermedvetet benägna att
-uppfylla din begäran. Kindred uppfyller spontant små förfrågningar och tror att
+uppfylla din begäran. Besläktade uppfyller spontant små förfrågningar och tror att
 det var av egen vilja. Dödliga är villiga att utföra upp till en timmes arbete
 för dig.
 
@@ -25,7 +25,7 @@ Med ögonkontakt kan du försätta ett mål med lägre
 [Mental Förmåga](mental-ability.md) än dig i ett suggestibelt hypnotiskt
 tillstånd. I detta tillstånd minns de inte vad de blir tillsagda, men de lyder.
 De kan ta emot en lång och komplex uppgift som tar upp till en natt. De känner
-sig tvingade att följa instruktionerna, men kindred kan stå emot dem om lydnad
+sig tvingade att följa instruktionerna, men besläktade kan stå emot dem om lydnad
 vore omedelbart farlig. En typisk användning är att beordra en människa: "Följ
 mig, lyd mina order och glöm allt vid soluppgång.".
 
@@ -34,12 +34,12 @@ mig, lyd mina order och glöm allt vid soluppgång.".
 Genom [Mesmerize](#2-Mesmerize) kan du ge ett mål en specifik utlösande
 omständighet och en [Command](#1-command) att lyda när dessa omständigheter
 uppstår. En typisk användning kan vara "Om du hör någon planera mot mig,
-_informera mig_.". Effekten varar en natt på kindred och en vecka på människor.
+_informera mig_.". Effekten varar en natt på besläktade och en vecka på människor.
 
 ### 3: Decree
 
 Du kan utfärda ett högt och tydligt uttalande; alla som ser och hör dig och har
-lägre [Mental Ability](mental-ability.md) än du påverkas som av
+lägre [Mental förmåga](mental-ability.md) än du påverkas som av
 [Command](#1-command).
 
 ### 3: Forgetful Mind

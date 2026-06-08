@@ -6,7 +6,7 @@
 
 För varje nivå av Celerity förbättras din reaktionshastighet, vilket låter dig
 reagera i takt med vem som helst som använder samma nivå. Detta innebär att du
-sannolikt vinner [Initiativ](strid.md#initiativ) i strid.
+sannolikt vinner [Initiativ](combat.md#initiativ) i strid.
 
 ### Aktiv effekt
 

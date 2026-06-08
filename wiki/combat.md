@@ -27,7 +27,7 @@ För att avgöra initiativordningen, använd följande regler i ordning:
 - Om anfallaren överraskade försvararen (mindre än 2 sekunder från insikt till
   attack): anfallaren går först.
 - Om någon sida har mer [Celerity](celerity.md) (totalt), går de först.
-- Om en part har mer [Physical Ability](physical-ability.md), går de först.
+- Om en part har mer [Fysisk förmåga](physical-ability.md), går de först.
 - Om allt annat är lika, singla slant eller kör sten-sax-påse.
 
 Ingen bonusskada delas ut vid överraskningsattacker; initiativ anses vara en
@@ -40,7 +40,7 @@ följande:
 
 - Närstridsattack, om ditt mål är inom räckhåll.
 - Distansattack, om du inte är i närstrid (eller ditt
-  [vapen](equipment.md#avstandsvapen) tillåter ändå).
+  [vapen](equipment.md#avståndsvapen) tillåter ändå).
 - Använd en [kraft](blood-powers.md), om den går att använda i hast.
 
 ## Skada
@@ -49,20 +49,20 @@ Skada tas som man skulle vänta sig, karaktärens HP reduceras med mängden skad
 som tas. Notervärt är dock:
 
 - Karaktärer med [Potence](potence.md) reducerar skadan de tar.
-- [Förvärrad skada](aggravated.md)
+- [Förvärrad skada](aggravated-damage.md)
 
 ### Närstridsskada
 
-Närstridsskada = ([Physical Ability](physical-ability.md) +
-[Weapon Bonus](equipment.md#närstridsvapen) (om någon)) / 3 (avrunda nedåt) +
+Närstridsskada = ([Fysisk förmåga](physical-ability.md) +
+[Vapenbonus](equipment.md#närstridsvapen) (om någon)) / 3 (avrunda nedåt) +
 nivån av [Potence](potence.md)
 
 ### Distansskada
 
 #### Skada på nära håll
 
-[Vapenskada](equipment.md#avstandsvapen) \* 2
+[Vapenskada](equipment.md#avståndsvapen) \* 2
 
 #### Skada på långt håll
 
-[Vapenskada](equipment.md#avstandsvapen) \* 1
+[Vapenskada](equipment.md#avståndsvapen) \* 1

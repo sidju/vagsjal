@@ -4,16 +4,16 @@
 
 ## Medfödda
 
-Dessa är krafterna som alla kindred besitter och instinktivt vet hur de ska
+Dessa är krafterna som alla besläktade besitter och instinktivt vet hur de ska
 använda.
 
 ### Kyssen
 
 Även om det går att bita eller skära en måltavla våldsamt och dricka från såret,
-föredrar de flesta kindred att använda den mer diskreta kyssen. Hur offret
+föredrar de flesta besläktade att använda den mer diskreta kyssen. Hur offret
 reagerar varierar beroende på vampyrens klan, men gemensamt är att upplevelsen
 distraherar offret från vad som sker och såret försluter sig spårlöst efteråt.
-Endast dödliga offer och kindred med lägre [Blood Potency](blood-potency.md) än
+Endast dödliga offer och besläktade med lägre [Blodpotens](blood-potency.md) än
 den bitande vampyren blir helt distraherade av upplevelsen, men även starkare
 vampyrer känner av den.
 
