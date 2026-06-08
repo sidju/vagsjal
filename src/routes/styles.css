@@ -213,6 +213,17 @@ table.stat-table.char-meta th:last-child {
   text-align: left;
 }
 
+/* Admin users table: thin ID column, wider name column */
+table.stat-table.users-table th:first-child,
+table.stat-table.users-table td:first-child {
+  width: auto;
+  white-space: nowrap;
+}
+table.stat-table.users-table th:nth-child(2),
+table.stat-table.users-table td:nth-child(2) {
+  width: 25%;
+}
+
 /* Combat value tables */
 .combat-details {
   margin: 1rem 0;
