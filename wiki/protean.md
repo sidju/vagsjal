@@ -77,8 +77,8 @@ försvinna i tomma intet, men du kan inte orsaka någon skada.
 ### 3: Horrid Form
 
 Du låter besten forma dig fullt ut och antar en monstruös form unik för dig.
-Denna form låter dig lägga till en ytterligare [Horrid](#horrid-aspect) eller
-[Predatory Aspect](#predatory-aspect) (utöver de 2 som fås från lägre nivåer)
+Denna form låter dig lägga till en ytterligare [Horrid](#2-horrid-aspect) eller
+[Predatory Aspect](#1-predatory-aspect) (utöver de 2 som fås från lägre nivåer)
 per 2 nivåer i [blodpotens](blood-potency.md). (dvs. 2 + BP/2 totalt)
 
 Spelare uppmuntras att skriva ner en beskrivning av sin valda kombination och

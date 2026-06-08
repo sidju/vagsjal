@@ -31,7 +31,7 @@ mig, lyd mina order och glöm allt vid soluppgång.".
 
 ### 2: Entombed Command
 
-Genom [Mesmerize](#2-Mesmerize) kan du ge ett mål en specifik utlösande
+Genom [Mesmerize](#2-mesmerize) kan du ge ett mål en specifik utlösande
 omständighet och en [Command](#1-command) att lyda när dessa omständigheter
 uppstår. En typisk användning kan vara "Om du hör någon planera mot mig,
 _informera mig_.". Effekten varar en natt på besläktade och en vecka på människor.
