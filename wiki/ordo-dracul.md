@@ -13,9 +13,9 @@ förvandling.
 
 Förbundet grundades, hävdar de, av Vlad Tepes — Dracula — som efter sin död och
 återuppståndelse ägnade sig åt att förstå och till slut överskrida vampyrskapets
-begränsningar. Den centrala tanker är att Besläktade är fångade: bundna av solen,
-av eld, av hunger, av Odjurets dragningskraft. Detta är inte gudomliga påbud
-eller naturliga fakta utan kedjor. Och kedjor kan brytas eller lossas.
+begränsningar. Den centrala tanker är att Besläktade är fångade: bundna av
+solen, av eld, av hunger, av Odjurets dragningskraft. Detta är inte gudomliga
+påbud eller naturliga fakta utan kedjor. Och kedjor kan brytas eller lossas.
 
 Detta ger Ordo Dracul en inriktning som är unik bland
 [kovenanterna](covenants.md): i grunden introspektiv och experimentell, mer
@@ -40,7 +40,7 @@ verklig och personlig seger över vampyrskapet.
 Huruvida Ordo Dracul verkligen kan spåra sin härstamning till Vlad Tepes är en
 fråga som även medlemmarna debatterar. Vad som är säkert är att kovenanten är
 gammalt, hemlighetsfullt och har producerat en mängd esoterisk kunskap utan
-motstycke i omfattning. De har aldrig försökt dominera Besläktad-politiken, deras
-ambitioner går ju i en annan riktning, men de är noga med vilka domäner de
+motstycke i omfattning. De har aldrig försökt dominera Besläktad-politiken,
+deras ambitioner går ju i en annan riktning, men de är noga med vilka domäner de
 involverar sig i och varför. När deras uppmärksamhet faller på en plats betyder
 det nog att de har hittat något värt att studera där.

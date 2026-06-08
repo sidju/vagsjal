@@ -3,8 +3,8 @@
 #index
 
 För att ha en karaktär som är trevlig att lajva behöver du mer än ett
-[karaktärsblad](/character/), oftast behöver du inte ens några stats
-alls. Istället behöver du _karaktär_, något som givetvis beskrivs i
+[karaktärsblad](/character/), oftast behöver du inte ens några stats alls.
+Istället behöver du _karaktär_, något som givetvis beskrivs i
 karaktärsbeskrivningen.
 
 Se till att ditt dokument börjar med sektionerna
@@ -92,9 +92,8 @@ den är fullt kontrollerad och dold ger den mycket nyans.
 
 #### Etik
 
-Fundera över vilken etik och moral karaktären efterföljer. Stämmer de
-överens med normerna för deras [klan](clans.md) och/eller
-[kovenant](covenants.md)?
+Fundera över vilken etik och moral karaktären efterföljer. Stämmer de överens
+med normerna för deras [klan](clans.md) och/eller [kovenant](covenants.md)?
 
 #### Det vampyriska livet
 
@@ -116,8 +115,8 @@ känner de inför det?
 
 Hur blev de omfamnade? Träffade de sin skapare, hur var deras relation? Notera
 att omfamningen i allmänhet är traumatisk, dess oåterkallelighet och att de
-flesta [förlorar sig till hunger](frenzy.md) omedelbart
-efteråt och ofta dödar någon.
+flesta [förlorar sig till hunger](frenzy.md) omedelbart efteråt och ofta dödar
+någon.
 
 #### Tiden som fledgeling
 

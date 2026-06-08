@@ -32,8 +32,8 @@ inte är större än en minibuss; effekten kvarstår till soluppgången.
 Du kan utvidga din kontroll över hur människor uppfattar dig till andra genom
 beröring; genom att hålla i dem när du döljer din närvaro kan du dölja dem. Du
 kan dölja ett mål utöver dig själv per 3 [Mental Förmåga](mental-ability.md). De
-du håller direkt med händerna döljs på nivå 2 av Obfuscate, de som håller i
-dig döljs på nivå 1 av Obfuscate.
+du håller direkt med händerna döljs på nivå 2 av Obfuscate, de som håller i dig
+döljs på nivå 1 av Obfuscate.
 
 ### 3: Oubliette
 

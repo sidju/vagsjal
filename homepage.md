@@ -22,7 +22,8 @@ rekommenderad läsning:
 
 - [Nyckelpunkter nedan](#nyckelpunkter).
 - [Världen](/wiki/setting/).
-- Den [klan](/wiki/clans/) som du ska spela (de andra kan läsas, men inget krav).
+- Den [klan](/wiki/clans/) som du ska spela (de andra kan läsas, men inget
+  krav).
 - [Karaktärsskapande](/wiki/character-creation/) med dess utpekade länkar, som
   del av att skapa en karaktär.
 

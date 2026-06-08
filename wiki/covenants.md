@@ -8,10 +8,10 @@ ambition. Besläktade ansluter sig till kovenanter då de finner en världsbild 
 matchar deras egen, eller då kovenanten erbjuder något de vill ha: makt,
 gemenskap, kunskap eller syfte.
 
-Kovenanter är det organisatoriska lagret i det besläktade samhället. De har hierarkier,
-förväntningar och ansvar. En besläktads primära politiska förpliktelser går till
-dess kovenant, och det är genom medlemskap i en kovenant som de flesta Besläktad
-engagerar sig i den bredare politiken i en domän.
+Kovenanter är det organisatoriska lagret i det besläktade samhället. De har
+hierarkier, förväntningar och ansvar. En besläktads primära politiska
+förpliktelser går till dess kovenant, och det är genom medlemskap i en kovenant
+som de flesta Besläktad engagerar sig i den bredare politiken i en domän.
 
 Lojaliteter kan och har tidigare förändrats under ett o-liv, men det är sällan
 utan konsekvenser att lämna en kovenant.

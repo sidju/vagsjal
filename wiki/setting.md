@@ -52,18 +52,17 @@ finns i världen och lär vara med om det blir ett nästa lajv.
 
 Alla vampyrer känner instinktivt Traditionerna:
 
-- Den första traditionen: Maskeraden.
-  Dölj din natur från de icke av blodet, eller förlora din rätt till blodet.
-- Den andra traditionen: Invigningen.
-  Dela inte blodet eller riskera både ditt och mottagarens liv.
-  Om du inviger är du ansvarig för den invigde.
-- Den tredje traditionen: Amaranth.
-  Drick inte själsblodet av en annan. Att göra det är att ge makt till Besten.
+- Den första traditionen: Maskeraden. Dölj din natur från de icke av blodet,
+  eller förlora din rätt till blodet.
+- Den andra traditionen: Invigningen. Dela inte blodet eller riskera både ditt
+  och mottagarens liv. Om du inviger är du ansvarig för den invigde.
+- Den tredje traditionen: Amaranth. Drick inte själsblodet av en annan. Att göra
+  det är att ge makt till Besten.
 
-Traditionerna är inte hårda lagar med straff utan en lärdom som alla
-instinktivt har. De kan lätt brytas, men alla vampyrer känner vikten av att
-inte göra det och vet att straffet de riskerar är inneboende i handlingens
-effekter, utöver sociala konsekvenser.
+Traditionerna är inte hårda lagar med straff utan en lärdom som alla instinktivt
+har. De kan lätt brytas, men alla vampyrer känner vikten av att inte göra det
+och vet att straffet de riskerar är inneboende i handlingens effekter, utöver
+sociala konsekvenser.
 
 ## Möjligheter och Risker
 

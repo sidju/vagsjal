@@ -18,15 +18,15 @@ utan att du kommer upp.
 Du låter besten sippra genom din form i form av en djurlik förändring av din
 kropp som gör dig bättre lämpad att jaga i natten. Typiska förändringar är:
 
-| Källa             | Effekt                                         |
-| ----------------- | ---------------------------------------------- |
-| Sinnen            | Förhöjd perception                             |
+| Källa             | Effekt                                       |
+| ----------------- | -------------------------------------------- |
+| Sinnen            | Förhöjd perception                           |
 | Klor/bett/sporrar | +2 [vapenbonus](equipment.md#närstridsvapen) |
-| Tålig hud         | +4 [HP](hp.md)                                 |
-| Fyrfotade lemmar  | Förbättrad stabilitet och löphastighet         |
-| Patagium/vingar   | Glidflygförmåga, ingen fallskada               |
-| Väggklättring     | Spindellik vidhäftning till vertikala ytor     |
-| Gripande svans    | Förbättrad balans och en extra brottningslem   |
+| Tålig hud         | +4 [HP](hp.md)                               |
+| Fyrfotade lemmar  | Förbättrad stabilitet och löphastighet       |
+| Patagium/vingar   | Glidflygförmåga, ingen fallskada             |
+| Väggklättring     | Spindellik vidhäftning till vertikala ytor   |
+| Gripande svans    | Förbättrad balans och en extra brottningslem |
 
 Förändringen kan inte återställas; den försvinner naturligt vid soluppgången men
 kan skäras av och skadan läkas för att återställa. En ny förändring kan inte
@@ -52,8 +52,8 @@ de inte påverkar samma kroppsdel.
 
 | Källa                          | Effekt                                                       |
 | ------------------------------ | ------------------------------------------------------------ |
-| Klor, tänder eller bensporrar  | +5 vapenbonus                                              |
-| [Vitae](vitae.md)-gift (svart) | [Förvärrad](aggravated-damage.md) skada                    |
+| Klor, tänder eller bensporrar  | +5 vapenbonus                                                |
+| [Vitae](vitae.md)-gift (svart) | [Förvärrad](aggravated-damage.md) skada                      |
 | [Vitae](vitae.md)-gift (röd)   | Tvingar [vitae](vitae.md)-intag [(blodsband)](blood-bond.md) |
 | Extra lemmar                   | Ytterligare lemmar för vapen eller brottning                 |
 | Förlängda armar eller fingrar  | Utökad närstridsräckvidd                                     |

@@ -44,6 +44,7 @@ use wiki::WikiPageTemplate;
 
 const CSS: &'static str = include_str!("styles.css");
 const LOGO: &'static [u8] = include_bytes!("vs-rr.png");
+const FAVICON: &'static [u8] = include_bytes!("favicon.png");
 
 #[derive(Template)]
 #[template(path = "index.html")]
@@ -145,6 +146,11 @@ pub async fn route(
       prevent_cache = false;
       verify_method_path_end(&path_vec, &req, &Method::GET)?;
       add_header(png(LOGO), hyper::header::CACHE_CONTROL, HeaderValue::from_static("public, max-age=2592000, immutable"))
+    },
+    Some("favicon.png") => {
+      prevent_cache = false;
+      verify_method_path_end(&path_vec, &req, &Method::GET)?;
+      add_header(png(FAVICON), hyper::header::CACHE_CONTROL, HeaderValue::from_static("public, max-age=2592000, immutable"))
     },
     _ => Err(Error::path_not_found(&req)),
   };
