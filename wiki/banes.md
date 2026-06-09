@@ -29,6 +29,9 @@ med tillräcklig viljestyrka, men besten måste bekämpas varje ögonblick.
 sätter eld på karaktären (om den inte motstår förvärrad skada). Karaktärer
 självslocknar efter BP rundor, men kan släckas med hjälp tidigare.
 
+Eld som inte är öppna lågor, såsom glöd och glödgad metall, gör 2 förvärrad
+skada per BP och sätter inte eld på karaktären.
+
 ## Halshuggning
 
 Halshuggning är en av få tillförlitliga metoder för slutgiltig död, precis som

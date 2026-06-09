@@ -5,8 +5,8 @@
 Organisatorisk förmåga beskriver din förmåga att organisera en större
 inflytelsesfär. Varje investering du kontrollerar måste hanteras; detta anger
 hur många du kan hantera direkt. Detta värde anses omfatta både medfödda och
-tekniska aspekter. Notera att du direkt kan kontrollera två färre investeringar
-per punkt [Blodpotens](blood-potency.md).
+tekniska aspekter. Notera att din Organisatoriska förmåga minskar med 2 per
+punkt [Blodpotens](blood-potency.md).
 
 Människor har en Organisatorisk förmåga mellan 1 och 3, normalt 1.
 

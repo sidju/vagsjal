@@ -14,8 +14,8 @@ såsom eld, och ingjuter en trötthet som tvingar dem att sova mer.
 - Du får 6 max-[HP](hp.md) per BP.
 - Din läkningstakt multipliceras med din BP.
 - Din skada från [Banes](banes.md) multipliceras med din BP.
-- Varje BP utöver den första gör att du sover en timme mer per dag (minskar
-  [Organisatorisk förmåga](organizational-ability.md) med 1 för varje BP).
+- Varje BP gör att du sover en timme mer per dag och minskar din
+  [Organisatoriska förmåga](organizational-ability.md) med 2.
 
 ## Att få blodpotens
 

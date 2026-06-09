@@ -1,6 +1,6 @@
 # Klaner
 
-#index #lore #rules
+#index #rules
 
 Klaner är vampyriska blodslinjer och deras nedärvda natur. En klan medför
 särskilda styrkor och svagheter, inklusive klanens specifika förbannelse, samt

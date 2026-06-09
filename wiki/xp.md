@@ -21,8 +21,8 @@ nya förmågor. Priserna för dem kan ses i följande tabell:
 | [Mänsklighet](humanity.md)                          | 7          |
 | Vilket [Inflytande](influence.md) som helst         | 4          |
 
-XP-kostnader för krafter ökar för varje nivå, och
-[Klan](clans.md)-krafter är betydligt billigare än andra.
+XP-kostnader för krafter ökar för varje nivå, och [Klan](clans.md)-krafter är
+betydligt billigare än andra.
 
 | [Klan](clans.md)-[krafter](blood-powers.md) | XP-kostnad |
 | ------------------------------------------- | ---------- |
@@ -53,29 +53,30 @@ Fysisk:
 
 - Lägg till en kompensation för din fysiska svaghet; extra [HP](hp.md), en
   [kraft](blood-powers.md) som låter dig undvika eller fly strid.
-- Lägg resten av XP:n på dina högre prioriteringar. Om det blir för lite XP
-  kvar efter kompensationen (sannolikt för mycket unga vampyrer), strunta i det
-  och var genuint mycket svag.
+- Lägg resten av XP:n på dina högre prioriteringar. Om det blir för lite XP kvar
+  efter kompensationen (sannolikt för mycket unga vampyrer), strunta i det och
+  var genuint mycket svag.
 
 ### Tänk två gånger innan du väljer Nivå 3-krafter
 
 På grund av de eskalerande XP-kostnaderna för högre nivåer av krafter är det
-tekniskt sett inte värt att skaffa nivå 3. Så om målet är effektivitet är de
-ett dåligt val, men för att definiera karaktären blir de därmed mer
-betydelsefulla.
+tekniskt sett inte värt att skaffa nivå 3. Så om målet är effektivitet är de ett
+dåligt val, men för att definiera karaktären blir de därmed mer betydelsefulla
+då man har chans att vara unik med dem.
 
 ### Dubbelkolla krafterna
 
 De är mycket signifikant förändrade jämfört med både Vampire the Masquerade och
-Vampire the Requiem.
+Vampire the Requiem. Notera att båda krafterna på en nivå fås när den nivån
+expas.
 
 ### Lås inte in dig i jämna treor av [Fysisk förmåga](physical-ability.md)
 
 Det är lätt att fokusera på den inneboende skadan som ökar på jämna treor, men
-att lägga till en eller två extra [Fysisk förmåga](physical-ability.md) kan
-vara mycket användbart i vissa fall:
+att lägga till en eller två extra [Fysisk förmåga](physical-ability.md) kan vara
+mycket användbart i vissa fall:
 
 - +3-vapen är mycket iögonfallande, så att kunna använda +2 eller +1 och
   fortfarande få skadeförstärkning förbättrar stridsflexibiliteten.
 - [Dueller](duel.md) avgörs på exakt [Fysisk förmåga](physical-ability.md), så
-  varje bit hjälper.
+  varje poäng hjälper.

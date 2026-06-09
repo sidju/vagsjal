@@ -52,4 +52,12 @@ yttrar det sig snarare som en tvingande impuls.
 
 ### [Blodsband](blood-bond.md)
 
-Han en [egen sida](blood-bond.md) då det finns lite mer regler.
+Har en [egen sida](blood-bond.md) då det finns lite mer regler.
+
+## Lärda krafter
+
+Dessa är krafterna som besläktade kan lära sig. Varje nivå av en kraft har två
+sidor, när en besläktad lär sig en nivå av en kraft behärskar de båda krafterna
+på den nivån.
+
+Se listan av krafter här efter.

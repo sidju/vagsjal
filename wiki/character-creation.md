@@ -48,8 +48,8 @@ Dessa syns endast för karaktärens ägare och spelledare:
 
 När den grundläggande informationen är ifylld och karaktären är godkänd kan du
 börja fylla i [färdigheter](/character/) genom att klicka på karaktärens namn.
-Se [XP rekommendationer](xp.md#rekommendationer) för råd i hur man bör tänka
-när man expar.
+Se [XP rekommendationer](xp.md#rekommendationer) för råd i hur man bör tänka när
+man expar.
 
 ## Godkännande
 
