@@ -1,5 +1,15 @@
 BEGIN;
 
+CREATE TABLE bp_change (
+	bp_change_id BIGSERIAL PRIMARY KEY NOT NULL,
+	vampire_id BIGINT NOT NULL,
+	change INT NOT NULL CHECK (change != 0),
+	note VARCHAR(256) NOT NULL DEFAULT '',
+	creation_time TIMESTAMPTZ DEFAULT NOW() NOT NULL,
+
+	FOREIGN KEY (vampire_id) REFERENCES vampire ON DELETE CASCADE
+);
+
 CREATE VIEW xp_remaining AS
 	SELECT vampire_id, SUM(amount) AS amount
 	FROM ((
@@ -28,15 +38,17 @@ CREATE VIEW xp_remaining AS
 	)) GROUP BY vampire_id
 ;
 
-CREATE VIEW vampire_stat AS
+CREATE OR REPLACE VIEW vampire_stat AS
 	WITH vampire_bp AS (
 		SELECT
-			vampire_id,
+			v.vampire_id,
 			(FLOOR(
-				EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - date_embraced::TIMESTAMPTZ - torpor_time))
-				/ (86400.0 * 365.25 * 24)
-			) + 1)::INT AS bp
-		FROM vampire
+				EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - v.date_embraced::TIMESTAMPTZ - v.torpor_time))
+				/ (86400.0 * 365.25 * 36)
+			) + 1 + COALESCE(SUM(bpc.change), 0))::INT AS bp
+		FROM vampire v
+		LEFT JOIN bp_change bpc ON bpc.vampire_id = v.vampire_id
+		GROUP BY v.vampire_id, v.date_embraced, v.torpor_time
 	)
 	SELECT vampire_id, id AS "id!", name AS "name!", COALESCE(value, 0) AS "value!", COALESCE(pending_review, false) AS "pending_review!"
 	FROM (

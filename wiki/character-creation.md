@@ -16,6 +16,10 @@ informationen är lätt att hitta.
 Fyll i de grundläggande uppgifterna om din karaktär på
 [karaktärsskapandet](/character/).
 
+(Innan du skapar din första karaktär behöver du även fylla i en ICE kontakt och
+om du är okej med att bilder på dig från lajvet används i marknadsföring för
+lajvet och GALF.)
+
 ### Offentliga fält
 
 Dessa syns på den [publika karaktärslistan](/characters/) för alla besökare när
@@ -44,8 +48,14 @@ Dessa syns endast för karaktärens ägare och spelledare:
 
 När den grundläggande informationen är ifylld och karaktären är godkänd kan du
 börja fylla i [färdigheter](/character/) genom att klicka på karaktärens namn.
+Se [XP rekommendationer](xp.md#rekommendationer) för råd i hur man bör tänka
+när man expar.
 
 ## Godkännande
 
 En spelledare måste godkänna karaktären innan den blir aktiv och synlig på den
 publika karaktärslistan.
+
+En spelledare behöver även godkänna XP användningarna innan de tar full effekt,
+de användningar som inväntar bekräftan visas i [karaktärsbladet](/character/)
+med en asterisk.

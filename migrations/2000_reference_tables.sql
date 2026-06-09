@@ -53,14 +53,10 @@ PRIMARY KEY (in_clan, level)
 INSERT INTO power_xp_cost (in_clan, level, xp_cost) VALUES
   (TRUE, 1, 9),
   (TRUE, 2, 12),
-  (TRUE, 3, 15),
-  (TRUE, 4, 18),
-  (TRUE, 5, 21),
+  (TRUE, 3, 18),
   (FALSE, 1, 12),
-  (FALSE, 2, 15),
-  (FALSE, 3, 18),
-  (FALSE, 4, 21),
-  (FALSE, 5, 24)
+  (FALSE, 2, 18),
+  (FALSE, 3, 30)
 ;
 
 CREATE TABLE clan (

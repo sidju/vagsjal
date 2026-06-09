@@ -25,7 +25,7 @@ om man vet hur klanerna smakar dvs. Till och med att finna blodsband är möjlig
 genom att smaka på parternas blod, även om skillnaden på släktskap och utbyte är
 mycket svår.
 
-Blodet blir starkare med åldern, ungefär var 24:e år, men det är inte endast en
+Blodet blir starkare med åldern, ungefär var 36:e år, men det är inte endast en
 fördel. När blodet blir starkare blir vampyren svagare mot sol och eld, sover
 mer av dagen, och klansvagheten förvärras.
 

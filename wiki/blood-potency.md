@@ -15,12 +15,11 @@ såsom eld, och ingjuter en trötthet som tvingar dem att sova mer.
 - Din läkningstakt multipliceras med din BP.
 - Din skada från [Banes](banes.md) multipliceras med din BP.
 - Varje BP utöver den första gör att du sover en timme mer per dag (minskar
-  [Organisatorisk förmåga](organizational-ability.md) med 2 för varje BP över
-  1).
+  [Organisatorisk förmåga](organizational-ability.md) med 1 för varje BP).
 
 ## Att få blodpotens
 
-Din blodpotens stiger med ett ungefär vart 24:e år av vampyrisk existens.
+Din blodpotens stiger med ett ungefär vart 36:e år av vampyrisk existens.
 
 År tillbringade i torpor räknas mot att höja en karaktärs blodpotens; ett år i
 torpor neutraliserar ett år av vampyrisk existens.

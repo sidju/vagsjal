@@ -35,7 +35,7 @@ rekommenderad läsning:
 - Många har ett visst band till sin klan, men det är mer en gemenskap än en
   lojalitet. Kanske ger man en fledgeling några råd, men att klanen gemensamt
   skulle ta ansvar för den är befängt.
-- BP ökar var 24:e år som vampyr och ökar karaktärens styrka på bekostnad av
+- BP ökar var 36:e år som vampyr och ökar karaktärens styrka på bekostnad av
   större svagheter och en timme mindre vaken tid per BP. Detta gör att vampyrer
   över 100 knappt är vakna om de inte spenderat en period i torpor för att sänka
   sin BP till en hanterbar nivå (högst 5).
