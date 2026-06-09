@@ -26,7 +26,7 @@
         </tr>
         <tr>
           <td><label for="ice_contact">ICE-kontakt (namn, telefon)</label></td>
-          <td><input id="ice_contact" name="ice_contact" placeholder="t.ex. Kalle Nilsson, 070-123 45 67" required></td>
+          <td><input id="ice_contact" name="ice_contact" placeholder="t.ex. Kalle Nilsson, 070-123 45 67" pattern=".+,([ +-]?\d){6,}" title="Namn följt av kommatecken och telefonnummer (minst 6 siffror)" required></td>
         </tr>
       </table>
       <div style="text-align: center;"><button type="submit" style="font-size: 1.5rem;">Spara</button></div>

@@ -287,7 +287,7 @@ async fn index_post(
   if form.pictures_ok.is_some() || form.marketing_ok.is_some() || form.ice_contact.is_some() {
     let pictures_ok = form.pictures_ok.as_deref().unwrap_or("false") == "true";
     let marketing_ok = form.marketing_ok.as_deref().unwrap_or("false") == "true";
-    let ice_contact = form.ice_contact.filter(|s| !s.trim().is_empty());
+    let ice_contact = form.ice_contact.map(|s| s.trim().to_string()).filter(|s| !s.is_empty());
     sqlx::query!(
       "UPDATE app_user SET pictures_ok = $1, marketing_ok = $2, ice_contact = $3 WHERE user_id = $4",
       pictures_ok,
@@ -296,7 +296,19 @@ async fn index_post(
       session.user_id,
     )
       .execute(&state.db)
-      .await?;
+      .await
+      .map_err(|e| {
+        if let sqlx::Error::Database(ref dbe) = e {
+          if let Some(code) = dbe.code() {
+            if code == "23514" {
+              return Error::invalid_builder_draft(
+                "ICE-kontakt måste vara på formatet 'namn, telefonnummer' där telefonnumret har minst 6 siffror"
+              );
+            }
+          }
+        }
+        Error::from(e)
+      })?;
     return see_other("/character/");
   }
 
