@@ -70,6 +70,9 @@ struct CreateCharacterForm {
   public_knowledge: Option<String>,
   home_domain: Option<String>,
   known_age: Option<String>,
+  pictures_ok: Option<String>,
+  marketing_ok: Option<String>,
+  ice_contact: Option<String>,
 }
 #[derive(Template)]
 #[template(path = "character/index.html")]
@@ -91,6 +94,7 @@ struct Index {
   show_form: bool,
   saved: bool,
   show_admin_link: bool,
+  needs_personal_data: bool,
 }
 
 impl Index {
@@ -250,6 +254,14 @@ WHERE vampire_id = $1
   );
   let show_form = active_chars.is_empty() && draft_chars.is_empty();
 
+  let needs_personal_data = sqlx::query_scalar!(
+    r#"SELECT ice_contact IS NULL AS "needs!: bool" FROM app_user WHERE user_id = $1"#,
+    session.user_id,
+  )
+    .fetch_one(&state.db)
+    .await?
+  ;
+
   // Render and return
   html(Index{
     active_chars,
@@ -260,6 +272,7 @@ WHERE vampire_id = $1
     show_form,
     saved,
     show_admin_link: session.role.is_storyteller(),
+    needs_personal_data,
   }.render()?)
 }
 
@@ -269,6 +282,24 @@ async fn index_post(
   mut req: Request,
 ) -> Result<Response, Error> {
   let form: CreateCharacterForm = parse_body_urlencoded(&mut req, state.max_content_len).await?;
+
+  // If personal data fields are present, save them and redirect back
+  if form.pictures_ok.is_some() || form.marketing_ok.is_some() || form.ice_contact.is_some() {
+    let pictures_ok = form.pictures_ok.as_deref().unwrap_or("false") == "true";
+    let marketing_ok = form.marketing_ok.as_deref().unwrap_or("false") == "true";
+    let ice_contact = form.ice_contact.filter(|s| !s.trim().is_empty());
+    sqlx::query!(
+      "UPDATE app_user SET pictures_ok = $1, marketing_ok = $2, ice_contact = $3 WHERE user_id = $4",
+      pictures_ok,
+      marketing_ok,
+      ice_contact,
+      session.user_id,
+    )
+      .execute(&state.db)
+      .await?;
+    return see_other("/character/");
+  }
+
   let character_description_url = form.character_description_url.map(|u| u.trim().to_string()).filter(|u| !u.is_empty());
   if let Some(ref url) = character_description_url {
     validate_description_url(&state.http_client, url).await?;

@@ -1,0 +1,17 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "UPDATE app_user SET pictures_ok = $1, marketing_ok = $2, ice_contact = $3 WHERE user_id = $4",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Bool",
+        "Bool",
+        "Varchar",
+        "Int8"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "b47db8f1aa954ef593e7557de646274709ce5606c50c7a2ae645684c096d3bc0"
+}

@@ -5,6 +5,35 @@
 {% block body %}
   {% if saved %}<p><b>Karaktär skapad! Väntar på godkännande från spelledare.</b></p>{% endif %}
 
+  {% if needs_personal_data %}
+    <h2>Personuppgifter</h2>
+    <p>Fyll i följande innan du kan skapa en karaktär.</p>
+    <form method="post" enctype="application/x-www-form-urlencoded">
+      <table class="stat-table">
+        <tr>
+          <td><label>Godkänner publicering av bilder</label></td>
+          <td>
+            <label><input type="radio" name="pictures_ok" value="true" required> Ja</label>
+            <label><input type="radio" name="pictures_ok" value="false" required> Nej</label>
+          </td>
+        </tr>
+        <tr>
+          <td><label>Godkänner marknadsföring</label></td>
+          <td>
+            <label><input type="radio" name="marketing_ok" value="true" required> Ja</label>
+            <label><input type="radio" name="marketing_ok" value="false" required> Nej</label>
+          </td>
+        </tr>
+        <tr>
+          <td><label for="ice_contact">ICE-kontakt (namn, telefon)</label></td>
+          <td><input id="ice_contact" name="ice_contact" placeholder="t.ex. Kalle Nilsson, 070-123 45 67" required></td>
+        </tr>
+      </table>
+      <div style="text-align: center;"><button type="submit" style="font-size: 1.5rem;">Spara</button></div>
+    </form>
+  {% endif %}
+
+  {% if !needs_personal_data %}
   {% if active_chars.len() > 0 %}
     <h2>Aktiva karaktärer</h2>
     <ul>
@@ -56,7 +85,7 @@
           {% if let Some(url) = character.character_description_url %}
           <tr>
             <td><a href="/wiki/character-description/">Karaktärsbeskrivning</a></td>
-            <td><a href="{{ url }}">{{ url }}</a></td>
+            <td><a href="{{ url }}" target="_blank" rel="noopener">{{ url }}</a></td>
           </tr>
           {% endif %}
           {% include "character/_stats_table.html" %}
@@ -205,7 +234,7 @@
           {% if let Some(url) = c.character_description_url %}
           <tr>
             <td><a href="/wiki/character-description/">Karaktärsbeskrivning</a></td>
-            <td><a href="{{ url }}">{{ url }}</a></td>
+            <td><a href="{{ url }}" target="_blank" rel="noopener">{{ url }}</a></td>
           </tr>
           {% endif %}
         </table>
@@ -265,13 +294,14 @@
           {% if let Some(url) = c.character_description_url %}
           <tr>
             <td><a href="/wiki/character-description/">Karaktärsbeskrivning</a></td>
-            <td><a href="{{ url }}">{{ url }}</a></td>
+            <td><a href="{{ url }}" target="_blank" rel="noopener">{{ url }}</a></td>
           </tr>
           {% endif %}
         </table>
       </li>
     {% endfor %}
     </ul>
+  {% endif %}
   {% endif %}
 
 <script>
