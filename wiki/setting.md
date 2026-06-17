@@ -1,9 +1,8 @@
 # Världen
 
-VägSjäl: Regentens Rekviem utspelar sig i en egen spelvärld inspirerad av (men
-inte trogen till) den värld som Vampire: The Requiem presenterar. För att ge en
-rätt känsla följer här några stycken som beskriver den värld som lajvet utspelar
-sig i.
+VägSjäl utspelar sig i en egen spelvärld inspirerad av (men inte trogen till)
+den värld som Vampire: The Requiem presenterar. För att ge en rätt känsla följer
+här några textstycken som beskriver den värld som lajvet utspelar sig i.
 
 ## Dimman
 

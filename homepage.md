@@ -3,8 +3,9 @@
 ## Kort om lajvet
 
 - Det är ett Vampyrlajv baserat på Vamprie: The Requiem.
-- Lajvet sker 21:a och 22:a augusti från 18 till 00
-- Lokalen är öppen mellan 16 och 02 för uppsättning/nedplockning.
+- Lajvet sker 21:a och 22:a augusti från 19 till 01 i House of Possibilitas
+  (närmaste hållplats Balladgatan; buss 18, 19, 43, etc.)
+- Lokalen är öppen mellan 17 och 03 för uppsättning/nedplockning.
 
 ## Kort om hemsidan
 
@@ -22,6 +23,7 @@ rekommenderad läsning:
 
 - [Nyckelpunkter nedan](#nyckelpunkter).
 - [Världen](/wiki/setting/).
+- [Lajvet](/wiki/the-larp/).
 - Den [klan](/wiki/clans/) som du ska spela (de andra kan läsas, men inget
   krav).
 - [Karaktärsskapande](/wiki/character-creation/) med dess utpekade länkar, som
@@ -32,6 +34,9 @@ rekommenderad läsning:
 - Världens politiska faktioner är inte grundade i klanerna utan i kovenanterna.
   Kovenanten utgör ett ideologiskt samfund och en politisk faktion, varmed
   lojalitet uppkommer både av ideologin och av tryggheten de erbjuder.
+- Klanerna är andra, även de ni känner sedan innan är omgjorda och har nya
+  svagheter som förvärras med åldern. Alla Nosferatus är inte fula, Gangrels
+  får inte djurdrag av frenzy.
 - Många har ett visst band till sin klan, men det är mer en gemenskap än en
   lojalitet. Kanske ger man en fledgeling några råd, men att klanen gemensamt
   skulle ta ansvar för den är befängt.
@@ -39,6 +44,7 @@ rekommenderad läsning:
   större svagheter och en timme mindre vaken tid per BP. Detta gör att vampyrer
   över 100 knappt är vakna om de inte spenderat en period i torpor för att sänka
   sin BP till en hanterbar nivå (högst 5).
+- För var nivå av en disciplin får karaktärer tillgång till två krafter.
 - Torpor är skrämmande att vara i under längre tid, många förlorar minnen och
   vissa även sin identitet under längre dvala.
 - Traditionerna är inte beslutade lagar utan tre läxor så väl lärda av dåtida

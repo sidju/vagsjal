@@ -1,4 +1,4 @@
-# Omfamning
+# Omfamning / Invigning
 
 #index #rules
 
