@@ -18,32 +18,6 @@
         </select>
       </label>
     </p>
-    <p><label>Namn <input name="name"></label></p>
-    <p><label>Mänsklig ålder <input name="apparent_age" type="number" min="0"></label></p>
-    <p><label>Datum för omfamning <input name="date_embraced" type="date"></label></p>
-    <p><label>Torpor år <input name="torpor_years" type="number" value="0"></label></p>
-    <p><label>Torpor månader <input name="torpor_months" type="number" value="0"></label></p>
-    <p><label>Torpor dagar <input name="torpor_days" type="number" value="0"></label></p>
-    <p>
-      <label>Klan
-        <select name="clan_id">
-          {% for clan in clans %}
-          <option value="{{ clan.clan_id }}">{{ clan.name }}</option>
-          {% endfor %}
-        </select>
-      </label>
-    </p>
-    <p>
-      <label>Kovenant
-        <select name="covenant_id">
-          <option value="">Inget</option>
-          {% for covenant in covenants %}
-          <option value="{{ covenant.covenant_id }}">{{ covenant.name }}</option>
-          {% endfor %}
-        </select>
-      </label>
-    </p>
-    <p><label>Länk till karaktärsbeskrivning <input name="character_description_url" type="url" placeholder="https://docs.google.com/..."></label></p>
     <p>
       <label>Status
         <select name="status">
@@ -53,6 +27,79 @@
         </select>
       </label>
     </p>
+
+    <h3>Offentliga fält</h3>
+    <table class="stat-table">
+      <tr>
+        <td><label for="name">Namn</label></td>
+        <td><input id="name" name="name"></td>
+      </tr>
+      <tr>
+        <td><label for="apparent_age">Mänsklig ålder</label></td>
+        <td><input id="apparent_age" name="apparent_age" type="number" min="0"></td>
+      </tr>
+      <tr>
+        <td><label for="clan_id">Klan</label></td>
+        <td>
+          <select id="clan_id" name="clan_id">
+            {% for clan in clans %}
+            <option value="{{ clan.clan_id }}">{{ clan.name }}</option>
+            {% endfor %}
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td><label for="home_domain">Hemdomän</label></td>
+        <td><input id="home_domain" name="home_domain" placeholder="t.ex. Göteborg, Paris"></td>
+      </tr>
+      <tr>
+        <td><label for="known_age">Känd ålder</label></td>
+        <td><input id="known_age" name="known_age" placeholder="t.ex. omkring 50"></td>
+      </tr>
+      <tr>
+        <td><label for="covenant_id">Kovenant</label></td>
+        <td>
+          <select id="covenant_id" name="covenant_id">
+            <option value="">Inget</option>
+            {% for covenant in covenants %}
+            <option value="{{ covenant.covenant_id }}">{{ covenant.name }}</option>
+            {% endfor %}
+          </select>
+        </td>
+      </tr>
+      <tr>
+        <td><label for="public_knowledge">Allmänt känt</label></td>
+        <td><textarea id="public_knowledge" name="public_knowledge" rows="3" cols="60"></textarea></td>
+      </tr>
+    </table>
+
+    <h3 style="opacity:0.8">Privata fält</h3>
+    <table class="stat-table" style="opacity:0.8">
+      <tr>
+        <td><label for="character_description_url">Länk till karaktärsbeskrivning</label></td>
+        <td><input id="character_description_url" name="character_description_url" type="url" placeholder="https://docs.google.com/..."></td>
+      </tr>
+      <tr>
+        <td><label for="date_embraced">Datum för omfamning</label></td>
+        <td><input id="date_embraced" name="date_embraced" type="date"></td>
+      </tr>
+      <tr>
+        <td colspan="2">Torpor</td>
+      </tr>
+      <tr>
+        <td><label for="torpor_years">år</label></td>
+        <td><input id="torpor_years" name="torpor_years" type="number" value="0"></td>
+      </tr>
+      <tr>
+        <td><label for="torpor_months">månader</label></td>
+        <td><input id="torpor_months" name="torpor_months" type="number" value="0"></td>
+      </tr>
+      <tr>
+        <td><label for="torpor_days">dagar</label></td>
+        <td><input id="torpor_days" name="torpor_days" type="number" value="0"></td>
+      </tr>
+    </table>
+    <br>
     <button type="submit">Skapa</button>
   </form>
   </details>

@@ -10,6 +10,7 @@ struct Character {
   vampire_id: i64,
   status: CharacterStatus,
   name: String,
+  owner_name: String,
   apparent_age: i32, // in years
   date_embraced: Date,
   torpor_time: sqlx::postgres::types::PgInterval,
@@ -148,6 +149,7 @@ SELECT
   vampire.vampire_id,
   vampire.status AS \"status: CharacterStatus\",
   vampire.name,
+  app_user.name AS owner_name,
   vampire.apparent_age,
   vampire.date_embraced,
   vampire.torpor_time,
@@ -160,6 +162,7 @@ SELECT
       vampire.home_domain,
       vampire.known_age
 FROM vampire
+JOIN app_user USING (user_id)
 JOIN clan USING (clan_id)
 LEFT JOIN covenant USING (covenant_id)
 LEFT JOIN xp_remaining USING (vampire_id)

@@ -21,6 +21,9 @@ struct CharacterRow {
   covenant_slug: String,
   remaining_xp: i64,
   character_description_url: Option<String>,
+  public_knowledge: String,
+  home_domain: String,
+  known_age: String,
 }
 
 impl CharacterRow {
@@ -120,7 +123,10 @@ async fn get_character(state: &'static State, vampire_id: i64) -> Result<Charact
       COALESCE(covenant.name, '') AS "covenant_name!",
       COALESCE(covenant.id, '') AS "covenant_slug!",
       COALESCE(xp_remaining.amount, 0) AS "remaining_xp!",
-      vampire.character_description_url AS "character_description_url?"
+      vampire.character_description_url AS "character_description_url?",
+      vampire.public_knowledge,
+      vampire.home_domain,
+      vampire.known_age
     FROM vampire
     JOIN app_user USING (user_id)
     JOIN clan USING (clan_id)
@@ -325,6 +331,9 @@ async fn update_character(
   if let Some(ref url) = character_description_url {
     validate_description_url(&state.http_client, url).await?;
   }
+  let public_knowledge = form.public_knowledge.map(|s| s.trim().to_string()).filter(|s| !s.is_empty()).unwrap_or_default();
+  let home_domain = form.home_domain.map(|s| s.trim().to_string()).filter(|s| !s.is_empty()).unwrap_or_default();
+  let known_age = form.known_age.map(|s| s.trim().to_string()).filter(|s| !s.is_empty()).unwrap_or_default();
   sqlx::query!(
     r#"
     UPDATE vampire
@@ -336,7 +345,10 @@ async fn update_character(
         torpor_time = $7,
         clan_id = $8,
         covenant_id = $9,
-        character_description_url = $10
+        character_description_url = $10,
+        public_knowledge = $11,
+        home_domain = $12,
+        known_age = $13
     WHERE vampire_id = $1
     "#,
     vampire_id,
@@ -349,6 +361,9 @@ async fn update_character(
     clan_id,
     covenant_id,
     character_description_url,
+    public_knowledge,
+    home_domain,
+    known_age,
   )
     .execute(&state.db)
     .await?;

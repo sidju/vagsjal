@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "\n    SELECT\n      vampire.vampire_id,\n      vampire.user_id,\n      app_user.name AS owner_name,\n      vampire.status AS \"status: CharacterStatus\",\n      vampire.name,\n      vampire.apparent_age,\n      vampire.date_embraced,\n      vampire.torpor_time,\n      vampire.clan_id,\n      clan.name AS clan_name,\n      COALESCE(vampire.covenant_id, 0) AS \"covenant_id!\",\n      COALESCE(covenant.name, '') AS \"covenant_name!\",\n      COALESCE(covenant.id, '') AS \"covenant_slug!\",\n      COALESCE(xp_remaining.amount, 0) AS \"remaining_xp!\",\n      vampire.character_description_url AS \"character_description_url?\"\n    FROM vampire\n    JOIN app_user USING (user_id)\n    JOIN clan USING (clan_id)\n    LEFT JOIN covenant USING (covenant_id)\n    LEFT JOIN xp_remaining USING (vampire_id)\n    WHERE vampire_id = $1\n    ",
+  "query": "\n    SELECT\n      vampire.vampire_id,\n      vampire.user_id,\n      app_user.name AS owner_name,\n      vampire.status AS \"status: CharacterStatus\",\n      vampire.name,\n      vampire.apparent_age,\n      vampire.date_embraced,\n      vampire.torpor_time,\n      vampire.clan_id,\n      clan.name AS clan_name,\n      COALESCE(vampire.covenant_id, 0) AS \"covenant_id!\",\n      COALESCE(covenant.name, '') AS \"covenant_name!\",\n      COALESCE(covenant.id, '') AS \"covenant_slug!\",\n      COALESCE(xp_remaining.amount, 0) AS \"remaining_xp!\",\n      vampire.character_description_url AS \"character_description_url?\",\n      vampire.public_knowledge,\n      vampire.home_domain,\n      vampire.known_age\n    FROM vampire\n    JOIN app_user USING (user_id)\n    JOIN clan USING (clan_id)\n    LEFT JOIN covenant USING (covenant_id)\n    LEFT JOIN xp_remaining USING (vampire_id)\n    WHERE vampire_id = $1\n    ",
   "describe": {
     "columns": [
       {
@@ -77,6 +77,21 @@
         "ordinal": 14,
         "name": "character_description_url?",
         "type_info": "Text"
+      },
+      {
+        "ordinal": 15,
+        "name": "public_knowledge",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 16,
+        "name": "home_domain",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 17,
+        "name": "known_age",
+        "type_info": "Varchar"
       }
     ],
     "parameters": {
@@ -99,8 +114,11 @@
       null,
       null,
       null,
-      true
+      true,
+      false,
+      false,
+      false
     ]
   },
-  "hash": "11ca4461142d119f83f87040610d5daa379028a6fb000168f5f05b2355556795"
+  "hash": "82115074e8e6b1d335ff56f4662cf56f761530454dbf340e7ba033c05dac9f16"
 }

@@ -48,6 +48,9 @@ struct CharacterForm {
   clan_id: Option<i64>,
   covenant_id: Option<String>,
   character_description_url: Option<String>,
+  public_knowledge: Option<String>,
+  home_domain: Option<String>,
+  known_age: Option<String>,
   status: Option<String>,
   review_kind: Option<String>,
   usage_id: Option<i64>,
@@ -180,10 +183,13 @@ async fn index_post(state: &'static State, mut req: Request) -> Result<Response,
         validate_description_url(&state.http_client, url).await?;
       }
   let covenant_id: Option<i64> = form.covenant_id.and_then(|s| { let s = s.trim(); if s.is_empty() { None } else { s.parse().ok() } });
+  let public_knowledge = form.public_knowledge.map(|s| s.trim().to_string()).filter(|s| !s.is_empty()).unwrap_or_default();
+  let home_domain = form.home_domain.map(|s| s.trim().to_string()).filter(|s| !s.is_empty()).unwrap_or_default();
+  let known_age = form.known_age.map(|s| s.trim().to_string()).filter(|s| !s.is_empty()).unwrap_or_default();
   sqlx::query!(
     r#"
-    INSERT INTO vampire (user_id, status, name, apparent_age, date_embraced, torpor_time, clan_id, covenant_id, character_description_url)
-    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+    INSERT INTO vampire (user_id, status, name, apparent_age, date_embraced, torpor_time, clan_id, covenant_id, character_description_url, public_knowledge, home_domain, known_age)
+    VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12)
     "#,
     user_id,
     status,
@@ -194,6 +200,9 @@ async fn index_post(state: &'static State, mut req: Request) -> Result<Response,
     clan_id,
     covenant_id,
     character_description_url,
+    public_knowledge,
+    home_domain,
+    known_age,
       )
         .execute(&state.db)
         .await

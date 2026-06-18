@@ -1,0 +1,68 @@
+<table class="stat-table">
+    <tr>
+      <th>Namn:</th>
+      <th>{{ character.name }}</th>
+    </tr>
+    <tr>
+      <td>Ägare</td>
+      <td>{{ character.owner_name }}</td>
+    </tr>
+    <tr>
+      <td>Status</td>
+      <td>
+        {% if character.status.is_active() %}Aktiv{% endif %}
+        {% if character.status.is_draft() %}Utkast{% endif %}
+        {% if character.status.is_inactive() %}Inaktiv{% endif %}
+      </td>
+    </tr>
+    <tr><th colspan="2">Offentliga fält</th></tr>
+    <tr>
+      <td>Mänsklig ålder</td>
+      <td>{{ character.apparent_age }}</td>
+    </tr>
+    <tr>
+      <td><a href="/wiki/clan/">Klan</a></td>
+      <td><a href="/wiki/{{ character.clan_name | lower }}/">{{ character.clan_name }}</a></td>
+    </tr>
+    <tr>
+      <td><a href="/wiki/covenants/">Kovenant</a></td>
+      <td>{% if character.covenant_slug.len() > 0 %}<a href="/wiki/{{ character.covenant_slug }}/">{{ character.covenant_name }}</a>{% endif %}</td>
+    </tr>
+    {% if character.home_domain.len() > 0 %}
+    <tr>
+      <td>Hemdomän</td>
+      <td>{{ character.home_domain }}</td>
+    </tr>
+    {% endif %}
+    {% if character.known_age.len() > 0 %}
+    <tr>
+      <td>Känd ålder</td>
+      <td>{{ character.known_age }}</td>
+    </tr>
+    {% endif %}
+    {% if character.public_knowledge.len() > 0 %}
+    <tr>
+      <td colspan="2">
+        <details>
+          <summary><a href="/wiki/public-knowledge/">Allmänt känt</a></summary>
+          <pre style="white-space:pre-wrap;margin:0">{{ character.public_knowledge }}</pre>
+        </details>
+      </td>
+    </tr>
+    {% endif %}
+    <tr><th colspan="2" style="opacity:0.8">Privata fält</th></tr>
+    <tr>
+      <td><a href="/wiki/embrace/">Omfamningsdatum</a></td>
+      <td>{{ character.date_embraced }}</td>
+    </tr>
+    <tr>
+      <td><a href="/wiki/torpor/">Tid i torpor</a></td>
+      <td>{{ character.torpor_display() }}</td>
+    </tr>
+    {% if let Some(url) = character.character_description_url %}
+    <tr>
+      <td><a href="/wiki/character-description/">Karaktärsbeskrivning</a></td>
+      <td><a href="{{ url }}" target="_blank" rel="noopener">{{ url }}</a></td>
+    </tr>
+    {% endif %}
+</table>

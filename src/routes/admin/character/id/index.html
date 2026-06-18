@@ -15,50 +15,8 @@
   </form>
   {% endif %}
 
-  <table class="stat-table">
-    <tr>
-      <th>Namn:</th>
-      <th>{{ character.name }}</th>
-    </tr>
-    <tr>
-      <td>Ägare</td>
-      <td>{{ character.owner_name }}</td>
-    </tr>
-    <tr>
-      <td>Status</td>
-      <td>
-        {% if character.status.is_active() %}Aktiv{% endif %}
-        {% if character.status.is_draft() %}Utkast{% endif %}
-        {% if character.status.is_inactive() %}Inaktiv{% endif %}
-      </td>
-    </tr>
-    <tr>
-      <td>Mänsklig ålder</td>
-      <td>{{ character.apparent_age }}</td>
-    </tr>
-    <tr>
-      <td><a href="/wiki/embrace/">Omfamningsdatum</a></td>
-      <td>{{ character.date_embraced }}</td>
-    </tr>
-    <tr>
-      <td><a href="/wiki/torpor/">Tid i torpor</a></td>
-      <td>{{ character.torpor_display() }}</td>
-    </tr>
-    <tr>
-      <td><a href="/wiki/clan/">Klan</a></td>
-      <td><a href="/wiki/{{ character.clan_name | lower }}/">{{ character.clan_name }}</a></td>
-    </tr>
-    <tr>
-      <td><a href="/wiki/covenants/">Kovenant</a></td>
-      <td>{% if character.covenant_slug.len() > 0 %}<a href="/wiki/{{ character.covenant_slug }}/">{{ character.covenant_name }}</a>{% endif %}</td>
-    </tr>
-    {% if let Some(url) = character.character_description_url %}
-    <tr>
-      <td><a href="/wiki/character-description/">Karaktärsbeskrivning</a></td>
-      <td><a href="{{ url }}" target="_blank" rel="noopener">{{ url }}</a></td>
-    </tr>
-    {% endif %}
-    {% include "character/_stats_table.html" %}
+  {% include "character/_character_meta_table.html" %}
+  {% include "character/_stats_table.html" %}
   <p><small>* väntar på granskning</small></p>
 
   <h2 id="pending-xp-changes">Pågående XP-användningar</h2>
