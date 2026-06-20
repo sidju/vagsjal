@@ -9,6 +9,12 @@ natt oavsett hur mycket [vitae](vitae.md) som intas. Om mer än halva livstiden
 för ett band har passerat innan varelsen dricker av vampyren förnyas bandet
 istället för att förstärkas.
 
+[Torpor](torpor.md) påverkar blodsband på ett oväntat sätt. I torpor bryter inte
+vampyren ner det främmande blod som binder dem, så ett blodsband kan kvarstå
+obegränsat länge i en besläktad i torpor. Detta påverka inte blodsband åt andra
+hållet, så en äldre vampyr i torpor kan mycket väl finna att deras tjänare har
+övergett dem sedan länge när de vaknar.
+
 ## Nivå 1
 
 Den första nivån av blodsband ger en ganska mild effekt av uppskattning för den

@@ -3,7 +3,7 @@
 #rules
 
 Besten i en vampyr är alltid närvarande, alltid redo att ta över. När besten
-vinner över förnuftet hamnar vampyren i ett _frenzytillstånd_.
+vinner över förnuftet hamnar vampyren i en _frenzy_.
 
 ## Typer av frenzy
 

@@ -19,7 +19,7 @@ nya förmågor. Priserna för dem kan ses i följande tabell:
 | [Organisatorisk förmåga](organizational-ability.md) | 4          |
 | [HP](hp.md)                                         | 3          |
 | [Mänsklighet](humanity.md)                          | 7          |
-| Vilket [Inflytande](influence.md) som helst         | 4          |
+| Vilket [Inflytande](influences.md) som helst        | 4          |
 
 XP-kostnader för krafter ökar för varje nivå, och [Klan](clans.md)-krafter är
 betydligt billigare än andra.

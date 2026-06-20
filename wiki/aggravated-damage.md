@@ -20,3 +20,7 @@ Medan en besläktad bär på förvärrad skada läker den bara 1 [HP](hp.md) per
 oavsett [blodpotens](blood-potency.md). Förgiftningen lämnar dem inte förrän de
 är helt läkta — först när all skada är borta kan kroppen till slut trycka ut den
 fientliga essensen.
+
+Om en besläktad faller till [torpor](torpor.md) när de bär på förvärrad skada
+överkoms de av infektionen och möter den slutgiltiga döden. Detsamma sker om
+förvärrad skada görs på en besläktad i torpor.

@@ -99,7 +99,7 @@ med normerna för deras [klan](clans.md) och/eller [kovenant](covenants.md)?
 
 Vad tycker karaktären om att vara en vampyr? Vad tycker de om andra vampyrer?
 
-#### [Humanitet](humanity.md)
+#### [Mänsklighet](humanity.md)
 
 Vad tycker karaktären om mänskligheten? Anser de sig själva vara mänskliga? Är
 människor underlägsna?
@@ -113,10 +113,10 @@ känner de inför det?
 
 #### Omfamningen
 
-Hur blev de omfamnade? Träffade de sin skapare, hur var deras relation? Notera
-att omfamningen i allmänhet är traumatisk, dess oåterkallelighet och att de
-flesta [förlorar sig till hunger](frenzy.md) omedelbart efteråt och ofta dödar
-någon.
+Hur blev de [omfamnade](embrace.md)? Träffade de sin skapare, hur var deras
+relation? Notera att omfamningen i allmänhet är traumatisk, dess
+oåterkallelighet och att de flesta [förlorar sig till hunger](frenzy.md)
+omedelbart efteråt och ofta dödar någon.
 
 #### Tiden som fledgeling
 

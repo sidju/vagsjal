@@ -1,5 +1,7 @@
 # Invictus
 
+#lore #covenants
+
 ## Etablissemanget
 
 Invictus är en kovenant förenad kring det gemensamma målet av att ta och
@@ -16,9 +18,10 @@ varit en lugn och kontrollerad tillväxt från att styra Rom till att styra
 världen.
 
 Deras faktiska historia kan knappast vara så felfri, men då de ofta allierat sig
-med Lancea et Sanctum (som är den enda andra kovenanten som funnits nästan lika
-länge) har ingen kunnat motbevisa deras version. Onekligt är dock att de varit
-mycket framgångsrika, de finns över hela världen och styr otaliga domäner.
+med [Lancea et Sanctum](lancea-et-sanctum.md) (som är den enda andra kovenanten
+som funnits nästan lika länge) har ingen kunnat motbevisa deras version.
+Onekligt är dock att de varit mycket framgångsrika, de finns över hela världen
+och styr otaliga domäner.
 
 ## Ideologi
 
@@ -113,4 +116,4 @@ att Invictus ska nästla sig in i domänens funktion.
   inte upprätthåller sin sida av avtalet. Graden av vite beslutas i hur många HP
   blod som uppläts när kontraktet upprättas. Den undertecknande som först bryter
   avtalet får avtalets totala HP blod åldrat till damm i sina ådror, om det är
-  mer HP än denne besitter faller den omedelbart i torpor.
+  mer HP än denne besitter faller den omedelbart i [torpor](torpor.md).

@@ -28,7 +28,7 @@ karaktären är godkänd:
 - **Namn** - karaktärens namn.
 - **Mänsklig ålder** - hur gammal karaktären ser ut (i år).
 - **Klan** - karaktärens [klan](clans.md).
-- **Kovenant** - Uttalad kovenant-tillhörighet
+- **Kovenant** - Uttalad [kovenant](covenants.md)-tillhörighet
 - **Hemdomän** - var karaktären huvudsakligen hållit till, t.ex. Göteborg eller
   Paris.
 - **Känd ålder** - ungefär hur gammal karaktären tros vara, t.ex. "omkring 50".

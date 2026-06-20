@@ -17,9 +17,22 @@ En vampyr kan hamna i torpor av flera anledningar:
 
 ## Att vakna ur torpor
 
-Att vakna ur torpor kräver blod. En vampyr i torpor kan väckas av att någon
-häller blod i dess mun, alternativt kan den vakna av sig själv efter
-tillräckligt lång tid. Ju mer blod som finns kvar i kroppen, desto kortare tid.
+En vampyr kan vakna ur torpor på två sätt. Naturligt eller väckas med
+[vitae](vitae.md).
+
+### Vakna naturligt
+
+Vampyrer med BP över 1 vaknar naturligt efter ungefär sin BP år i torpor, på
+bekostnad av att förlora en BP.
+
+Vampyrer med BP 1 kan inte vakna naturligt utan möter den slutgiltiga döden om
+ingen väcker dem inom ett år från att de fallit i torpor.
+
+### Vitae
+
+En vampyr i torpor kan väckas av att få vampyrblod i dess mun. Mänskligt blod
+väcker den inte men ger näring, så den kan läka och ersätta eventuell förlorad
+vitae.
 
 ## Effekter av torpor
 

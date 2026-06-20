@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "\n    SELECT\n      'Kraft' AS \"kind!\",\n      power_raise.power_raise_id AS \"usage_id!\",\n      power.name AS \"name!\",\n      power_raise.increase AS \"increase!\",\n      power_raise.xp_cost AS \"xp_cost!\",\n      to_char(power_raise.creation_time, 'YYYY-MM-DD HH24:MI:SS') AS \"created_at!\"\n    FROM power_raise\n    JOIN power ON power.id = power_raise.power\n    LEFT JOIN power_raise_review USING (power_raise_id)\n    WHERE power_raise.vampire_id = $1 AND power_raise_review.state IS NULL\n    ORDER BY power_raise.creation_time, power_raise.power_raise_id\n    ",
+  "query": "\n    SELECT\n      'stat' AS \"kind!\",\n      stat_raise.stat_raise_id AS \"usage_id!\",\n      stat.name AS \"name!\",\n      stat_raise.increase AS \"increase!\",\n      stat_raise.xp_cost AS \"xp_cost!\",\n      to_char(stat_raise.creation_time, 'YYYY-MM-DD HH24:MI:SS') AS \"created_at!\"\n    FROM stat_raise\n    LEFT JOIN stat_raise_review USING (stat_raise_id)\n    JOIN stat ON stat.id = stat_raise.stat\n    WHERE stat_raise.vampire_id = $1 AND stat_raise_review.state IS NULL\n    ORDER BY stat_raise.creation_time, stat_raise.stat_raise_id\n    ",
   "describe": {
     "columns": [
       {
@@ -48,5 +48,5 @@
       null
     ]
   },
-  "hash": "67afb6dd4efa5f7729da6476f792ea07f55fdfabdc68e3a20ef722ad819361e5"
+  "hash": "888e95b198a6e8261ed36cfd6e6504f6356341a6cc63e3fe087e15f9b99e3717"
 }

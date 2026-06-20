@@ -224,6 +224,17 @@ table.stat-table.users-table td:nth-child(2) {
   width: 25%;
 }
 
+/* Admin character tables: thin ID column, wider name column */
+table.character-listing th:first-child,
+table.character-listing td:first-child {
+  width: auto;
+  white-space: nowrap;
+}
+table.character-listing th:nth-child(2),
+table.character-listing td:nth-child(2) {
+  width: 25%;
+}
+
 /* Combat value tables */
 .combat-details {
   margin: 1rem 0;

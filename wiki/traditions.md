@@ -1,6 +1,6 @@
 # Traditionerna
 
-#lore #rules
+#lore
 
 Alla vampyrer känner instinktivt Traditionerna. De är inte hårda lagar med
 straff utan en lärdom som alla bär inom sig. De kan lätt brytas, men alla

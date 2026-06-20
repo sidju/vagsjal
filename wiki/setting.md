@@ -19,10 +19,10 @@ existens.
 
 Var vampyr har en instinktiv förståelse för blodet och dess band. Att särskilja
 djur, människa och övernaturliga varelser när man luktar deras blod är trivialt.
-Att verifiera vilken klan en vampyr tillhör är lika lätt som att smaka på det,
-om man vet hur klanerna smakar dvs. Till och med att finna blodsband är möjligt
-genom att smaka på parternas blod, även om skillnaden på släktskap och utbyte är
-mycket svår.
+Att verifiera vilken [klan](clans.md) en vampyr tillhör är lika lätt som att
+smaka på det, om man vet hur klanerna smakar dvs. Till och med att finna
+blodsband är möjligt genom att smaka på parternas blod, även om skillnaden på
+släktskap och utbyte är mycket svår.
 
 Blodet blir starkare med åldern, ungefär var 36:e år, men det är inte endast en
 fördel. När blodet blir starkare blir vampyren svagare mot sol och eld, sover
@@ -41,15 +41,18 @@ fel. Att gå med i en kovenant är att frånsäga sig sin mänsklighet och sluta
 till en fundamentalt inhuman världssyn, varför det oftast dröjer minst 20 år
 från invigning innan en vampyr går med i en kovenant.
 
-De allmänt kända kovenanterna i världen är Carthian Movement, Lancea et Sanctum,
-Circle of the Crone, Invictus och Ordo Dracul.
+De allmänt kända kovenanterna i världen är
+[Carthian Movement](carthian-movement.md),
+[Lancea et Sanctum](lancea-et-sanctum.md),
+[Circle of the Crone](circle-of-the-crone.md), [Invictus](invictus.md) och
+[Ordo Dracul](ordo-dracul.md).
 
 Ordo Dracul är inte med i detta lajvet (då de är lite tillbakadragna), men de
 finns i världen och lär vara med om det blir ett nästa lajv.
 
 ## Traditionerna
 
-Alla vampyrer känner instinktivt Traditionerna:
+Alla vampyrer känner instinktivt [Traditionerna](traditions.md):
 
 - Den första traditionen: Maskeraden. Dölj din natur från de icke av blodet,
   eller förlora din rätt till blodet.

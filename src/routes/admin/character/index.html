@@ -106,7 +106,7 @@
 
   {% if draft_chars.len() > 0 %}
   <h2>Utkast</h2>
-  <table class="stat-table">
+  <table class="character-listing">
     <tr><th>ID</th><th>Namn</th><th>Ägare</th><th>Klan</th><th>Återstående XP</th><th>Beskrivning</th><th>Öppna</th></tr>
     {% for character in draft_chars %}
     <tr>
@@ -124,7 +124,7 @@
 
   {% if active_chars.len() > 0 %}
   <h2>Aktiva</h2>
-  <table class="stat-table">
+  <table class="character-listing">
     <tr><th>ID</th><th>Namn</th><th>Ägare</th><th>Klan</th><th>Återstående XP</th><th>Beskrivning</th><th>Öppna</th></tr>
     {% for character in active_chars %}
     <tr>
@@ -142,7 +142,7 @@
 
   {% if inactive_chars.len() > 0 %}
   <h2>Inaktiva</h2>
-  <table class="stat-table">
+  <table class="character-listing">
     <tr><th>ID</th><th>Namn</th><th>Ägare</th><th>Klan</th><th>Återstående XP</th><th>Beskrivning</th><th>Öppna</th></tr>
     {% for character in inactive_chars %}
     <tr class="inactive">

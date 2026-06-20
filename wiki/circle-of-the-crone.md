@@ -1,5 +1,7 @@
 # Circle of the Crone / Haggans Krans
 
+#lore #covenants
+
 ## Akolyterna
 
 Haggans krans är en kovenant som kännetecknas av magi, mystik och harmoni, här
@@ -11,13 +13,14 @@ vampyr är inte ett straff, det är metamorfos.
 
 Att beskriva en historia till Haggans Krans är omöjligt att göra korrekt. Deras
 historia är inte utav en filosofi som spreds, utan av otaliga vagt liknande
-filosofier från världen över som förtrycktes och förföljdes av Invictus och
-Lancea et Sanctum i häxjakter och korståg världen över. Den gemensamma
-bakgrunden som gav upphov till denna förföljelse är “hedniska” traditioner och
-en bild av vampyrskapet som något naturligt. Deras filosofier är därför lika
-varierande som den Karthiska rörelsens, grundade i ockultism och religioner från
-världen över. Dessa religiösa splittringar är sällan en källa till konflikt inom
-kovenanten, då de alla finner det helt naturligt att flera gudar samexisterar.
+filosofier från världen över som förtrycktes och förföljdes av
+[Invictus](invictus.md) och [Lancea et Sanctum](lancea-et-sanctum.md) i
+häxjakter och korståg världen över. Den gemensamma bakgrunden som gav upphov
+till denna förföljelse är “hedniska” traditioner och en bild av vampyrskapet som
+något naturligt. Deras filosofier är därför lika varierande som den Karthiska
+rörelsens, grundade i ockultism och religioner från världen över. Dessa
+religiösa splittringar är sällan en källa till konflikt inom kovenanten, då de
+alla finner det helt naturligt att flera gudar samexisterar.
 
 ## Ideologi
 
@@ -39,8 +42,8 @@ På ett liknande sätt som legender söker akolyter sanning och samspråk utanf�
 tankarnas värld. De hänger sig åt en aktivitet så helhjärtat att tankar lämnar
 dem för att ersättas av ett instinktivt flöde och extas. I det tillståndet anser
 de sig redo att kommunicera med sina gudar och kanske ta emot råd och svar på
-sina böner. Även Torpor och Frenzy betraktas som en väg till detta tillstånd,
-med givna nackdelar.
+sina böner. Även [Torpor](torpor.md) och [Frenzy](frenzy.md) betraktas som en
+väg till detta tillstånd, med givna nackdelar.
 
 ## Organisation
 

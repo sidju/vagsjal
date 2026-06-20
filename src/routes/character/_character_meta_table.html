@@ -1,4 +1,5 @@
 <table class="stat-table">
+  {% if !character.owner_name.is_empty() %}
     <tr>
       <th>Namn:</th>
       <th>{{ character.name }}</th>
@@ -15,7 +16,14 @@
         {% if character.status.is_inactive() %}Inaktiv{% endif %}
       </td>
     </tr>
+  {% endif %}
     <tr><th colspan="2">Offentliga fält</th></tr>
+  {% if character.owner_name.is_empty() %}
+    <tr>
+      <th>Namn:</th>
+      <th>{{ character.name }}</th>
+    </tr>
+  {% endif %}
     <tr>
       <td>Mänsklig ålder</td>
       <td>{{ character.apparent_age }}</td>

@@ -1,10 +1,13 @@
 # Lancea et Sanctum
 
+#lore #covenants
+
 ## De Helgade
 
-    *"Ty, jag är ej någon gudlös best som jagar bortom den helgades storhet.Jag är storheten. Jag är helgad.”*
-
-Malediction 1:4
+> _"Ty, jag är ej någon gudlös best som jagar bortom den helgades storhet.Jag är
+> storheten. Jag är helgad.”_
+>
+> -- Malediction 1:4
 
 Lancea et sanctum är den kristna grenen av vampyrvärlden. En pervers, förvriden
 skugga av den katolska kyrkan som önskar sprida sin fördömda profet Longinus
@@ -19,9 +22,10 @@ förbjuden kunskap och sin egen gren av blodsmagi: Theban Sorcery.
 
 ## Historia
 
-    *“Beskåda Longinus, spjut av fördömelse, ödmjukad och helgad inför människan.”*
-
-Torment 1:1
+> _“Beskåda Longinus, spjut av fördömelse, ödmjukad och helgad inför
+> människan.”_
+>
+> -- Torment 1:1
 
 Lancea et Sanctum har en lång, mytomspunnen och ovanligt nog nedskriven
 historia, även om många utomstående besläktade ifrågasätter dess sanningshalt.
@@ -35,9 +39,9 @@ och traditioner som besläktade följer idag etablerades av dem.
 
 ## Teologi
 
-    *“Jubla, du är fördömd!”*
-
-The Rule of Golgotha 1
+> _“Jubla, du är fördömd!”_
+>
+> -- The Rule of Golgotha 1
 
 Lancea Sanctum tar mycket av sin moral och teologi från kristendom, men kontra
 till vad många utomstående kan tro följer de helgade inte bibeln. Istället
@@ -56,15 +60,17 @@ motiveras av en moralisk avhållsamhet. Detta är inte på grund av någon empat
 gentemot mänskligheten, utan på grund av praktiska skäl för att hålla maskeraden
 kombinerad med religiös dogma.
 
-Av alla kovenanter följer de helgade de tre traditionerna hårdast. Kovenanten
-har också den striktaste tolkningen av den andra traditionen och förbjuder sina
-medlemmar helt från att omfamna.
+Av alla kovenanter följer de helgade de tre [traditionerna](traditions.md)
+hårdast. Kovenanten har också den striktaste tolkningen av den andra traditionen
+och förbjuder sina medlemmar helt från att omfamna.
 
 ## Organisation
 
-    *“Vi erkänner en hierarki av varelser, från den lägsta flugan till den främsta av fördömda. Vi accepterar och är tacksamma för våran position i den ordning Gud skapat.”*
-
-The Rule of Golgotha 4
+> _“Vi erkänner en hierarki av varelser, från den lägsta flugan till den främsta
+> av fördömda. Vi accepterar och är tacksamma för våran position i den ordning
+> Gud skapat.”_
+>
+> -- The Rule of Golgotha 4
 
 Lancea et Sanctum har en hård uppdelning mellan två block i kovenanten:
 Församlingen, som består av de icke-ordinerade lekmännen, och prästerskapet,
@@ -124,9 +130,12 @@ man är ordinerad och en del av prästerskapet. De är följande:
 
 ## Theban Sorcery
 
-    *“Ett krig härjade i himlen. Men änglarna stred inte: soldaterna var män och kvinnor som var beväpnade med eld, som talade ett språk jag ej förstod och vars ord blev till verklighet, som lyfte stenar utan att lyfta dem och gick utan att flytta på sig.”*
-
-Eschaton 8:2
+> _“Ett krig härjade i himlen. Men änglarna stred inte: soldaterna var män och
+> kvinnor som var beväpnade med eld, som talade ett språk jag ej förstod och
+> vars ord blev till verklighet, som lyfte stenar utan att lyfta dem och gick
+> utan att flytta på sig.”_
+>
+> -- Eschaton 8:2
 
 Theban Sorcery är Lancea et Sanctums unika blodsmagi som tar formen av bibliska
 mirakel. Enligt tradition ska Sankt Daniel ha blivit given kunskapen av ängeln

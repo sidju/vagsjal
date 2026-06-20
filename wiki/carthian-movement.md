@@ -1,5 +1,7 @@
 # Carthian Movement / Karthiska Rörelsen
 
+#lore #covenants
+
 ## Reformisterna
 
 Den Karthiska Rörelsen är en kovenant som vill förändra världen, men som inte
@@ -74,8 +76,8 @@ tillfällen:
 1. Lagens stöd: Etableras vid lagens stiftande genom en omröstning i blod som
    hålls av Magister, Myrmidon eller Tjänsteman. Den karthiska lagen ger kraften
    att motstå manipulerade lagbrott, ex.v. ses MF som 1 högre per nivå av
-   medlemskap inom den Karthiska rörelsen för att motstå Dominate med en order
-   som bryter mot lagen.
+   medlemskap inom den Karthiska rörelsen för att motstå [Dominate](dominate.md)
+   med en order som bryter mot lagen.
 2. Efterlyst: Etableras vid lagens stiftande genom en omröstning i blod som
    hålls av Magister, Myrmidon eller Tjänsteman. Den karthiska lagen märker de
    som bryter mot lagen med ett svart märke på vid brottet synlig hud. Medlemmar
@@ -91,6 +93,6 @@ tillfällen:
    omedelbart och obönhörligt på förövaren blott ett ögonblick efter handlingen.
 
 Karthiska lagar har en gemensam svaghet, de är endast så starka som den
-starkaste i stiftandet. De som har högre BP än den högsta BP som var med och
-skapade lagen påverkas inte av den, men kan likväl känna av när den borde ha
-tagit effekt.
+starkaste i stiftandet. De som har högre [BP](blood-potency.md) än den högsta BP
+som var med och skapade lagen påverkas inte av den, men kan likväl känna av när
+den borde ha tagit effekt.

@@ -24,10 +24,15 @@
       <td>{{ s.value }}</td>
       <td id="proj-stat-{{ loop.index0 }}">{{ s.value }}</td>
       {% endif %}
-      {% if s.id != "blood-potency" %}
+      {% if s.id != "blood-potency" && s.id != "humanity" %}
       <td>
         <button type="button" class="raise-btn" data-kind="stat" data-name="{{ s.id }}">▲</button>
         <button type="button" class="lower-btn" data-kind="stat" data-name="{{ s.id }}">▼</button>
+      </td>
+      {% elif s.id == "humanity" %}
+      <td>
+        <button type="button" class="raise-btn" data-kind="humanity" data-name="humanity">▲</button>
+        <button type="button" class="lower-btn" data-kind="humanity" data-name="humanity">▼</button>
       </td>
       {% else %}
       <td></td>
@@ -172,22 +177,26 @@
     const limits = { power: 3, influence: 5, humanity: 10 };
 
     function opKey(op) {
-      return op.kind === "stat" ? op.stat : (op.kind === "power" ? op.power : op.influence);
+      return op.kind === "stat" ? op.stat : (op.kind === "power" ? op.power : (op.kind === "influence" ? op.influence : op.note));
     }
     function addOp(op) {
-      // Merge with existing op of same kind+key for all except humanity
-      if (op.kind !== "humanity") {
-        const key = opKey(op);
-        const existing = ops.find(function (o) { return o.kind === op.kind && opKey(o) === key; });
-        if (existing) {
+      const key = opKey(op);
+      const existing = ops.find(function (o) { return o.kind === op.kind && opKey(o) === key; });
+      if (existing) {
+        if (op.kind === "humanity") {
+          existing.change += op.change;
+          if (existing.change === 0) {
+            ops.splice(ops.indexOf(existing), 1);
+          }
+        } else {
           existing.increase += op.increase;
           if (existing.increase === 0) {
             ops.splice(ops.indexOf(existing), 1);
           }
-          saveDraft();
-          render();
-          return;
         }
+        saveDraft();
+        render();
+        return;
       }
       ops.push(op);
       saveDraft();
@@ -241,6 +250,7 @@
         if (kind === "stat") { proj = projStats[name] || 0; base = curStatLevel[name] || 0; }
         else if (kind === "power") { proj = projPowers[name] || 0; base = curPowerLevel[name] || 0; }
         else if (kind === "influence") { proj = projInfluences[name] || 0; base = curInfluenceLevel[name] || 0; }
+        else if (kind === "humanity") { proj = projStats[name] || 0; base = curStatLevel[name] || 0; }
         const limit = limits[name] ?? limits[kind];
         if (btn.classList.contains("lower-btn")) {
           btn.disabled = proj <= base;
@@ -322,6 +332,7 @@
         if (kind === "stat") addOp({ kind: "stat", stat: name, increase: 1 });
         else if (kind === "power") addOp({ kind: "power", power: name, increase: 1 });
         else if (kind === "influence") addOp({ kind: "influence", influence: name, increase: 1 });
+        else if (kind === "humanity") addOp({ kind: "humanity", change: 1, note: "" });
       });
     });
     document.querySelectorAll(".lower-btn").forEach(function (btn) {
@@ -331,6 +342,7 @@
         if (kind === "stat") addOp({ kind: "stat", stat: name, increase: -1 });
         else if (kind === "power") addOp({ kind: "power", power: name, increase: -1 });
         else if (kind === "influence") addOp({ kind: "influence", influence: name, increase: -1 });
+        else if (kind === "humanity") addOp({ kind: "humanity", change: -1, note: "" });
       });
     });
 
