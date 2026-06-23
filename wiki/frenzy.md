@@ -37,7 +37,7 @@ Vissa förolämpningar, hot eller förluster kan utlösa besten till raseri. Om 
 vampyr förlorar sig till detta raseri använder de alla medel de har till hands
 för att ge utlopp för sin ilska.
 
-## Att hantera en frenzy
+## Hantera en frenzy
 
 Det finns mer än ett sätt att hantera när besten börjar trycka sig upp till
 ytan. Antingen kan man motstå frenzy, en stor prestation av viljestyrka som
@@ -64,7 +64,8 @@ besten.
 Ett lättare alternativ till att motstå en frenzy är att leda den istället. Låt
 besten besluta dina handlingar men genomför dem själv för att bibehålla en grad
 av kontroll; välj vart du flyr, vilket blod du dricker och vem du angriper.
-Slaget är likt för [motstå frenzy](#motstå-frenzy) men med ett fritt omslag.
+Slaget är likt för [motstå frenzy](#motstå-frenzy) men kräver en mindre vinst,
+så utan försvårande omständigheter är det en automatisk framgång.
 
 Om det under en ledd frenzy inte går att uppfylla bestens önskan förlorar man
 sig till frenzy.

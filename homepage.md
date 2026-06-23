@@ -6,6 +6,11 @@
 - Lajvet sker 21:a och 22:a augusti från 19 till 01 i House of Possibilitas
   (närmaste hållplats Balladgatan; buss 18, 19, 43, etc.)
 - Lokalen är öppen mellan 17 och 03 för uppsättning/nedplockning.
+- Karaktärer är antingen del av de infiltrerande
+  [kovenanterna](/wiki/covenant/) (max 6 per kovenant) eller del av
+  lokalbefolkningen i domänen som behöver besluta sig för att antingen motverka
+  kovenanterna eller låta sig rekryteras till rätt pris.
+- [Discord server finns!](https://discord.gg/2dhxbZGzjx)
 
 ## Kort om hemsidan
 
@@ -58,6 +63,9 @@ rekommenderad läsning:
   väl lärda av dåtida vampyrer att de är inneboende i blodet. Att bryta dem är
   fullt möjligt och inte helt ovanligt, men alla vet att det finns både direkta
   och sociala konsekvenser.
+- Lajvet utspelar sig inte på en fredad plats (om den inte fredas in-game); så
+  blodskrafter kan användas fritt, våld kan brukas och (boffer-) vapen tillåts.
+  (SL inspekterar vapen vid ankomst för säkerhet.)
 - Äldre vampyrer än 200 år är sällsynta i världen. De flesta har dragit sig
   undan eller ligger rakt av i [torpor](/wiki/torpor/) för att sänka sin
   [BP](/wiki/blood-potency/) till en hanterbar nivå, om de inte redan har dött.

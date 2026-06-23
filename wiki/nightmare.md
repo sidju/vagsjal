@@ -41,6 +41,10 @@ illusioner består så länge du är där och upprätthåller dem.
 
 Du kan använda så kraftfull rädsla att den orsakar fysisk skada. Även ett mål
 med högre [Mental Förmåga](mental-ability.md) än du fryser till av skräck ett
-ögonblick, och de med lägre känner hur hjärtat stannar när rädslan sliter i
-deras kropp och orsakar en skada för varje tre poäng
+ögonblick, och de med lägre eller samma känner hur hjärtat stannar när rädslan
+sliter i deras kropp och orsakar en skada för varje tre poäng
 [Mental Förmåga](mental-ability.md) du har.
+
+Disciplinen kan inte användas på samma person mer än en gång per combat runda.
+Efter användning kan offret välja att äntra strid, i sådana fall beslutas
+[initiativ](combat.md#initiativ) som vanligt.

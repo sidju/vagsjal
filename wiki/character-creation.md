@@ -2,9 +2,11 @@
 
 #index #rules
 
-## Steg 1 - [Karaktärsbeskrivning](character-description.md)
+## Steg 1 - Karaktärsbeskrivning
 
-Skriv en [karaktärsbeskrivning](character-description.md) i ett google dokument.
+Skriv en [karaktärsbeskrivning](character-description.md) i ett google dokument
+enligt -> [dessa instruktioner](character-description.md) <-.
+
 Ta nytta av [wikin](/wiki/), [publik karaktärsinfo](/characters/), och i
 synnerhet [världen](setting.md).
 
