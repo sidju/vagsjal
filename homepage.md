@@ -7,7 +7,7 @@
   (närmaste hållplats Balladgatan; buss 18, 19, 43, etc.)
 - Lokalen är öppen mellan 17 och 03 för uppsättning/nedplockning.
 - Karaktärer är antingen del av de infiltrerande
-  [kovenanterna](/wiki/covenant/) (max 6 per kovenant) eller del av
+  [kovenanterna](/wiki/covenants/) (max 6 per kovenant) eller del av
   lokalbefolkningen i domänen som behöver besluta sig för att antingen motverka
   kovenanterna eller låta sig rekryteras till rätt pris.
 - [Discord server finns!](https://discord.gg/2dhxbZGzjx)
