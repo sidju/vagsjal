@@ -39,12 +39,12 @@ pub struct AuthResult {
 
 fn format_cookie(name: &str, value: &str, max_age_seconds: i64) -> Result<HeaderValue, Error> {
   HeaderValue::try_from(format!(
-    "{name}={value}; Path=/; Max-Age={max_age_seconds}; Secure; HttpOnly; SameSite=Strict"
+    "{name}={value}; Path=/; Max-Age={max_age_seconds}; Secure; HttpOnly; SameSite=Lax"
   )).map_err(Into::into)
 }
 fn format_clear_cookie(name: &str) -> Result<HeaderValue, Error> {
   HeaderValue::try_from(format!(
-    "{name}=; Path=/; Max-Age=0; Secure; HttpOnly; SameSite=Strict"
+    "{name}=; Path=/; Max-Age=0; Secure; HttpOnly; SameSite=Lax"
   )).map_err(Into::into)
 }
 pub fn clear_auth_cookies() -> Result<Vec<HeaderValue>, Error> {
