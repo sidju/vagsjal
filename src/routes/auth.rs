@@ -315,7 +315,7 @@ RETURNING nonce
   ;
 
   let res = add_header(
-    redirect("/"),
+    redirect("/character/"),
     hyper::header::SET_COOKIE,
     format_cookie(
       SESSION_COOKIE_NAME,
