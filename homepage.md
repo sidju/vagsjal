@@ -76,3 +76,8 @@ rekommenderad läsning:
   [backstories](/wiki/character-creation/). Står inget om en domän på hemsidan
   är ni mycket välkomna att skapa den och signifikanta karaktärer i den så
   hanterar vi det under in-appningen.
+
+## Lagliga saker
+
+- [Persondatahantering](/wiki/privacy/)
+- [Användarvillkor](/wiki/tos/)
