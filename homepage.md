@@ -42,9 +42,8 @@ rekommenderad läsning:
   tryggheten de erbjuder.
 - [Klanerna](/wiki/clans/) är andra, även de ni känner sedan innan är omgjorda
   och har nya [svagheter](/wiki/banes/) som förvärras med åldern. Alla
-  [Nosferatus](/wiki/nosferatu/) är inte fula,
-  [Gangrels](/wiki/gangrel/) får inte djurdrag av
-  [frenzy](/wiki/frenzy/).
+  [Nosferatus](/wiki/nosferatu/) är inte fula, [Gangrels](/wiki/gangrel/) får
+  inte djurdrag av [frenzy](/wiki/frenzy/).
 - Många har ett visst band till sin [klan](/wiki/clans/), men det är mer en
   gemenskap än en lojalitet. Kanske ger man en fledgeling några råd, men att
   klanen gemensamt skulle ta ansvar för den är befängt.

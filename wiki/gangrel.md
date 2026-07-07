@@ -37,8 +37,9 @@ självbestämmande och styrka, och bryr sig mindre om vad som inspirerade dem.
 Klan Gangrel är närmare Besten än de andra klanerna, de har gett upp själva sin
 mänsklighet till den som del av Protean och förlorar med det en del av sin
 självkontroll. Det gör dem både mer impulsiva överlag samt gör det svårare att
-helt motstå Frenzy. De kräver en extra framgång för att helt motstå en Frenzy,
-men har ingen nackdel i att rikta en Frenzy.
+helt motstå Frenzy. För varje 2 poäng Blood Potency kräver de en extra framgång
+för att helt motstå en Frenzy, men har ingen nackdel i att rikta en Frenzy tack
+vare sin nära relation med besten.
 
 ## Blodskrafter
 
