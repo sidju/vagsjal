@@ -1,6 +1,6 @@
 # Omfamning / Invigning
 
-#index #rules
+#rules
 
 Omfamning är den process genom vilken en ny vampyr skapas. En vampyr (kallad
 sire) tömmer en människa på blod och låter sedan offret dricka av sitt blod. Om

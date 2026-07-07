@@ -1,6 +1,6 @@
 # Amaranth / Diableri
 
-#rule #traditions
+#rules
 
 ## Mörkare än mord
 

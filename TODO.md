@@ -6,3 +6,4 @@
 - Info om spelledningen (wiki sida)
   - I synnerhet vem som SL-ar vilken kovenant
 - (Beräkna ålder vid omfamningsdatum)
+- Skriv en liten text på Influencer sidan?

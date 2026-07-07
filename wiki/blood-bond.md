@@ -1,5 +1,7 @@
 # Blodsband
 
+#rules
+
 Blodsband kan uppstå när en varelse dricker [vitae](vitae.md). Om den drickande
 är en vampyr av samma eller högre [blodpotens](blood-potency.md) som blodet den
 dricker är det en 50/50 chans att ett band knyts. Om den drickande har lägre

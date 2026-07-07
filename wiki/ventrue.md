@@ -48,8 +48,9 @@ Medlemmar i klan Ventrue brukar försöka maskera detta och låtsas som att allt
 som det ska, men med tiden uppstår det alltid sprickor i deras välkonstruerade
 fasad.
 
-Medlemmar i klan Ventrue får en derangement, alltså galenskap, för varje 2 poäng
-Blood Potency de har.
+Medlemmar i klan Ventrue får en derangement, alltså galenskap, när de når
+[Blodpotens](blood-potency.md) 2 som förvärras allt eftersom deras Blodpotens
+stiger.
 
 ## Blodskrafter
 

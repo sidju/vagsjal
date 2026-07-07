@@ -1,5 +1,7 @@
 # Användarvillkor
 
+#meta
+
 Denna hemsida syftar till att samordna en gemensam kreativ process. Allt som
 skapas och införs i denna process tillhör skaparen men tillåts användas i
 VägSjäl. Kontakta spelledningen om den tillåtelsen ska dras tillbaka och en

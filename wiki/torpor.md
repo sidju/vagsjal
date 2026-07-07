@@ -1,6 +1,6 @@
 # Torpor
 
-#index #rules
+#rules
 
 Torpor är ett tillstånd av djupt vampyriskt medvetslöshet, liknande en dvala. En
 vampyr i torpor är medvetslös, kall som döden och vaknar inte förrän den har

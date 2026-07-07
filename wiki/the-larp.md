@@ -1,5 +1,7 @@
 # Lajvet: Regentens Rekviem
 
+#index #lore
+
 Göteborg har länge varit en fristad från [Kovenanterna](covenants.md). Den
 exakta motivationen är inte känd men _Regenten_ har i nästan 100 år hållt dem
 ute och utvisat alla spioner och infiltratörer de skickat.

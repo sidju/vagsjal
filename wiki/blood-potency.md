@@ -16,6 +16,11 @@ såsom eld, och ingjuter en trötthet som tvingar dem att sova mer.
 - Din skada från [Banes](banes.md) multipliceras med din BP.
 - Varje BP gör att du sover en timme mer per dag och minskar din
   [Organisatoriska förmåga](organizational-ability.md) med 2.
+- Vid högre blodpotens behöver du dricka potentare blod.
+  - Vid blodpotens 3 ger det inte längre näring att dricka av djur.
+  - Vid blodpotens 6 ger det inte längre näring att dricka av människor.
+  - Vid blodpotens 9 ger det inte ens näring att dricka av andra vampyrer,
+    förutom [amaranth](amaranth.md).
 
 ## Att få blodpotens
 
@@ -36,7 +41,7 @@ Detta motsvarar följande tabell:
 | 181 -> 216                    | 6          |
 
 Blodpotensen har även en chans att stiga när en vampyr begår
-[Amaranth](traditions.md#3-amaranth).
+[Amaranth](amaranth.md).
 
 ## Att sänka sin blodpotens
 

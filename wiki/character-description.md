@@ -1,6 +1,6 @@
 # Karaktärsbeskrivning
 
-#index
+#character
 
 För att ha en karaktär som är trevlig att lajva behöver du mer än ett
 [karaktärsblad](/character/), oftast behöver du inte ens några stats alls.
