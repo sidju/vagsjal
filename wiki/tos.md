@@ -1,6 +1,6 @@
 # Användarvillkor
 
-#meta
+#website
 
 Denna hemsida syftar till att samordna en gemensam kreativ process. Allt som
 skapas och införs i denna process tillhör skaparen men tillåts användas i
