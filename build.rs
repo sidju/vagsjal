@@ -78,6 +78,9 @@ fn main() {
     }
   }
 
+  // Generate wiki nav partial for the nav dropdown
+  write_wiki_nav_partial(&analyzer.categories, &display_titles);
+
   // SECOND PASS: render each page with full analysis data
   let mut pages: Vec<(String, String, String)> = Vec::new();
   for (name, content) in &entries {
@@ -112,79 +115,34 @@ fn main() {
 
     // Grouped index section
     if name == "index" {
-      if let Some(index_pages) = analyzer.categories.get("index") {
-        // Build page -> non-index/non-categories secondary tags
-        let mut page_cats: BTreeMap<&str, BTreeSet<&str>> = BTreeMap::new();
-        for page in index_pages {
-          page_cats.entry(page.as_str()).or_default();
-        }
-        for (cat, members) in &analyzer.categories {
-          if cat == "index" || cat == "categories" { continue; }
-          for member in members {
-            if let Some(cats) = page_cats.get_mut(member.as_str()) {
-              cats.insert(cat.as_str());
-            }
-          }
-        }
-
-        // Build groups: category -> list of pages
-        let mut groups: BTreeMap<&str, Vec<&str>> = BTreeMap::new();
-        let mut ungrouped: Vec<&str> = Vec::new();
-        for (page, cats) in &page_cats {
-          if cats.is_empty() {
-            ungrouped.push(*page);
+      let (groups, ungrouped) = build_index_groups(&analyzer.categories, &display_titles);
+      if !groups.is_empty() || !ungrouped.is_empty() {
+        body.push_str("<hr>\n<section class=\"wiki-section\">\n");
+        for (cat, pages) in &groups {
+          let label = display_titles.get(*cat).map(|s| s.as_str()).unwrap_or(*cat);
+          if display_titles.contains_key(*cat) {
+            body.push_str(&format!("<h2><a href=\"/wiki/{cat}/\">{label}</a></h2>\n"));
           } else {
-            for cat in cats {
-              groups.entry(*cat).or_default().push(*page);
-            }
+            body.push_str(&format!("<h2>{label}</h2>\n"));
           }
-        }
-
-        // Sort list items alphabetically; remove category page from its own list (it's the heading)
-        for (cat, pages) in &mut groups {
-          pages.retain(|p| p != cat);
-          pages.sort_by(|a, b| {
-            let a_title = display_titles.get(*a).map(|s| s.as_str()).unwrap_or(*a);
-            let b_title = display_titles.get(*b).map(|s| s.as_str()).unwrap_or(*b);
-            a_title.cmp(b_title)
-          });
-        }
-        // Remove from ungrouped any page that serves as a heading for an existing group
-        ungrouped.retain(|page| !groups.contains_key(*page));
-        ungrouped.sort_by(|a, b| {
-          let a_title = display_titles.get(*a).map(|s| s.as_str()).unwrap_or(*a);
-          let b_title = display_titles.get(*b).map(|s| s.as_str()).unwrap_or(*b);
-          a_title.cmp(b_title)
-        });
-
-        if !groups.is_empty() || !ungrouped.is_empty() {
-          body.push_str("<hr>\n<section class=\"wiki-section\">\n");
-          for (cat, pages) in &groups {
-            let label = display_titles.get(*cat).map(|s| s.as_str()).unwrap_or(*cat);
-            if display_titles.contains_key(*cat) {
-              body.push_str(&format!("<h2><a href=\"/wiki/{cat}/\">{label}</a></h2>\n"));
-            } else {
-              body.push_str(&format!("<h2>{label}</h2>\n"));
-            }
-            if !pages.is_empty() {
-              body.push_str("<ul>\n");
-              for page in pages {
-                let display = display_titles.get(*page).map(|s| s.as_str()).unwrap_or(*page);
-                body.push_str(&format!("<li><a href=\"/wiki/{page}/\">{display}</a></li>\n"));
-              }
-              body.push_str("</ul>\n");
-            }
-          }
-          if !ungrouped.is_empty() {
-            body.push_str("<h2>Övrigt</h2>\n<ul>\n");
-            for page in &ungrouped {
+          if !pages.is_empty() {
+            body.push_str("<ul>\n");
+            for page in pages {
               let display = display_titles.get(*page).map(|s| s.as_str()).unwrap_or(*page);
               body.push_str(&format!("<li><a href=\"/wiki/{page}/\">{display}</a></li>\n"));
             }
             body.push_str("</ul>\n");
           }
-          body.push_str("</section>\n");
         }
+        if !ungrouped.is_empty() {
+          body.push_str("<h2>Övrigt</h2>\n<ul>\n");
+          for page in &ungrouped {
+            let display = display_titles.get(*page).map(|s| s.as_str()).unwrap_or(*page);
+            body.push_str(&format!("<li><a href=\"/wiki/{page}/\">{display}</a></li>\n"));
+          }
+          body.push_str("</ul>\n");
+        }
+        body.push_str("</section>\n");
       }
     }
 
@@ -247,6 +205,92 @@ fn main() {
   pages.extend(auto_pages);
 
   write_wiki_pages(&pages, &real_page_names);
+}
+
+fn write_wiki_nav_partial(
+  categories: &BTreeMap<String, BTreeSet<String>>,
+  display_titles: &BTreeMap<String, String>,
+) {
+  let (groups, ungrouped) = build_index_groups(categories, display_titles);
+
+  let mut html = String::new();
+  for (cat, pages) in &groups {
+    let label = display_titles.get(*cat).map(|s| s.as_str()).unwrap_or(*cat);
+    if display_titles.contains_key(*cat) {
+      html.push_str(&format!("<strong><a href=\"/wiki/{cat}/\">{label}</a></strong>\n"));
+    } else {
+      html.push_str(&format!("<strong>{label}</strong>\n"));
+    }
+    if !pages.is_empty() {
+      html.push_str("<ul>\n");
+      for page in pages {
+        let display = display_titles.get(*page).map(|s| s.as_str()).unwrap_or(*page);
+        html.push_str(&format!("<li><a href=\"/wiki/{page}/\">{display}</a></li>\n"));
+      }
+      html.push_str("</ul>\n");
+    }
+  }
+  if !ungrouped.is_empty() {
+    html.push_str("<strong>Övrigt</strong>\n<ul>\n");
+    for page in &ungrouped {
+      let display = display_titles.get(*page).map(|s| s.as_str()).unwrap_or(*page);
+      html.push_str(&format!("<li><a href=\"/wiki/{page}/\">{display}</a></li>\n"));
+    }
+    html.push_str("</ul>\n");
+  }
+
+  std::fs::write(Path::new("templates").join("wiki_nav_partial.html"), &html).unwrap();
+}
+
+fn build_index_groups<'a>(
+  categories: &'a BTreeMap<String, BTreeSet<String>>,
+  display_titles: &'a BTreeMap<String, String>,
+) -> (BTreeMap<&'a str, Vec<&'a str>>, Vec<&'a str>) {
+  let Some(index_pages) = categories.get("index") else {
+    return (BTreeMap::new(), Vec::new());
+  };
+
+  let mut page_cats: BTreeMap<&str, BTreeSet<&str>> = BTreeMap::new();
+  for page in index_pages {
+    page_cats.entry(page.as_str()).or_default();
+  }
+  for (cat, members) in categories {
+    if cat == "index" || cat == "categories" { continue; }
+    for member in members {
+      if let Some(cats) = page_cats.get_mut(member.as_str()) {
+        cats.insert(cat.as_str());
+      }
+    }
+  }
+
+  let mut groups: BTreeMap<&str, Vec<&str>> = BTreeMap::new();
+  let mut ungrouped: Vec<&str> = Vec::new();
+  for (page, cats) in &page_cats {
+    if cats.is_empty() {
+      ungrouped.push(*page);
+    } else {
+      for cat in cats {
+        groups.entry(*cat).or_default().push(*page);
+      }
+    }
+  }
+
+  for (cat, pages) in &mut groups {
+    pages.retain(|p| p != cat);
+    pages.sort_by(|a, b| {
+      let a_title = display_titles.get(*a).map(|s| s.as_str()).unwrap_or(*a);
+      let b_title = display_titles.get(*b).map(|s| s.as_str()).unwrap_or(*b);
+      a_title.cmp(b_title)
+    });
+  }
+  ungrouped.retain(|page| !groups.contains_key(*page));
+  ungrouped.sort_by(|a, b| {
+    let a_title = display_titles.get(*a).map(|s| s.as_str()).unwrap_or(*a);
+    let b_title = display_titles.get(*b).map(|s| s.as_str()).unwrap_or(*b);
+    a_title.cmp(b_title)
+  });
+
+  (groups, ungrouped)
 }
 
 fn write_wiki_pages(pages: &[(String, String, String)], real_pages: &BTreeSet<String>) {

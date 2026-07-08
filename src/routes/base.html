@@ -22,7 +22,12 @@
               <a href="/">Hem</a>
               <a href="/characters/">Karaktärer</a>
               <a href="/character/">Karaktärsblad</a>
-              <a href="/wiki/">Wiki</a>
+              <details class="nav-dropdown">
+                <summary>Wiki</summary>
+                <div class="nav-dropdown-panel">
+                  {% include "wiki_nav_partial.html" %}
+                </div>
+              </details>
               {% if show_admin_link %}
               <a href="/admin/">Admin</a>
               {% endif %}

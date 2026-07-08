@@ -72,6 +72,73 @@ body {
   font-weight: bold;
 }
 
+/* Wiki nav dropdown */
+.nav-dropdown {
+  position: relative;
+}
+.nav-dropdown > summary {
+  list-style: none;
+  color: #b89088;
+  cursor: pointer;
+  user-select: none;
+}
+.nav-dropdown > summary::-webkit-details-marker { display: none; }
+.nav-dropdown > summary::after {
+  content: " ▾";
+  font-size: 0.75em;
+}
+.nav-dropdown[open] > summary::after {
+  content: " ▴";
+}
+.nav-dropdown > summary:hover {
+  color: #f0b8ae;
+}
+.nav-dropdown-panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.5rem);
+  z-index: 100;
+  min-width: 14rem;
+  background: #1a0505;
+  border: 1px solid rgba(98, 18, 18, 0.55);
+  border-radius: 4px;
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.nav-dropdown-panel strong {
+  display: block;
+  color: #c89888;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
+.nav-dropdown-panel strong:first-child {
+  margin-top: 0;
+}
+.nav-dropdown-panel strong a {
+  color: inherit;
+}
+.nav-dropdown-panel strong a:hover {
+  color: #f0b8ae;
+}
+.nav-dropdown-panel ul {
+  margin: 0.15rem 0 0 0.75rem;
+  padding: 0;
+  list-style: none;
+}
+.nav-dropdown-panel li {
+  margin: 0.1rem 0;
+}
+.nav-dropdown-panel a {
+  color: #b89088;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+.nav-dropdown-panel a:hover {
+  color: #f0b8ae;
+}
+
 .page-paths {
   max-width: 900px;
   margin: 0 auto;
