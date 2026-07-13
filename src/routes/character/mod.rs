@@ -316,10 +316,12 @@ async fn index_post(
     return see_other("/character/");
   }
 
-  let character_description_url = form.character_description_url.map(|u| u.trim().to_string()).filter(|u| !u.is_empty());
-  if let Some(ref url) = character_description_url {
-    validate_description_url(&state.http_client, url).await?;
+  let character_description_url = form.character_description_url.ok_or_else(|| Error::invalid_builder_draft("Missing character_description_url"))?
+    .trim().to_string();
+  if character_description_url.is_empty() {
+    return Err(Error::invalid_builder_draft("Missing character_description_url"));
   }
+  validate_description_url(&state.http_client, &character_description_url).await?;
   let name = form.name.ok_or_else(|| Error::invalid_builder_draft("Missing name"))?;
   let apparent_age = form.apparent_age.ok_or_else(|| Error::invalid_builder_draft("Missing apparent_age"))?;
   let date_embraced = parse_date(form.date_embraced.as_deref().ok_or_else(|| Error::invalid_builder_draft("Missing date_embraced"))?)?;

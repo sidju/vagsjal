@@ -5,8 +5,7 @@ FROM rust:alpine AS deps
 RUN apk add --no-cache musl-dev openssl-dev openssl-libs-static pkgconf
 RUN rustup target add x86_64-unknown-linux-musl
 WORKDIR /usr/src/vagsjal
-COPY Cargo.toml Cargo.lock build.rs ./
-COPY .sqlx .sqlx
+COPY Cargo.toml Cargo.lock ./
 RUN mkdir src && echo 'fn main() {}' > src/main.rs
 RUN SQLX_OFFLINE=true cargo build --release --target x86_64-unknown-linux-musl; \
     # Remove main crate artifacts so the real build replaces them
