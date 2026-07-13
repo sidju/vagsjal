@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "\nSELECT\n  vampire.vampire_id,\n  vampire.status AS \"status: CharacterStatus\",\n  vampire.name,\n  '' AS \"owner_name!\",\n  vampire.apparent_age,\n  vampire.date_embraced,\n  vampire.torpor_time,\n      clan.name AS clan_name,\n      COALESCE(covenant.name, '') AS \"covenant_name!\",\n      COALESCE(covenant.id, '') AS \"covenant_slug!\",\n      COALESCE(xp_remaining.amount, 0) AS \"remaining_xp!\",\n      vampire.character_description_url AS \"character_description_url?\",\n      vampire.public_knowledge,\n      vampire.home_domain,\n      vampire.known_age\nFROM vampire\nJOIN clan USING (clan_id)\nLEFT JOIN covenant USING (covenant_id)\nLEFT JOIN xp_remaining USING (vampire_id)\nWHERE vampire.user_id = $1\nORDER BY vampire.name\n    ",
+  "query": "\nSELECT\n  vampire.vampire_id,\n  vampire.status AS \"status: CharacterStatus\",\n  vampire.name,\n  '' AS \"owner_name!\",\n  vampire.apparent_age,\n  vampire.date_embraced,\n  FLOOR(EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - vampire.date_embraced::TIMESTAMPTZ)) / (86400.0 * 365.25))::INT AS \"embrace_years_ago!\",\n  vampire.torpor_time,\n      clan.name AS clan_name,\n      COALESCE(covenant.name, '') AS \"covenant_name!\",\n      COALESCE(covenant.id, '') AS \"covenant_slug!\",\n      COALESCE(xp_remaining.amount, 0) AS \"remaining_xp!\",\n      vampire.character_description_url AS \"character_description_url?\",\n      vampire.public_knowledge,\n      vampire.home_domain,\n      vampire.known_age\nFROM vampire\nJOIN clan USING (clan_id)\nLEFT JOIN covenant USING (covenant_id)\nLEFT JOIN xp_remaining USING (vampire_id)\nWHERE vampire.user_id = $1\nORDER BY vampire.name\n    ",
   "describe": {
     "columns": [
       {
@@ -35,46 +35,51 @@
       },
       {
         "ordinal": 6,
+        "name": "embrace_years_ago!",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 7,
         "name": "torpor_time",
         "type_info": "Interval"
       },
       {
-        "ordinal": 7,
+        "ordinal": 8,
         "name": "clan_name",
         "type_info": "Varchar"
       },
       {
-        "ordinal": 8,
+        "ordinal": 9,
         "name": "covenant_name!",
         "type_info": "Varchar"
       },
       {
-        "ordinal": 9,
+        "ordinal": 10,
         "name": "covenant_slug!",
         "type_info": "Varchar"
       },
       {
-        "ordinal": 10,
+        "ordinal": 11,
         "name": "remaining_xp!",
         "type_info": "Int8"
       },
       {
-        "ordinal": 11,
+        "ordinal": 12,
         "name": "character_description_url?",
         "type_info": "Text"
       },
       {
-        "ordinal": 12,
+        "ordinal": 13,
         "name": "public_knowledge",
         "type_info": "Text"
       },
       {
-        "ordinal": 13,
+        "ordinal": 14,
         "name": "home_domain",
         "type_info": "Varchar"
       },
       {
-        "ordinal": 14,
+        "ordinal": 15,
         "name": "known_age",
         "type_info": "Varchar"
       }
@@ -91,6 +96,7 @@
       null,
       false,
       false,
+      null,
       false,
       false,
       null,
@@ -102,5 +108,5 @@
       false
     ]
   },
-  "hash": "0c4c021636de764cef34ffe80c5103f2c75669f70f51b62a32aed9b242fd2625"
+  "hash": "5a3cecedad643dfa0c87b169c7fb5848d612837669f280172c7fe7d48428939a"
 }

@@ -135,7 +135,7 @@ pub async fn route(
     },
     Some("wiki") => {
       prevent_cache = false;
-      wiki::route(session, req, path_vec).await
+      add_header(wiki::route(session, req, path_vec).await, hyper::header::CACHE_CONTROL, HeaderValue::from_static("public, max-age=86400"))
     },
     Some("styles.css") => {
       prevent_cache = false;
@@ -145,12 +145,12 @@ pub async fn route(
     Some("vs-rr.png") => {
       prevent_cache = false;
       verify_method_path_end(&path_vec, &req, &Method::GET)?;
-      add_header(png(LOGO), hyper::header::CACHE_CONTROL, HeaderValue::from_static("public, max-age=2592000, immutable"))
+      add_header(png(LOGO), hyper::header::CACHE_CONTROL, HeaderValue::from_static("public, max-age=86400"))
     },
     Some("favicon.png") => {
       prevent_cache = false;
       verify_method_path_end(&path_vec, &req, &Method::GET)?;
-      add_header(png(FAVICON), hyper::header::CACHE_CONTROL, HeaderValue::from_static("public, max-age=2592000, immutable"))
+      add_header(png(FAVICON), hyper::header::CACHE_CONTROL, HeaderValue::from_static("public, max-age=86400"))
     },
     _ => Err(Error::path_not_found(&req)),
   };

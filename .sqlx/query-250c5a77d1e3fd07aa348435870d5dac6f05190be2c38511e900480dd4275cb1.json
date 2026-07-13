@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "\n    SELECT\n      vampire.vampire_id,\n      vampire.user_id,\n      app_user.name AS owner_name,\n      vampire.status AS \"status: CharacterStatus\",\n      vampire.name,\n      vampire.apparent_age,\n      vampire.date_embraced,\n      vampire.torpor_time,\n      vampire.clan_id,\n      clan.name AS clan_name,\n      COALESCE(vampire.covenant_id, 0) AS \"covenant_id!\",\n      COALESCE(covenant.name, '') AS \"covenant_name!\",\n      COALESCE(covenant.id, '') AS \"covenant_slug!\",\n      COALESCE(xp_remaining.amount, 0) AS \"remaining_xp!\",\n      vampire.character_description_url AS \"character_description_url?\",\n      vampire.public_knowledge,\n      vampire.home_domain,\n      vampire.known_age\n    FROM vampire\n    JOIN app_user USING (user_id)\n    JOIN clan USING (clan_id)\n    LEFT JOIN covenant USING (covenant_id)\n    LEFT JOIN xp_remaining USING (vampire_id)\n    WHERE vampire_id = $1\n    ",
+  "query": "\n    SELECT\n      vampire.vampire_id,\n      vampire.user_id,\n      app_user.name AS owner_name,\n      vampire.status AS \"status: CharacterStatus\",\n      vampire.name,\n      vampire.apparent_age,\n      vampire.date_embraced,\n      FLOOR(EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - vampire.date_embraced::TIMESTAMPTZ)) / (86400.0 * 365.25))::INT AS \"embrace_years_ago!\",\n      vampire.torpor_time,\n      vampire.clan_id,\n      clan.name AS clan_name,\n      COALESCE(vampire.covenant_id, 0) AS \"covenant_id!\",\n      COALESCE(covenant.name, '') AS \"covenant_name!\",\n      COALESCE(covenant.id, '') AS \"covenant_slug!\",\n      COALESCE(xp_remaining.amount, 0) AS \"remaining_xp!\",\n      vampire.character_description_url AS \"character_description_url?\",\n      vampire.public_knowledge,\n      vampire.home_domain,\n      vampire.known_age\n    FROM vampire\n    JOIN app_user USING (user_id)\n    JOIN clan USING (clan_id)\n    LEFT JOIN covenant USING (covenant_id)\n    LEFT JOIN xp_remaining USING (vampire_id)\n    WHERE vampire_id = $1\n    ",
   "describe": {
     "columns": [
       {
@@ -40,56 +40,61 @@
       },
       {
         "ordinal": 7,
+        "name": "embrace_years_ago!",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 8,
         "name": "torpor_time",
         "type_info": "Interval"
       },
       {
-        "ordinal": 8,
+        "ordinal": 9,
         "name": "clan_id",
         "type_info": "Int8"
       },
       {
-        "ordinal": 9,
+        "ordinal": 10,
         "name": "clan_name",
         "type_info": "Varchar"
       },
       {
-        "ordinal": 10,
+        "ordinal": 11,
         "name": "covenant_id!",
         "type_info": "Int8"
       },
       {
-        "ordinal": 11,
+        "ordinal": 12,
         "name": "covenant_name!",
         "type_info": "Varchar"
       },
       {
-        "ordinal": 12,
+        "ordinal": 13,
         "name": "covenant_slug!",
         "type_info": "Varchar"
       },
       {
-        "ordinal": 13,
+        "ordinal": 14,
         "name": "remaining_xp!",
         "type_info": "Int8"
       },
       {
-        "ordinal": 14,
+        "ordinal": 15,
         "name": "character_description_url?",
         "type_info": "Text"
       },
       {
-        "ordinal": 15,
+        "ordinal": 16,
         "name": "public_knowledge",
         "type_info": "Text"
       },
       {
-        "ordinal": 16,
+        "ordinal": 17,
         "name": "home_domain",
         "type_info": "Varchar"
       },
       {
-        "ordinal": 17,
+        "ordinal": 18,
         "name": "known_age",
         "type_info": "Varchar"
       }
@@ -107,6 +112,7 @@
       false,
       false,
       false,
+      null,
       false,
       false,
       false,
@@ -120,5 +126,5 @@
       false
     ]
   },
-  "hash": "82115074e8e6b1d335ff56f4662cf56f761530454dbf340e7ba033c05dac9f16"
+  "hash": "250c5a77d1e3fd07aa348435870d5dac6f05190be2c38511e900480dd4275cb1"
 }

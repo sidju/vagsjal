@@ -13,6 +13,7 @@ struct Character {
   owner_name: String,
   apparent_age: i32, // in years
   date_embraced: Date,
+  embrace_years_ago: i32,
   torpor_time: sqlx::postgres::types::PgInterval,
   clan_name: String,
   covenant_name: String,
@@ -152,6 +153,7 @@ SELECT
   '' AS \"owner_name!\",
   vampire.apparent_age,
   vampire.date_embraced,
+  FLOOR(EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - vampire.date_embraced::TIMESTAMPTZ)) / (86400.0 * 365.25))::INT AS \"embrace_years_ago!\",
   vampire.torpor_time,
       clan.name AS clan_name,
       COALESCE(covenant.name, '') AS \"covenant_name!\",

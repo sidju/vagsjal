@@ -67,7 +67,7 @@ fn verify_id_token_allow_missing_nonce<'a>(
   >,
   ClaimsVerificationError,
 > {
-  id_token.claims(&state.oidc_client.id_token_verifier(), allow_any_nonce)
+  id_token.claims(&state.oidc.client().id_token_verifier(), allow_any_nonce)
 }
 fn display_name_from_claims(
   claims: &openidconnect::IdTokenClaims<
@@ -151,7 +151,7 @@ async fn refresh_session_from_cookie(
   state: &'static State,
   refresh_token_raw: &str,
 ) -> Result<Option<(SessionData, Vec<HeaderValue>)>, Error> {
-  let token_response: openidconnect::core::CoreTokenResponse = match state.oidc_client
+  let token_response: openidconnect::core::CoreTokenResponse = match state.oidc.client()
     .exchange_refresh_token(&openidconnect::RefreshToken::new(refresh_token_raw.to_owned()))
   {
     Ok(req) => match req.request_async(&state.http_client).await {
@@ -194,7 +194,7 @@ async fn refresh_session_from_cookie(
 pub async fn start_oidc_login_flow(
   state: &'static State,
 ) -> Result<Response, Error> {
-  let (authorize_url, csrf_state, nonce) = state.oidc_client
+  let (authorize_url, csrf_state, nonce) = state.oidc.client()
     .authorize_url(
       openidconnect::AuthenticationFlow::<openidconnect::core::CoreResponseType>::AuthorizationCode,
       openidconnect::CsrfToken::new_random,
@@ -293,7 +293,7 @@ RETURNING nonce
     .ok_or(ClientError::UnknownOIDCProcess)?
   ;
 
-  let token_response: openidconnect::core::CoreTokenResponse = state.oidc_client
+  let token_response: openidconnect::core::CoreTokenResponse = state.oidc.client()
     .exchange_code(openidconnect::AuthorizationCode::new(oidc_response.code))?
     .request_async(&state.http_client)
     .await
@@ -304,7 +304,7 @@ RETURNING nonce
     .ok_or(ClientError::OIDCGaveNoToken)?
   ;
   let id_token_claims = id_token.claims(
-    &state.oidc_client.id_token_verifier(),
+    &state.oidc.client().id_token_verifier(),
     &openidconnect::Nonce::new(nonce),
   )?;
   let _session = upsert_user_from_claims(state, id_token_claims).await?;

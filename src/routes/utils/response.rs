@@ -78,6 +78,10 @@ pub fn css(
     "Content-Type",
     HeaderValue::from_static("text/css; charset=utf-8")
   );
+  re.headers_mut().insert(
+    "Cache-Control",
+    HeaderValue::from_static("public, max-age=86400"),
+  );
   Ok(re)
 }
 // Return given string as javascript
@@ -91,7 +95,7 @@ pub fn js(
   );
   re.headers_mut().insert(
     "Cache-Control",
-    HeaderValue::from_static("public, max-age=2592000, immutable"),
+    HeaderValue::from_static("public, max-age=86400"),
   );
   Ok(re)
 }
