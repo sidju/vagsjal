@@ -26,19 +26,20 @@ såsom eld, och ingjuter en trötthet som tvingar dem att sova mer.
 
 Din blodpotens stiger med ett ungefär vart 36:e år av vampyrisk existens.
 
-År tillbringade i torpor räknas mot att höja en karaktärs blodpotens; ett år i
-torpor neutraliserar ett år av vampyrisk existens.
+År tillbringade i [torpor](torpor.md) räknas mot att höja en karaktärs
+blodpotens; ett år i [torpor](torpor.md) neutraliserar ett år av vampyrisk
+existens.
 
 Detta motsvarar följande tabell:
 
-| År av existens - år av torpor | Blodpotens |
-| ----------------------------- | ---------- |
-| 0 -> 36                       | 1          |
-| 37 -> 72                      | 2          |
-| 73 -> 108                     | 3          |
-| 109 -> 144                    | 4          |
-| 145 -> 180                    | 5          |
-| 181 -> 216                    | 6          |
+| År av existens - år av [torpor](torpor.md) | Blodpotens |
+| ------------------------------------------ | ---------- |
+| 0 -> 36                                    | 1          |
+| 37 -> 72                                   | 2          |
+| 73 -> 108                                  | 3          |
+| 109 -> 144                                 | 4          |
+| 145 -> 180                                 | 5          |
+| 181 -> 216                                 | 6          |
 
 Blodpotensen har även en chans att stiga när en vampyr begår
 [Amaranth](amaranth.md).
@@ -48,9 +49,9 @@ Blodpotensen har även en chans att stiga när en vampyr begår
 Då blodpotensens svagheter blir nästan ohanterliga kring 140 års ålder finns det
 ett givet behov av att kunna minska den igen. Det finns i essens två kända sätt:
 
-- Om man spenderar fler år i torpor än man har blodpotens har man en god chans
-  att reducera den, men det är inte det enda man förlorar. Minnen och ibland
-  andra egenskaper går ofta förlorade i en längre dvala, utöver att den tenderar
-  att vara fylld av mindre än behagliga drömmar.
-- Ordo Dracul har ritualer som kan sänka blodets potens, men de säljer dem inte
-  billigt.
+- Om man spenderar fler år i [torpor](torpor.md) än man har blodpotens har man
+  en god chans att reducera den, men det är inte det enda man förlorar. Minnen
+  och ibland andra egenskaper går ofta förlorade i en längre dvala, utöver att
+  den tenderar att vara fylld av mindre än behagliga drömmar.
+- [Ordo Dracul](ordo-dracul.md) har ritualer som kan sänka blodets potens, men
+  de säljer dem inte billigt.

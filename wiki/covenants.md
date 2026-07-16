@@ -3,10 +3,10 @@
 #index #lore
 
 En Kovenant är en politisk och filosofisk lojalitet — vald, inte nedärvd. Där en
-[klan](clans.md) är en fråga om blod, är ett förbund en fråga om tro och
-ambition. Besläktade ansluter sig till kovenanter då de finner en världsbild som
-matchar deras egen, eller då kovenanten erbjuder något de vill ha: makt,
-gemenskap, kunskap eller syfte.
+[klan](clans.md) är en fråga om blod, är ett förbund en fråga om [tro](faith.md)
+och ambition. Besläktade ansluter sig till kovenanter då de finner en världsbild
+som matchar deras egen, eller då kovenanten erbjuder något de vill ha: makt,
+gemenskap, [kunskap](lore.md) eller syfte.
 
 Kovenanter är det organisatoriska lagret i det besläktade samhället. De har
 hierarkier, förväntningar och ansvar. En besläktads primära politiska

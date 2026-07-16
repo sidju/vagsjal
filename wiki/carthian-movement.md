@@ -4,10 +4,11 @@
 
 ## Reformisterna
 
-Den Karthiska Rörelsen är en kovenant som vill förändra världen, men som inte
-vet till vad. De värderar tolerans och rättvisa, men kan inte besluta sig för
-hur de ska strukturera ett besläktat samhälle runt de idealen. Istället söker de
-efter en struktur genom att experimentera i domänerna de kontrollerar.
+Den Karthiska Rörelsen är en kovenant som vill förändra [världen](setting.md),
+men som inte vet till vad. De värderar tolerans och rättvisa, men kan inte
+besluta sig för hur de ska strukturera ett besläktat samhälle runt de idealen.
+Istället söker de efter en struktur genom att experimentera i domänerna de
+kontrollerar.
 
 ## Historia
 
@@ -93,9 +94,10 @@ tillfällen:
    omedelbart och obönhörligt på förövaren blott ett ögonblick efter handlingen.
 
 Karthiska lagar har några gemensamma svagheter:
+
 - De är endast så starka som den starkaste i stiftandet. De som har högre
-  [BP](blood-potency.md) än den högsta BP som var med och skapade lagen
-  påverkas inte av den, men kan likväl känna av när den borde ha tagit effekt.
+  [BP](blood-potency.md) än den högsta BP som var med och skapade lagen påverkas
+  inte av den, men kan likväl känna av när den borde ha tagit effekt.
 - Karthiska lagar fungerar endast då de anses vara legitimt etablerade. De kan
-  stiftas av en minoritet av domänen *så länge domänen tycker omröstningarna är
-  legitima*, och riskerar försvagas eller försvinna om domänen ändrar åsikt.
+  stiftas av en minoritet av domänen _så länge domänen tycker omröstningarna är
+  legitima_, och riskerar försvagas eller försvinna om domänen ändrar åsikt.

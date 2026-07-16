@@ -30,9 +30,9 @@ ingen väcker dem inom ett år från att de fallit i torpor.
 
 ### Vitae
 
-En vampyr i torpor kan väckas av att få vampyrblod i dess mun. Mänskligt blod
-väcker den inte men ger näring, så den kan läka och ersätta eventuell förlorad
-vitae.
+En vampyr i torpor kan väckas av att få [vampyrblod](vitae.md) i dess mun.
+Mänskligt blod väcker den inte men ger näring, så den kan läka och ersätta
+eventuell förlorad [vitae](vitae.md).
 
 ## Effekter av torpor
 

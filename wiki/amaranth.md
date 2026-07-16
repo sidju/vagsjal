@@ -14,8 +14,8 @@ som ger en kännbart ökad styrka (+1 [blodpotens](blood-potency.md)).
 
 Amaranthen har ett djupt pris för vampyren, men inte för dess best. Offrets själ
 binds in i förövarens, gör den starkare och höjer därigenom
-[blodpotensen](blood-potency.md). Men mest styrka får Besten, som blir svårare
-att motstå. Det yttrar sig mest i svårighet att
+[blodpotensen](blood-potency.md). Men mest styrka får [Besten](beast.md), som
+blir svårare att motstå. Det yttrar sig mest i svårighet att
 [motstå frenzy](frenzy.md#hantera-en-frenzy), där karaktären behöver en
 ytterligare framgång, men känns även i andra sammanhang där
 [bestens vilja](beast.md#bestens-vilja) är stark.

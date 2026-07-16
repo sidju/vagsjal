@@ -9,8 +9,8 @@ skapelse tas ur spelvärlden.
 
 ## Karaktärsbeskrivning
 
-Länken till karaktärsbeskrivning behöver främst vara tillgänglig under
-skapandet, men spelare uppmanas lämna den tillgänglig och uppdatera den under
-tiden karakären är i spel. Beskrivningar för karaktärer ur spel är frivilliga
-att ha kvar och lämna tillgängliga, men kan underlätta för spelledningen om de
-finns.
+Länken till [karaktärsbeskrivning](character-description.md) behöver främst vara
+tillgänglig under skapandet, men spelare uppmanas lämna den tillgänglig och
+uppdatera den under tiden karakären är i spel. Beskrivningar för karaktärer ur
+spel är frivilliga att ha kvar och lämna tillgängliga, men kan underlätta för
+spelledningen om de finns.

@@ -46,5 +46,5 @@ sliter i deras kropp och orsakar en skada för varje tre poäng
 [Mental Förmåga](mental-ability.md) du har.
 
 Disciplinen kan inte användas på samma person mer än en gång per combat runda.
-Efter användning kan offret välja att äntra strid, i sådana fall beslutas
-[initiativ](combat.md#initiativ) som vanligt.
+Efter användning kan offret välja att äntra [strid](combat.md), i sådana fall
+beslutas [initiativ](combat.md#initiativ) som vanligt.

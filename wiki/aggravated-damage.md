@@ -23,4 +23,4 @@ fientliga essensen.
 
 Om en besläktad faller till [torpor](torpor.md) när de bär på förvärrad skada
 överkoms de av infektionen och möter den slutgiltiga döden. Detsamma sker om
-förvärrad skada görs på en besläktad i torpor.
+förvärrad skada görs på en besläktad i [torpor](torpor.md).

@@ -22,20 +22,22 @@ hårdkodat in i klanens sätt att vara.
 Med detta sagt är långt ifrån alla medlemmar maktgalna egoister. Många strävar
 efter att vara exceptionell i ett specifikt fält och önskar inte styra direkt.
 Andra önskar inte ens vara i något hierarkiskt system och aktivt kämpar emot
-kovenanter de annars var skapade för. Är inte det främsta tecknet på ens makt
-och inflytande att man kan ta sig an etablissemanget och vinna?
+[kovenanter](covenants.md) de annars var skapade för. Är inte det främsta
+tecknet på ens makt och inflytande att man kan ta sig an etablissemanget och
+vinna?
 
 ## Bestens uttryck
 
-Klan Ventrues best är en stolt, rättfärdigad jägare som ser alla dess handlingar
-som självklara och rätta. Det finns inte en uns av tveksamhet i besten och all
-potentiell kritik ses som förräderi. I frenzy tar alla dessa aspekter totalt
-över den besläktade och de blir ett fruktansvärt, arrogant vidunder utan dess
-like.Den härskande klanens bett orsakar en känsla av total underkastelse hos den
-som blir biten. I den stunden önskar offret inget annat än att blidka monstret
-hen då ser som sin självklara mästare. I kontrast känner den besläktade makt och
-kontroll, något de självklart har rätt till. Offret ger sitt liv till sin herre,
-såsom alla undersåtar bör göra.
+Klan Ventrues best är en stolt, rättfärdigad jägare som ser alla dess
+[handlingar](actions.md) som självklara och rätta. Det finns inte en uns av
+tveksamhet i [besten](beast.md) och all potentiell kritik ses som förräderi. I
+[frenzy](frenzy.md) tar alla dessa aspekter totalt över den besläktade och de
+blir ett fruktansvärt, arrogant vidunder utan dess like.Den härskande klanens
+bett orsakar en känsla av total underkastelse hos den som blir biten. I den
+stunden önskar offret inget annat än att blidka monstret hen då ser som sin
+självklara mästare. I kontrast känner den besläktade makt och kontroll, något de
+självklart har rätt till. Offret ger sitt liv till sin herre, såsom alla
+undersåtar bör göra.
 
 ## Svaghet
 
@@ -49,8 +51,8 @@ som det ska, men med tiden uppstår det alltid sprickor i deras välkonstruerade
 fasad.
 
 Medlemmar i klan Ventrue får en derangement, alltså galenskap, när de når
-[Blodpotens](blood-potency.md) 2 som förvärras allt eftersom deras Blodpotens
-stiger.
+[Blodpotens](blood-potency.md) 2 som förvärras allt eftersom deras
+[Blodpotens](blood-potency.md) stiger.
 
 ## Blodskrafter
 

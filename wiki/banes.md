@@ -16,18 +16,20 @@ fastna i fullt dagsljus utan skydd — dödar en vampyr snabbt oavsett [HP](hp.m
 Kort exponering genom glas, kläder eller skugga ger fortfarande skada, men i
 lägre takt. Vampyren kan inte välja att vara kvar i solljus, flykt är ett måste.
 
-Direkt solljus gör 6 förvärrad skada per BP varje runda en signifikant del av
-karakären är i solljus.
+Direkt solljus gör 6 [förvärrad skada](aggravated-damage.md) per BP varje runda
+en signifikant del av karakären är i solljus.
 
 ## Eld
 
-Eld ger [Förvärrad skada](aggravated-damage.md) och drar besten mot
+Eld ger [Förvärrad skada](aggravated-damage.md) och drar [besten](beast.md) mot
 [Rötschreck](frenzy.md#rötschreck). Till skillnad från solljus kan eld uthärdas
-med tillräcklig viljestyrka, men besten måste bekämpas varje ögonblick.
+med tillräcklig viljestyrka, men [besten](beast.md) måste bekämpas varje
+ögonblick.
 
-Öppna lågor gör 4 förvärrad skada per BP varje runda karaktären är i eld och
-sätter eld på karaktären (om den inte motstår förvärrad skada). Karaktärer
-självslocknar efter BP rundor, men kan släckas med hjälp tidigare.
+Öppna lågor gör 4 [förvärrad skada](aggravated-damage.md) per BP varje runda
+karaktären är i eld och sätter eld på karaktären (om den inte motstår
+[förvärrad skada](aggravated-damage.md)). Karaktärer självslocknar efter BP
+rundor, men kan släckas med hjälp tidigare.
 
 Eld som inte är öppna lågor, såsom glöd och glödgad metall, gör 2 förvärrad
 skada per BP och sätter inte eld på karaktären.

@@ -5,7 +5,7 @@
 ## Rustning
 
 Rustning ger extra [HP](hp.md) som används upp innan din egen, till priset av
-att du blir allt mer uppenbart förberedd för strid.
+att du blir allt mer uppenbart förberedd för [strid](combat.md).
 
 | [HP](hp.md) bonus | Kategoribeskrivning        |
 | ----------------- | -------------------------- |
@@ -36,14 +36,14 @@ risk går det att få ganska bra skada.
 
 Avståndsvapen kräver att användaren är tränad med vapnet.
 
-| Vapen              | Skada | Särskilda regler                       |
-| ------------------ | ----- | -------------------------------------- |
-| Handeldvapen       | 1     | Kan användas i närstrid                |
-| Jaktgevär          | 2     |                                        |
-| Automatkarbin      | 2     |                                        |
-| Krypskyttegevär    | 2     | Längre räckvidd, SL avgör              |
-| Hagelgevär         | 3     | Kan inte laddas om i strid             |
-| Avsågat hagelgevär | 3     | Kan användas i närstrid, 2 skott/strid |
+| Vapen              | Skada | Särskilda [regler](rules.md)            |
+| ------------------ | ----- | --------------------------------------- |
+| Handeldvapen       | 1     | Kan användas i närstrid                 |
+| Jaktgevär          | 2     |                                         |
+| Automatkarbin      | 2     |                                         |
+| Krypskyttegevär    | 2     | Längre räckvidd, SL avgör               |
+| Hagelgevär         | 3     | Kan inte laddas om i [strid](combat.md) |
+| Avsågat hagelgevär | 3     | Kan användas i närstrid, 2 skott/strid  |
 
 Ljud av skottlossning kan orsaka problem; ljuddämpare kan användas och påverkar
 inte skadan.

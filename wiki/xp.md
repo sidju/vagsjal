@@ -48,11 +48,11 @@ Det är frestande att lägga allt på en aspekt av spelet, men det blir ofta
 frustrerande i längden. En mer balanserad approach är att prioritera dem och
 sträva efter att lägga till viss kompensation för den svagaste.
 
-Till exempel, när du skapar en karaktär med prioritet Organisation, Mental,
-Fysisk:
+Till exempel, när du skapar en [karaktär](character.md) med prioritet
+Organisation, Mental, Fysisk:
 
 - Lägg till en kompensation för din fysiska svaghet; extra [HP](hp.md), en
-  [kraft](blood-powers.md) som låter dig undvika eller fly strid.
+  [kraft](blood-powers.md) som låter dig undvika eller fly [strid](combat.md).
 - Lägg resten av XP:n på dina högre prioriteringar. Om det blir för lite XP kvar
   efter kompensationen (sannolikt för mycket unga vampyrer), strunta i det och
   var genuint mycket svag.

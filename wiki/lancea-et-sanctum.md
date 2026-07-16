@@ -18,7 +18,8 @@ vända sig till Herren. Där löftet om paradiset är mänsklighetens morot är 
 Sanctum piskan som driver de otroende till Herrens famn.
 
 Till sin hjälp har kovenanten en arsenal av heliga artefakter, bibliotek av
-förbjuden kunskap och sin egen gren av blodsmagi: Theban Sorcery.
+förbjuden [kunskap](lore.md) och sin egen gren av blodsmagi:
+[Theban Sorcery](#theban-sorcery).
 
 ## Historia
 
@@ -44,8 +45,9 @@ och traditioner som besläktade följer idag etablerades av dem.
 > -- The Rule of Golgotha 1
 
 Lancea Sanctum tar mycket av sin moral och teologi från kristendom, men kontra
-till vad många utomstående kan tro följer de helgade inte bibeln. Istället
-följer de det ovan nämnda Longinus Testamente, som ersätter bibelns plats.
+till vad många utomstående kan [tro](faith.md) följer de helgade inte bibeln.
+Istället följer de det ovan nämnda Longinus Testamente, som ersätter bibelns
+plats.
 
 Den centrala tesen i testamentet är att vampyrexistensen är paradoxalt nog ett
 gudomligt straff och samtidigt en gudomlig gåva. På grund av detta ska dess
@@ -55,14 +57,15 @@ Guds heliga monster.
 
 Kovenantens medlemmar instrueras att på vissa sätt njuta av sin existens, att
 dricka blod från en människa anses vara en helig akt som ska njutas av i dess
-fullaste höjd, men samtidigt måste de också följa en stor mängd regler som
-motiveras av en moralisk avhållsamhet. Detta är inte på grund av någon empati
-gentemot mänskligheten, utan på grund av praktiska skäl för att hålla maskeraden
-kombinerad med religiös dogma.
+fullaste höjd, men samtidigt måste de också följa en stor mängd
+[regler](rules.md) som motiveras av en moralisk avhållsamhet. Detta är inte på
+grund av någon empati gentemot mänskligheten, utan på grund av praktiska skäl
+för att hålla [maskeraden](masquerade.md) kombinerad med religiös dogma.
 
-Av alla kovenanter följer de helgade de tre [traditionerna](traditions.md)
-hårdast. Kovenanten har också den striktaste tolkningen av den andra traditionen
-och förbjuder sina medlemmar helt från att omfamna.
+Av alla [kovenanter](covenants.md) följer de helgade de tre
+[traditionerna](traditions.md) hårdast. Kovenanten har också den striktaste
+tolkningen av den andra traditionen och förbjuder sina medlemmar helt från att
+omfamna.
 
 ## Organisation
 
@@ -74,10 +77,10 @@ och förbjuder sina medlemmar helt från att omfamna.
 
 Lancea et Sanctum har en hård uppdelning mellan två block i kovenanten:
 Församlingen, som består av de icke-ordinerade lekmännen, och prästerskapet,
-ordinerade medlemmar som får utföra sakramentet och lära sig Theban Sorcery.
-Alla är accepterade medlemmar i kovenanten, men endast prästerskapet har något
-makt och inflytande, och alla lekmän måste lyda prästerskapets ord. Majoriteten
-av kovenanten är lekmän.
+ordinerade medlemmar som får utföra sakramentet och lära sig
+[Theban Sorcery](#theban-sorcery). Alla är accepterade medlemmar i kovenanten,
+men endast prästerskapet har något makt och inflytande, och alla lekmän måste
+lyda prästerskapets ord. Majoriteten av kovenanten är lekmän.
 
 Prästerskapet består i sin tur av en intern hierarki av prästitlar. Alla är i
 grunden en präst men skillnaden ligger i vem som anses vara den mest
@@ -104,7 +107,8 @@ Prästerskap titlarna kallas för huvudämbeten, och de är följande:
 - **Kardinal**: Ett gammalt, och enligt vissa föråldrat, ämbete som sällan
   används. En kardinal har ansvar för särskilt stora domäner och fungerar som
   både en biskop och ärkebiskop. Hen bestämmer både över de nattliga uppgifterna
-  som kovenanten ska utföra och dess övergripande politik i hela domänen.
+  som kovenanten ska utföra och dess övergripande [politik](politics.md) i hela
+  domänen.
 
 Utöver huvudämbetena som signalerar ens rang finns det en lista på generella
 ämbeten som signalerar en specifik roll. Vissa av dessa ämbeten kräver inte att
@@ -137,22 +141,24 @@ man är ordinerad och en del av prästerskapet. De är följande:
 >
 > -- Eschaton 8:2
 
-Theban Sorcery är Lancea et Sanctums unika blodsmagi som tar formen av bibliska
-mirakel. Enligt tradition ska Sankt Daniel ha blivit given kunskapen av ängeln
-Amoniel i en grotta djupt under staden Thebes, därav namnet.
+[Theban Sorcery](#theban-sorcery) är Lancea et Sanctums unika blodsmagi som tar
+formen av bibliska mirakel. Enligt tradition ska Sankt Daniel ha blivit given
+kunskapen av ängeln Amoniel i en grotta djupt under staden Thebes, därav namnet.
 
-Det är en ritualistisk och djupt religiös form av magi som kräver tro, kunskap
-och viktigast av allt, ett symboliskt föremål som fungerar som ritualens
-sakrament och offer. Med hjälp Theban Sorcery kan de helgade utföra annars
-omöjliga handlingar såsom att frammana helig eld, tvinga en kättare att tala
-sanning och tillfälligt skydda en besläktad från solljus. Vad exakt man kan
-utföra med Theban Sorcery är i teorin endast begränsat av mängden kunskap man
-har lyckats samla på sig. I praktiken är dock blodmagin mer begränsad än så.
-Kovenantens äldre medlemmar är mycket försiktiga med att lära ut mirakel och de
-flesta i prästerskapet har en väldigt begränsad mängd förmågor.
+Det är en ritualistisk och djupt religiös form av magi som kräver
+[tro](faith.md), [kunskap](lore.md) och viktigast av allt, ett symboliskt
+föremål som fungerar som ritualens sakrament och offer. Med hjälp
+[Theban Sorcery](#theban-sorcery) kan de helgade utföra annars omöjliga
+[handlingar](actions.md) såsom att frammana helig eld, tvinga en kättare att
+tala sanning och tillfälligt skydda en besläktad från solljus. Vad exakt man kan
+utföra med [Theban Sorcery](#theban-sorcery) är i teorin endast begränsat av
+mängden [kunskap](lore.md) man har lyckats samla på sig. I praktiken är dock
+blodmagin mer begränsad än så. Kovenantens äldre medlemmar är mycket försiktiga
+med att lära ut mirakel och de flesta i prästerskapet har en väldigt begränsad
+mängd förmågor.
 
-Spelledningen finns tillhanda för att skapa Theban Sorcery ritualer. Dels kan
-enklare standard-ritualer skapas och läras ut, dels kan unika improviserade
-ritualer skapas för specifika sammanhang på ett sätt som är tillfredsställande
-för berättelsen. Standard-ritualer kommer att skrivas in här nedan för framtida
-referens.
+Spelledningen finns tillhanda för att skapa [Theban Sorcery](#theban-sorcery)
+ritualer. Dels kan enklare standard-ritualer skapas och läras ut, dels kan unika
+improviserade ritualer skapas för specifika sammanhang på ett sätt som är
+tillfredsställande för berättelsen. Standard-ritualer kommer att skrivas in här
+nedan för framtida referens.

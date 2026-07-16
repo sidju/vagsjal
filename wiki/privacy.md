@@ -14,7 +14,7 @@ för andra användare.
 
 Datan insamlas för att kunna erbjuda smidig överblick till karaktärsdata för
 både spelledning och spelare kring lajvet. Datan bibehålls några månader efter
-lajvet för att möjliggöra för spelare att kolla upp sin karaktär för eventuella
-uppföljande konversationer eller scener, men vid årets slut kommer all
-persondata att tas bort och hemsidan stängas ner. (Karaktärsdatan tas inte
-bort.)
+lajvet för att möjliggöra för spelare att kolla upp sin [karaktär](character.md)
+för eventuella uppföljande konversationer eller scener, men vid årets slut
+kommer all persondata att tas bort och [hemsidan](website.md) stängas ner.
+(Karaktärsdatan tas inte bort.)

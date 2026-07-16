@@ -2,7 +2,7 @@
 
 #rules
 
-HP är det klassiska värdet för skada innan man faller i strid.
+HP är det klassiska värdet för skada innan man faller i [strid](combat.md).
 
 Människor har ett max-HP på 6, och besläktade får +6 HP per
 [Blodpotens](blood-potency.md).

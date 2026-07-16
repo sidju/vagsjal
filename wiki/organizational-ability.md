@@ -11,5 +11,5 @@ punkt [Blodpotens](blood-potency.md).
 Människor har en Organisatorisk förmåga mellan 1 och 3, normalt 1.
 
 Du kan ersätta Organisatorisk förmåga med en eller flera ghouls, som då är
-nästan fullt uppbokade med att hantera dessa investeringar och därmed lägger sin
-Organisatorisk förmåga till din.
+nästan fullt uppbokade med att hantera dessa [investeringar](investments.md) och
+därmed lägger sin Organisatorisk förmåga till din.

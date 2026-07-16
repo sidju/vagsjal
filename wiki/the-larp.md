@@ -3,8 +3,8 @@
 #index #lore
 
 Göteborg har länge varit en fristad från [Kovenanterna](covenants.md). Den
-exakta motivationen är inte känd men _Regenten_ har i nästan 100 år hållt dem
-ute och utvisat alla spioner och infiltratörer de skickat.
+exakta motivationen är inte känd men _[Regenten](braxton-coale.md)_ har i nästan
+100 år hållt dem ute och utvisat alla spioner och infiltratörer de skickat.
 
 Under dessa år har flera flytt till Göteborg för att undkomma förföljelse från
 kovenanterna, andra bara sökt ett liv i frid och frihet, och givetvis några
@@ -14,15 +14,16 @@ elysium med jämna mellanrum, samarbetat, gjort enklare avtal, och bråkat lite;
 men tack vare den stora domänen och en hotfull _Regent_ som kylt maktbegäret har
 det varit lugnt och fredligt.
 
-Den tiden är nu förbi. _Regenten_ har inte setts till på flera veckor och inte
-ens hans närmaste kan nå honom. Som en gammal [Mekhet](mekhet.md) är det inte
-helt osannolikt att han gömmer sig, men under tiden som domänen undrar vad som
-skett sprids ryktet. Kovenanterna ser en öppning och är fullt villiga att
-riskera en grupp vardera för en chans till att ta kontrollen över ännu en domän.
+Den tiden är nu förbi. _[Regenten](braxton-coale.md)_ har inte setts till på
+flera veckor och inte ens hans närmaste kan nå honom. Som en gammal
+[Mekhet](mekhet.md) är det inte helt osannolikt att han gömmer sig, men under
+tiden som domänen undrar vad som skett sprids ryktet. Kovenanterna ser en
+öppning och är fullt villiga att riskera en grupp vardera för en chans till att
+ta kontrollen över ännu en domän.
 
 När kovenanternas delegationer når staden utan konfrontation kan det konstateras
-att något har hänt _Regenten_, men om han fallit i [torpor](torpor.md) eller
-mött den slutgiltiga döden förblir okänt.
+att något har hänt _[Regenten](braxton-coale.md)_, men om han fallit i
+[torpor](torpor.md) eller mött den slutgiltiga döden förblir okänt.
 
 En knapp vecka efter kovenanternas intåg infaller elysium.
 
@@ -56,15 +57,16 @@ de sfärer som är relevanta för att nå sina mål och inte dö på den kullen?
 
 Kovenanterna är desperata för att rekrytera, de oberoende kommer nog aldrig få
 bättre erbjudanden för att gå med i en kovenant än just nu. Men passar någon av
-kovenanterna verkligen din karaktär? Kan de blinda sig med ljuspunkterna och
-undgå att se sprickorna av korruption och våld? Eller är sprickorna precis det
-som attraherar, en möjlighet att tjäna på det beteende som tidigare straffats?
+kovenanterna verkligen din [karaktär](character.md)? Kan de blinda sig med
+ljuspunkterna och undgå att se sprickorna av korruption och våld? Eller är
+sprickorna precis det som attraherar, en möjlighet att tjäna på det beteende som
+tidigare straffats?
 
-Men kanske ser din karaktär det vackra i vad Göteborgs domän har varit? Kanske
-är din karaktär inbiten anarkist och villig att dö för att en domän inte ska
-styras av en världsomspännande kovenant utan av individer? Det lär inte vara en
-enkel kamp, men den blir svårare om man inte är snabb och rekryterar innan
-kovenanterna.
+Men kanske ser din [karaktär](character.md) det vackra i vad Göteborgs domän har
+varit? Kanske är din [karaktär](character.md) inbiten anarkist och villig att dö
+för att en domän inte ska styras av en världsomspännande kovenant utan av
+individer? Det lär inte vara en enkel kamp, men den blir svårare om man inte är
+snabb och rekryterar innan kovenanterna.
 
 Meddela SL när ni skapar en faktion och vilka medlemmar den har, så ordnar vi en
 discord kanal för er att samordna er i.

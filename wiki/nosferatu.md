@@ -30,20 +30,20 @@ Detta kan göra det svårt för Nosferatus att jaga, men inte nödvändigtvis. D
 finns individer som trotsar, eller till och med söker, skräcken som utstrålas;
 som vill höra pulsen bulta och känna adrenalinet flöda. En Nosferatus bett
 uppfyller alla deras önskemål, det ingjuter en paralyserande och nästan flygande
-skräck; likt ett fritt fall eller en dödlig strid. Paniken lämnar inga detaljer
-i minnet, bara blind skräck.
+skräck; likt ett fritt fall eller en dödlig [strid](combat.md). Paniken lämnar
+inga detaljer i minnet, bara blind skräck.
 
 ## Svaghet
 
 Den skräck som signifierar Nosferatu läcker oundvikligen ut och ingjuter ett
 obehag i alla omkring dem. Effekten är i princip helt omärkbar till en början,
 men när [blodet blir starkare](blood-potency.md) blir det väldigt distinkt. Vid
-hög blodpotens förlorar Nosferatus helt sin mänskliga form och blir till sanna
-monster; oformliga klumpar som absorberar sina offer hela, träd som spetsar
-offer och hänger dem i sina kronor.
+hög [blodpotens](blood-potency.md) förlorar Nosferatus helt sin mänskliga form
+och blir till sanna monster; oformliga klumpar som absorberar sina offer hela,
+träd som spetsar offer och hänger dem i sina kronor.
 
-Exempel på effekter för var BP följer, en karaktär har en effekt från var nivå
-lägre eller lika med karaktärens BP.
+Exempel på effekter för var BP följer, en [karaktär](character.md) har en effekt
+från var nivå lägre eller lika med karaktärens BP.
 
 | BP  | Effekt                                                         |
 | --- | -------------------------------------------------------------- |

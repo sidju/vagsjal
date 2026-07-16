@@ -15,9 +15,10 @@ arbete för dig.
 Om du har mer [Mental Förmåga](mental-ability.md) än ditt mål och ögonkontakt
 binder du dem och tvingar dem att lyda en kort befallning. Övernaturliga
 varelser märker att du gjorde något mot dem, men kan ändå inte stå emot och
-lyder tvångsmässigt. Dödliga hittar på förklaringar till sina handlingar och tar
-varje påstående du ger som en absolut sanning, till den grad att det permanent
-omformar deras syn på händelser och världen så att den passar ditt ord.
+lyder tvångsmässigt. Dödliga hittar på förklaringar till sina
+[handlingar](actions.md) och tar varje påstående du ger som en absolut sanning,
+till den grad att det permanent omformar deras syn på händelser och
+[världen](setting.md) så att den passar ditt ord.
 
 ### 2: Mesmerize
 

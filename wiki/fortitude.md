@@ -4,9 +4,10 @@
 
 ### Strid
 
-I strid negaterar Fortitude 1 skada per nivå per stridsrunda. Dessutom kan du
-ignorera [förvärrad](aggravated-damage.md) skada i lika många rundor som du har
-Fortitude, och ta den som normal skada (reducerad av Fortitude som vanligt).
+I [strid](combat.md) negaterar Fortitude 1 skada per nivå per stridsrunda.
+Dessutom kan du ignorera [förvärrad](aggravated-damage.md) skada i lika många
+rundor som du har Fortitude, och ta den som normal skada (reducerad av Fortitude
+som vanligt).
 
 ### Nytta
 

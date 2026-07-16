@@ -40,19 +40,19 @@ Genom en symboliskt passande handling kan vampyrer pressa sin best på ett offer
 och påverka dess sinne med dess primala drifter. De kan välja vilken bestialisk
 aspekt de projicerar från följande:
 
-- Bestialisk, hota eller utmana dem aggressivt medan besten tvingar dem att
-  tänka i termer av kamp eller flykt.
-- Impulsiv, erbjud eller uppmuntra dem till något medan besten får dem att vilja
-  agera snabbt och tänka mindre på konsekvenser.
-- Tävlingsinriktad, utmana deras skicklighet eller heder medan besten uppmuntrar
-  dem att bevisa sig själva och visa upp sig.
+- Bestialisk, hota eller utmana dem aggressivt medan [besten](beast.md) tvingar
+  dem att tänka i termer av kamp eller flykt.
+- Impulsiv, erbjud eller uppmuntra dem till något medan [besten](beast.md) får
+  dem att vilja agera snabbt och tänka mindre på konsekvenser.
+- Tävlingsinriktad, utmana deras skicklighet eller heder medan
+  [besten](beast.md) uppmuntrar dem att bevisa sig själva och visa upp sig.
 
 På andra vampyrer visar detta sig som en knuff i den riktningen; för människor
 yttrar det sig snarare som en tvingande impuls.
 
 ### [Blodsband](blood-bond.md)
 
-Har en [egen sida](blood-bond.md) då det finns lite mer regler.
+Har en [egen sida](blood-bond.md) då det finns lite mer [regler](rules.md).
 
 ## Lärda krafter
 

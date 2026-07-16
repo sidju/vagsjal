@@ -2,9 +2,10 @@
 
 #index #rules
 
-Strid börjar senast det ögonblick som en karaktär tar skada, men oftast strax
-innan. Under strid kan inte mentala krafter längre kontrollera vampyrers
-agerande, men de kan avgöra [initiativ](#initiativ) och ha andra effekter.
+Strid börjar senast det ögonblick som en [karaktär](character.md) tar skada, men
+oftast strax innan. Under strid kan inte mentala krafter längre kontrollera
+vampyrers agerande, men de kan avgöra [initiativ](#initiativ) och ha andra
+effekter.
 
 Strider är uppdelade i [stridsrundor](#stridsrundor), där var sida agerar
 (attackerar eller försöker lämna striden) en gång per runda i
@@ -19,14 +20,15 @@ bättre.
 Gruppstrid är brutalt enkel, alla stats summeras ihop för vardera sida och
 striden beräknas som om de summorna var en karakär. Notervärt är dock:
 
-- Fortitude appliceras för gruppen som helhet, inte för karaktärerna.
+- [Fortitude](fortitude.md) appliceras för gruppen som helhet, inte för
+  karaktärerna.
 - Skada fördelas inte jämnt utan kvarvarande HP fördelas jämnt, varmed ingen i
   en grupp dör innan HP summan för gruppen är lägre än antalet karakärer i
   gruppen.
 
 ## Initiativ
 
-För att avgöra initiativordningen, använd följande regler i ordning:
+För att avgöra initiativordningen, använd följande [regler](rules.md) i ordning:
 
 - Om anfallaren överraskade försvararen (mindre än 2 sekunder från insikt till
   attack) eller paralyserade försvararen med en mental kraft: anfallaren går

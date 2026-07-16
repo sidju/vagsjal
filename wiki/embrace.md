@@ -4,7 +4,8 @@
 
 Omfamning är den process genom vilken en ny vampyr skapas. En vampyr (kallad
 sire) tömmer en människa på blod och låter sedan offret dricka av sitt blod. Om
-allt går rätt vaknar människan som en nyfödd vampyr — ofta kallad fledgeling.
+allt går rätt vaknar människan som en nyfödd vampyr — ofta kallad
+[fledgeling](fledgeling.md).
 
 Omfamningen är en traumatisk upplevelse som varierar beroende på
 [klan](clans.md). Bandet mellan sire och dess childre är djupt och ofta

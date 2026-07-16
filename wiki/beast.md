@@ -17,10 +17,10 @@ slughet tar och förstör. Några exempel på vad besten vill följer:
 - Döda sina motståndare (fred är inte ett alternativ)
 - Kontrollera sina allierade (fri lojalitet räcker inte)
 - Ta det den gillar ("mitt och endast mitt")
-- Förstöra det den ogillar (saker, personer, kunskap, territorier)
+- Förstöra det den ogillar (saker, personer, [kunskap](lore.md), territorier)
 - Frossa på blod (högre BP är bättre, mer blod är bättre,
   [Amaranth](amaranth.md) är bäst)
-- Gå in i torpor när blodpotensen är hög (likt en björn går i ide)
+- Gå in i [torpor](torpor.md) när blodpotensen är hög (likt en björn går i ide)
 
 ## Leva med besten
 

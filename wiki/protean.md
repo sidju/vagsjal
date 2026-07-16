@@ -15,8 +15,9 @@ utan att du kommer upp.
 
 ### 1: Predatory Aspect
 
-Du låter besten sippra genom din form i form av en djurlik förändring av din
-kropp som gör dig bättre lämpad att jaga i natten. Typiska förändringar är:
+Du låter [besten](beast.md) sippra genom din form i form av en djurlik
+förändring av din kropp som gör dig bättre lämpad att jaga i natten. Typiska
+förändringar är:
 
 | Källa             | Effekt                                       |
 | ----------------- | -------------------------------------------- |
@@ -45,8 +46,8 @@ vingar tillåter att flyga (annars endast glidflygande).
 
 ### 2: Horrid Aspect
 
-Du låter ännu mer av besten sippra genom din form, vare sig djurisk eller
-mänsklig, och korrumperar den med en fasansfull övernaturlig aspekt.
+Du låter ännu mer av [besten](beast.md) sippra genom din form, vare sig djurisk
+eller mänsklig, och korrumperar den med en fasansfull övernaturlig aspekt.
 Fruktansvärd aspekt kan vara aktiv samtidigt som Rovdjursaspekt, förutsatt att
 de inte påverkar samma kroppsdel.
 
@@ -76,10 +77,11 @@ försvinna i tomma intet, men du kan inte orsaka någon skada.
 
 ### 3: Horrid Form
 
-Du låter besten forma dig fullt ut och antar en monstruös form unik för dig.
-Denna form låter dig lägga till en ytterligare [Horrid](#2-horrid-aspect) eller
-[Predatory Aspect](#1-predatory-aspect) (utöver de 2 som fås från lägre nivåer)
-per 2 nivåer i [blodpotens](blood-potency.md). (dvs. 2 + BP/2 totalt)
+Du låter [besten](beast.md) forma dig fullt ut och antar en monstruös form unik
+för dig. Denna form låter dig lägga till en ytterligare
+[Horrid](#2-horrid-aspect) eller [Predatory Aspect](#1-predatory-aspect) (utöver
+de 2 som fås från lägre nivåer) per 2 nivåer i [blodpotens](blood-potency.md).
+(dvs. 2 + BP/2 totalt)
 
 Spelare uppmuntras att skriva ner en beskrivning av sin valda kombination och
 dess resulterande utseende (och bör gärna lägga till valfritt antal extra

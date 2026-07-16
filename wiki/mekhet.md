@@ -5,18 +5,18 @@
 ## Hemligheternas klan
 
 Mekhets natur är av förföljelse, intrång i de mest privata stunderna och
-tankarna. De drivs av en girighet till kunskap och i synnerhet hemligheter; de
-söker en trygghet om att de vet mest och helst att ingen vet något om dem. De är
-siluetten i gränden, blicken som reser nackhåren, känslan av att en inte är
-ensam hemma när allt är låst och släckt.
+tankarna. De drivs av en girighet till [kunskap](lore.md) och i synnerhet
+hemligheter; de söker en trygghet om att de vet mest och helst att ingen vet
+något om dem. De är siluetten i gränden, blicken som reser nackhåren, känslan av
+att en inte är ensam hemma när allt är låst och släckt.
 
 ## Arketyper
 
 Mekhet väntas generellt vara tystlåtna, främst lyssna och se vad andra gör med
 undantag för kalkylerade uttalanden och ageranden. Det är dock en extrem
-beskrivning som kanske mer uppkommer av att andra klaner är impulsiva och
-utåtagerande. Mekhets kan mycket väl agera impulsivt, men de har oftast noggrann
-koll på sin omgivning även då.
+beskrivning som kanske mer uppkommer av att andra [klaner](clans.md) är
+impulsiva och utåtagerande. Mekhets kan mycket väl agera impulsivt, men de har
+oftast noggrann koll på sin omgivning även då.
 
 En sannare kärna av Mekhets agerande är försiktighet och uppmärksamhet, ett
 beteende som drivs av deras svagheter och begär. Det kan vara högst relevant att
@@ -41,8 +41,8 @@ invigts för att den hittade sin sire.
 
 Hemligheter är kärnan i klan Mekhet till den grad att var Mekhet även får
 hemliga svagheter. Det är känt att klan Mekhet är svaga mot fler saker än andra
-klaner, men var Mekhet gör sitt yttersta för att hålla sina egna svagheter
-hemliga. Svagheterna misstänks korrekt komma mer ur individens egna
+[klaner](clans.md), men var Mekhet gör sitt yttersta för att hålla sina egna
+svagheter hemliga. Svagheterna misstänks korrekt komma mer ur individens egna
 internaliserade förväntningar om vad de inte tål, men de tenderar att yttra sig
 stereotypt: att inte kunna korsa rinnande vatten, att sky heliga symboler, lida
 av starkt ljus även när det inte är solljus. Dessa svagheter gör 2 skada per BP

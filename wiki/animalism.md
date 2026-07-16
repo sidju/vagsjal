@@ -28,10 +28,10 @@ av odöd. Det liknar en besläktad men kan endast upprätthållas på
 Du kan spilla ditt blod och genom det sprida din best genom omgivningen, och
 driva djur och människor till raseri. Övernaturliga varelser kan stå emot om de
 har högre [Blodpotens](blood-potency.md) än du, men om de har druckit ditt blod
-inom din Blodpotens antal månader räknas din Blodpotens som 2 högre. De som
-frenzy:ar av detta står i viss mån under ditt befäl; du kan styra dem att
-attackera ett mål eller en grupp. Om du inte gör det slåss de påverkade
-inbördes.
+inom din [Blodpotens](blood-potency.md) antal månader räknas din
+[Blodpotens](blood-potency.md) som 2 högre. De som [frenzy](frenzy.md):ar av
+detta står i viss mån under ditt befäl; du kan styra dem att attackera ett mål
+eller en grupp. Om du inte gör det slåss de påverkade inbördes.
 
 ## 3: Lord of the Land
 
@@ -40,8 +40,9 @@ Detta ger dig kontroll över territoriet i en vecka per
 [Blodpotens](blood-potency.md), även om du fritt kan underhålla det medan du är
 inom området. Om de inte bjudits in känner varelser inom området en djup skräck
 och en drift att fly. Om de står emot och hur länge de uthärdar är en fråga om
-karaktär och omständigheter, men ingen är undantagen från känslan. Du är
-instinktivt medveten om varelser som träder in i territoriet, och blind endast
-för dem som döljs av [Obfuscate](obfuscate.md). Inom området kan du se genom
-ögonen på djuriska blods-tjänare och agera genom dem, om än begränsad av deras
-kropp. Om territorier överlappar har det med högre Blodpotens företräde.
+[karaktär](character.md) och omständigheter, men ingen är undantagen från
+känslan. Du är instinktivt medveten om varelser som träder in i territoriet, och
+blind endast för dem som döljs av [Obfuscate](obfuscate.md). Inom området kan du
+se genom ögonen på djuriska blods-tjänare och agera genom dem, om än begränsad
+av deras kropp. Om territorier överlappar har det med högre
+[Blodpotens](blood-potency.md) företräde.

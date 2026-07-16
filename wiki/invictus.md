@@ -15,25 +15,26 @@ Invictus kan rimligen hävdas vara den äldsta nu existerande kovenanten. Deras
 historia börjar före Kristus där de tog över efter den mystiska kollapsen av
 Camarillan i Rom. Från deras suspekta start har historien enligt dem själva
 varit en lugn och kontrollerad tillväxt från att styra Rom till att styra
-världen.
+[världen](setting.md).
 
 Deras faktiska historia kan knappast vara så felfri, men då de ofta allierat sig
 med [Lancea et Sanctum](lancea-et-sanctum.md) (som är den enda andra kovenanten
 som funnits nästan lika länge) har ingen kunnat motbevisa deras version.
-Onekligt är dock att de varit mycket framgångsrika, de finns över hela världen
-och styr otaliga domäner.
+Onekligt är dock att de varit mycket framgångsrika, de finns över hela
+[världen](setting.md) och styr otaliga domäner.
 
 ## Ideologi
 
-Medan flera andra kovenanter ägnar sig åt revolution, experiment och
-spiritualitet är Invictus hjärta makten. Den totala kontroll som deras system
-för länge sedan gav dem önskar de att upprätthålla och utöka världen över.
+Medan flera andra [kovenanter](covenants.md) ägnar sig åt revolution, experiment
+och spiritualitet är Invictus hjärta makten. Den totala kontroll som deras
+system för länge sedan gav dem önskar de att upprätthålla och utöka
+[världen](setting.md) över.
 
 Deras ideologi styrs av deras traditioner som stått tidens tand. Deras sätt kan
 anses föråldrade, men trots det är konvenanten den som tydligast infiltrerat det
-mänskliga samhället. Traditionerna och blodsmagin är en kärna, inte enbart för
-att upprätthålla makten men för att leda de yngre medlemmarna till att följa i
-fotspåren som vandrat från Rom.
+mänskliga samhället. [Traditionerna](traditions.md) och blodsmagin är en kärna,
+inte enbart för att upprätthålla makten men för att leda de yngre medlemmarna
+till att följa i fotspåren som vandrat från Rom.
 
 Deras förfinade sida kanske enbart är ett sätt att förkasta sitt eget
 vampyrskap; att skapa en illusion av nobilitet som distraherar Invictus från
@@ -86,29 +87,30 @@ ut utanför domänen utan ytterligare efterforskningar.
 
 ## Blodseder
 
-Blodsederna är en central del av Invictus, både deras maktstrukturer och kultur.
-Alla invictus har tillgång till några grundläggande blodseder grundade i
-kontrakt beroende på deras ålder. Utöver dessa vanliga eder tilldelas fler till
-de som besitter specifika ansvarsposter inom kovenanten. Diskutera med SL under
-karaktärsskapande eller i samband med befordran för passande eder. Kom ihåg att
-målet med eder är att agera spelskapande och att ederna ofta är ett verktyg för
-att Invictus ska nästla sig in i domänens funktion.
+Blodsederna är en central del av Invictus, både deras maktstrukturer och
+[kultur](culture.md). Alla invictus har tillgång till några grundläggande
+blodseder grundade i kontrakt beroende på deras ålder. Utöver dessa vanliga eder
+tilldelas fler till de som besitter specifika ansvarsposter inom kovenanten.
+Diskutera med SL under [karaktärsskapande](character-creation.md) eller i
+samband med befordran för passande eder. Kom ihåg att målet med eder är att
+agera spelskapande och att ederna ofta är ett verktyg för att Invictus ska
+nästla sig in i domänens funktion.
 
 ### Lärling
 
 - **Blodskontrakt**: Alla parter i ett kontrakt upplåter 1 HP blod vardera som
   blandas till ett bläck som kontraktet skrivs och signeras med. Bläcket förblir
-  till syn och smak färsk vitae så länge avtalet upprätthålls. Om avtalet bryts
-  åldras bläcket genast till gammalt blod.
+  till syn och smak färsk [vitae](vitae.md) så länge avtalet upprätthålls. Om
+  avtalet bryts åldras bläcket genast till gammalt blod.
 
 ### Gesäll
 
 - **Försäkran**: En utveckling av blodskontrakt som kräver en ersättning från
   den part som inte upprätthåller sin sida av avtalet. Ersättningen beslutas om
   i samband med att kontraktet upprättas. Den ersättning eller säkerhet som
-  utlovats kommer magiskt överlåtas vid avtalsbrott; ghoulers blodsband skiftar
-  mästare, lojaliteten av mänskliga kontakter förändras, juridiska dokument
-  justerar sin text till sin nya ägare.
+  utlovats kommer magiskt överlåtas vid avtalsbrott; ghoulers
+  [blodsband](blood-bond.md) skiftar mästare, lojaliteten av mänskliga kontakter
+  förändras, juridiska dokument justerar sin text till sin nya ägare.
 
 ### Mästare
 

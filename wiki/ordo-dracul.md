@@ -26,21 +26,21 @@ upptar större delen av det besläktade samhället.
 
 ## Coils of the Dragon
 
-Coils of the Dragon är kovenantens definierande bedrift: en serie tekniker,
-utvecklade under århundraden av noggranna experiment, som låter en vampyr
-överskrida specifika delar av sin förbannade natur. En vampyr som bemästrat en
-Coil kan upptäcka att den inte längre drabbas av frenzy under vissa
-omständigheter, är mindre sårbar för eld eller kan uthärda solljus längre än vad
-som borde vara möjligt. Var Coil är en skatt och lärs bara ut till invigda som
-visat både hängivenhet och förmåga att uthärda dess pris; var och en kräver en
-verklig och personlig seger över vampyrskapet.
+[Coils of the Dragon](#coils-of-the-dragon) är kovenantens definierande bedrift:
+en serie tekniker, utvecklade under århundraden av noggranna experiment, som
+låter en vampyr överskrida specifika delar av sin förbannade natur. En vampyr
+som bemästrat en Coil kan upptäcka att den inte längre drabbas av
+[frenzy](frenzy.md) under vissa omständigheter, är mindre sårbar för eld eller
+kan uthärda solljus längre än vad som borde vara möjligt. Var Coil är en skatt
+och lärs bara ut till invigda som visat både hängivenhet och förmåga att uthärda
+dess pris; var och en kräver en verklig och personlig seger över vampyrskapet.
 
 ## Historia
 
 Huruvida Ordo Dracul verkligen kan spåra sin härstamning till Vlad Tepes är en
 fråga som även medlemmarna debatterar. Vad som är säkert är att kovenanten är
-gammalt, hemlighetsfullt och har producerat en mängd esoterisk kunskap utan
-motstycke i omfattning. De har aldrig försökt dominera Besläktad-politiken,
-deras ambitioner går ju i en annan riktning, men de är noga med vilka domäner de
-involverar sig i och varför. När deras uppmärksamhet faller på en plats betyder
-det nog att de har hittat något värt att studera där.
+gammalt, hemlighetsfullt och har producerat en mängd esoterisk
+[kunskap](lore.md) utan motstycke i omfattning. De har aldrig försökt dominera
+Besläktad-politiken, deras ambitioner går ju i en annan riktning, men de är noga
+med vilka domäner de involverar sig i och varför. När deras uppmärksamhet faller
+på en plats betyder det nog att de har hittat något värt att studera där.

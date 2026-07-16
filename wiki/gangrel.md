@@ -16,11 +16,12 @@ En generell förväntan finns om att Gangrels är bestiala. Klor, öron och
 animaliska läten är vad som ofta talas om. Även om dessa yttringar är vanliga är
 de inte det enda som klanens blod innefattar. Även ekonomiska rovdjur finns
 bland dem, som låter impulser av girighet och att leka med sitt byte fylla
-tomheten medans de pissar in sitt revir genom stora skrytiga investeringar.
-Impulserna en Gangrel kan välja mellan att följa är otaliga, men
-hämningslösheten med vilken de hänger sig till dem är bortom deras kontroll.
-Ofta leds deras beteende av ett specifikt djur, men det är inte alltid lätt för
-varken gangrelen själv eller utomstående att identifiera vilket.
+tomheten medans de pissar in sitt revir genom stora skrytiga
+[investeringar](investments.md). Impulserna en Gangrel kan välja mellan att
+följa är otaliga, men hämningslösheten med vilken de hänger sig till dem är
+bortom deras kontroll. Ofta leds deras beteende av ett specifikt djur, men det
+är inte alltid lätt för varken gangrelen själv eller utomstående att identifiera
+vilket.
 
 ## Bestens Uttryck
 
@@ -34,12 +35,13 @@ självbestämmande och styrka, och bryr sig mindre om vad som inspirerade dem.
 
 ## Svaghet
 
-Klan Gangrel är närmare Besten än de andra klanerna, de har gett upp själva sin
-mänsklighet till den som del av Protean och förlorar med det en del av sin
-självkontroll. Det gör dem både mer impulsiva överlag samt gör det svårare att
-helt motstå Frenzy. För varje 2 poäng Blood Potency kräver de en extra framgång
-för att helt motstå en Frenzy, men har ingen nackdel i att rikta en Frenzy tack
-vare sin nära relation med besten.
+Klan Gangrel är närmare [Besten](beast.md) än de andra klanerna, de har gett upp
+själva sin [mänsklighet](humanity.md) till den som del av [Protean](protean.md)
+och förlorar med det en del av sin självkontroll. Det gör dem både mer impulsiva
+överlag samt gör det svårare att helt motstå [Frenzy](frenzy.md). För varje 2
+poäng Blood Potency kräver de en extra framgång för att helt motstå en
+[Frenzy](frenzy.md), men har ingen nackdel i att rikta en [Frenzy](frenzy.md)
+tack vare sin nära relation med [besten](beast.md).
 
 ## Blodskrafter
 

@@ -15,12 +15,12 @@ informationen är lätt att hitta.
 
 ## Steg 2 - Skriv en karaktärsansökan
 
-Fyll i de grundläggande uppgifterna om din karaktär på
+Fyll i de grundläggande uppgifterna om din [karaktär](character.md) på
 [karaktärsskapandet](/character/).
 
-(Innan du skapar din första karaktär behöver du även fylla i en ICE kontakt och
-om du är okej med att bilder på dig från lajvet används i marknadsföring för
-lajvet och GALF.)
+(Innan du skapar din första [karaktär](character.md) behöver du även fylla i en
+ICE kontakt och om du är okej med att bilder på dig från lajvet används i
+marknadsföring för lajvet och GALF.)
 
 ### Offentliga fält
 
@@ -34,17 +34,18 @@ karaktären är godkänd:
 - **Hemdomän** - var karaktären huvudsakligen hållit till, t.ex. Göteborg eller
   Paris.
 - **Känd ålder** - ungefär hur gammal karaktären tros vara, t.ex. "omkring 50".
-- **Offentlig kunskap** - vad allmänheten (eller andra vampyrer) vet om
-  karaktären.
+- **Offentlig [kunskap](lore.md)** - vad allmänheten (eller andra vampyrer) vet
+  om karaktären.
 
 ### Privata fält
 
-Dessa syns endast för karaktärens ägare och spelledare:
+Dessa syns endast för karaktärens ägare och [spelledare](storytellers.md):
 
 - **Omfamningsdatum** — när karaktären [omfamnades](embrace.md).
-- **Torpor** — hur lång tid karaktären tillbringat i [torpor](torpor.md).
-- **Karaktärsbeskrivning** — länk till en utförlig beskrivning (t.ex. Google
-  Docs).
+- **[Torpor](torpor.md)** — hur lång tid karaktären tillbringat i
+  [torpor](torpor.md).
+- **[Karaktärsbeskrivning](character-description.md)** — länk till en utförlig
+  beskrivning (t.ex. Google Docs).
 
 ## Steg 2 — Färdigheter
 
@@ -55,9 +56,9 @@ man expar.
 
 ## Godkännande
 
-En spelledare måste godkänna karaktären innan den blir aktiv och synlig på den
-publika karaktärslistan.
+En [spelledare](storytellers.md) måste godkänna karaktären innan den blir aktiv
+och synlig på den publika karaktärslistan.
 
-En spelledare behöver även godkänna XP användningarna innan de tar full effekt,
-de användningar som inväntar bekräftan visas i [karaktärsbladet](/character/)
-med en asterisk.
+En [spelledare](storytellers.md) behöver även godkänna XP användningarna innan
+de tar full effekt, de användningar som inväntar bekräftan visas i
+[karaktärsbladet](/character/) med en asterisk.

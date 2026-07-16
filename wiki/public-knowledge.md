@@ -22,6 +22,6 @@ frakt och hjälper många nyankomna med flytten till Göteborg.
 
 Hamburg, 40 år sedan: En ghoul tillhörande en högt uppsatt
 [Invictus](invictus.md) medlem blev "stulen" och det var lite stök och rykten
-kring det. Invictus insisterade på att den tillhörde dem oavsett. Kopplingen
-till Hannes är inte tydlig förutom för de som sett den ghoulen i person och kan
-känna igen ansiktet.
+kring det. [Invictus](invictus.md) insisterade på att den tillhörde dem oavsett.
+Kopplingen till Hannes är inte tydlig förutom för de som sett den ghoulen i
+person och kan känna igen ansiktet.
