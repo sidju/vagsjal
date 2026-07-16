@@ -15,10 +15,16 @@ RUN SQLX_OFFLINE=true cargo build --release --target x86_64-unknown-linux-musl
 # Step 3: wiki markdown
 COPY homepage.md ./
 COPY wiki wiki
+RUN touch homepage.md wiki/*
 RUN SQLX_OFFLINE=true cargo build --release --target x86_64-unknown-linux-musl
 RUN cp templates/wiki_nav_partial.html /tmp/
 # Step 4: full source
-COPY src templates ./
+RUN rm src/main.rs
+COPY src src
+COPY templates templates
+COPY migrations migrations
+COPY .sqlx .sqlx
+RUN touch src/main.rs
 RUN cp /tmp/wiki_nav_partial.html templates/
 RUN SQLX_OFFLINE=true cargo build --release --target x86_64-unknown-linux-musl
 RUN touch .env
