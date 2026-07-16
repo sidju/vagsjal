@@ -42,9 +42,11 @@ mod characters;
 mod wiki;
 use wiki::WikiPageTemplate;
 
-const CSS: &'static str = include_str!("styles.css");
-const LOGO: &'static [u8] = include_bytes!("vs-rr.png");
-const FAVICON: &'static [u8] = include_bytes!("favicon.png");
+const CSS: &'static str = include_str!("assets/styles.css");
+const SEARCH_JS: &str = include_str!("assets/search.js");
+const SEARCH_DATA: &str = include_str!(concat!(env!("OUT_DIR"), "/search_data.js"));
+const LOGO: &'static [u8] = include_bytes!("assets/vs-rr.png");
+const FAVICON: &'static [u8] = include_bytes!("assets/favicon.png");
 
 #[derive(Template)]
 #[template(path = "index.html")]
@@ -136,6 +138,16 @@ pub async fn route(
     Some("wiki") => {
       prevent_cache = false;
       add_header(wiki::route(session, req, path_vec).await, hyper::header::CACHE_CONTROL, HeaderValue::from_static("public, max-age=86400"))
+    },
+    Some("search.js") => {
+      prevent_cache = false;
+      verify_method_path_end(&path_vec, &req, &Method::GET)?;
+      js(SEARCH_JS)
+    },
+    Some("search-data.js") => {
+      prevent_cache = false;
+      verify_method_path_end(&path_vec, &req, &Method::GET)?;
+      js(SEARCH_DATA)
     },
     Some("styles.css") => {
       prevent_cache = false;

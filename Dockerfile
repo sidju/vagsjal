@@ -1,22 +1,25 @@
 # syntax=docker/dockerfile:labs
 
-# Stage 1: compile dependencies only (cached unless Cargo.toml/Cargo.lock changes)
-FROM rust:alpine AS deps
+# Build stage, compile incrementally to optimise cache usage
+FROM rust:alpine AS builder
 RUN apk add --no-cache musl-dev openssl-dev openssl-libs-static pkgconf
 RUN rustup target add x86_64-unknown-linux-musl
 WORKDIR /usr/src/vagsjal
+# Step 1: deps only
 COPY Cargo.toml Cargo.lock ./
-RUN mkdir src && echo 'fn main() {}' > src/main.rs
-RUN SQLX_OFFLINE=true cargo build --release --target x86_64-unknown-linux-musl; \
-    # Remove main crate artifacts so the real build replaces them
-    rm -rf target/x86_64-unknown-linux-musl/release/vagsjal \
-           target/x86_64-unknown-linux-musl/release/.fingerprint/vagsjal-* \
-           target/x86_64-unknown-linux-musl/release/deps/vagsjal-* \
-           target/x86_64-unknown-linux-musl/release/build/vagsjal-*
-
-# Stage 2: build the real binary (deps already cached from stage 1)
-FROM deps AS builder
-COPY . .
+RUN mkdir src wiki templates && echo 'fn main() {}' > src/main.rs
+RUN SQLX_OFFLINE=true cargo build --release --target x86_64-unknown-linux-musl
+# Step 2: build.rs
+COPY build.rs ./
+RUN SQLX_OFFLINE=true cargo build --release --target x86_64-unknown-linux-musl
+# Step 3: wiki markdown
+COPY homepage.md ./
+COPY wiki wiki
+RUN SQLX_OFFLINE=true cargo build --release --target x86_64-unknown-linux-musl
+RUN cp templates/wiki_nav_partial.html /tmp/
+# Step 4: full source
+COPY src templates ./
+RUN cp /tmp/wiki_nav_partial.html templates/
 RUN SQLX_OFFLINE=true cargo build --release --target x86_64-unknown-linux-musl
 RUN touch .env
 

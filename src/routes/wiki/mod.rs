@@ -4,9 +4,6 @@ pub(crate) mod wiki_pages {
     include!(concat!(env!("OUT_DIR"), "/wiki_pages.rs"));
 }
 
-const SEARCH_JS: &str = include_str!("search.js");
-const SEARCH_DATA: &str = include_str!(concat!(env!("OUT_DIR"), "/search_data.js"));
-
 #[derive(Template)]
 #[template(path = "wiki/page.html")]
 pub(crate) struct WikiPageTemplate {
@@ -68,21 +65,6 @@ pub async fn route(
       }
     },
     Some(page) => {
-      // Special wiki static files — serve them before the trailing-slash redirect
-      if page == "search.js" || page == "search-data.js" {
-        if !(path_vec.is_empty()
-          || (path_vec.len() == 1 && path_vec.first().map(|s| s.as_str()) == Some("")))
-        {
-          return Err(Error::path_not_found(&req));
-        }
-        verify_method(&req, &Method::GET)?;
-        return if page == "search.js" {
-          js(SEARCH_JS)
-        } else {
-          js(SEARCH_DATA)
-        };
-      }
-
       match path_vec.pop().as_deref() {
         None => return permanent_redirect(&format!("{}/", req.uri().path())),
         Some("") => {},
