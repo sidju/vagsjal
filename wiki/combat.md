@@ -2,6 +2,10 @@
 
 #index #rules
 
+Strid börjar senast det ögonblick som en karaktär tar skada, men oftast strax
+innan. Under strid kan inte mentala krafter längre kontrollera vampyrers
+agerande, men de kan avgöra [initiativ](#initiativ) och ha andra effekter.
+
 Strider är uppdelade i [stridsrundor](#stridsrundor), där var sida agerar
 (attackerar eller försöker lämna striden) en gång per runda i
 [initiativ](#initiativ)-ordning.
@@ -25,7 +29,8 @@ striden beräknas som om de summorna var en karakär. Notervärt är dock:
 För att avgöra initiativordningen, använd följande regler i ordning:
 
 - Om anfallaren överraskade försvararen (mindre än 2 sekunder från insikt till
-  attack): anfallaren går först.
+  attack) eller paralyserade försvararen med en mental kraft: anfallaren går
+  först.
 - Om någon sida har mer [Celerity](celerity.md) (totalt), går de först.
 - Om en part har mer [Fysisk förmåga](physical-ability.md), går de först.
 - Om allt annat är lika, singla slant eller kör sten-sax-påse.

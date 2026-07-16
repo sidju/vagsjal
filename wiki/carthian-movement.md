@@ -92,7 +92,10 @@ tillfällen:
    straffet för alla instanser av det brottet i ett år, straffet appliceras
    omedelbart och obönhörligt på förövaren blott ett ögonblick efter handlingen.
 
-Karthiska lagar har en gemensam svaghet, de är endast så starka som den
-starkaste i stiftandet. De som har högre [BP](blood-potency.md) än den högsta BP
-som var med och skapade lagen påverkas inte av den, men kan likväl känna av när
-den borde ha tagit effekt.
+Karthiska lagar har några gemensamma svagheter:
+- De är endast så starka som den starkaste i stiftandet. De som har högre
+  [BP](blood-potency.md) än den högsta BP som var med och skapade lagen
+  påverkas inte av den, men kan likväl känna av när den borde ha tagit effekt.
+- Karthiska lagar fungerar endast då de anses vara legitimt etablerade. De kan
+  stiftas av en minoritet av domänen *så länge domänen tycker omröstningarna är
+  legitima*, och riskerar försvagas eller försvinna om domänen ändrar åsikt.
