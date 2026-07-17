@@ -10,6 +10,7 @@
   [kovenanterna](/wiki/covenants/) (max 6 per kovenant) eller del av
   lokalbefolkningen i domänen som behöver besluta sig för att antingen motverka
   kovenanterna eller låta sig rekryteras till rätt pris.
+- För att anmäla dig, följ [-> inför lajvet guiden <-](/wiki/before-the-larp/).
 - [Discord server finns!](https://discord.gg/2dhxbZGzjx)
 
 ## Kort om hemsidan

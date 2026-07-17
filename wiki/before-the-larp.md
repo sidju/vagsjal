@@ -1,5 +1,7 @@
 # Inför lajvet
 
+#index #practical
+
 För att kunna lajva VägSjäl behöver du göra det här:
 
 - Bli [medlem i GALF i eBas](https://ebas.sverok.se/blimedlem/galf)

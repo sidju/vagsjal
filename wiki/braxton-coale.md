@@ -1,5 +1,7 @@
 # Regenten / Braxton Coale
 
+#index #lore
+
 ## Tyrannen av frihet
 
 Braxton Coale, mest känd som Regenten i Göteborgs domän, anses av de flesta bara
