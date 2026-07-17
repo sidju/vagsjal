@@ -31,7 +31,7 @@ Här följer exempel för varje nivå:
 ### Mänsklighet 10
 
 - En natt utan mänskligt engagemang.
-- Att ljuga för att skydda Maskeraden.
+- Att ljuga för att skydda [Maskeraden](masquerade.md).
 - Att spendera blod för något annat än att vakna.
 - Att dricka från ovetande.
 
