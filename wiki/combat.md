@@ -55,7 +55,7 @@ följande:
 Skada tas som man skulle vänta sig, karaktärens HP reduceras med mängden skada
 som tas. Notervärt är dock:
 
-- Karaktärer med [Potence](potence.md) reducerar skadan de tar.
+- Karaktärer med [Fortitude](fortitude.md) reducerar skadan de tar.
 - [Förvärrad skada](aggravated-damage.md)
 
 ### Närstridsskada
