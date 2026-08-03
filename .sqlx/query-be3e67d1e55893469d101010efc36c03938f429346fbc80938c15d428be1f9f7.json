@@ -1,0 +1,74 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n    SELECT\n      vampire.vampire_id,\n      vampire.user_id,\n      app_user.name AS owner_name,\n      vampire.status AS \"status: CharacterStatus\",\n      vampire.name,\n      clan.name AS clan_name,\n      COALESCE(covenant.name, '') AS \"covenant_name!\",\n      COALESCE(covenant.id, '') AS \"covenant_slug!\",\n      COALESCE(xp_remaining.amount, 0) AS \"remaining_xp!\",\n      vampire.character_description_url AS \"character_description_url?\"\n    FROM vampire\n    JOIN app_user USING (user_id)\n    JOIN clan USING (clan_id)\n    LEFT JOIN covenant USING (covenant_id)\n    LEFT JOIN xp_remaining USING (vampire_id)\n    ORDER BY\n      CASE vampire.status\n        WHEN 'draft' THEN 0\n        WHEN 'active' THEN 1\n        WHEN 'inactive' THEN 2\n      END,\n      vampire.name\n    ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "vampire_id",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 1,
+        "name": "user_id",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 2,
+        "name": "owner_name",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 3,
+        "name": "status: CharacterStatus",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 4,
+        "name": "name",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 5,
+        "name": "clan_name",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 6,
+        "name": "covenant_name!",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 7,
+        "name": "covenant_slug!",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 8,
+        "name": "remaining_xp!",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 9,
+        "name": "character_description_url?",
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Left": []
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false,
+      false,
+      false,
+      null,
+      null,
+      null,
+      true
+    ]
+  },
+  "hash": "be3e67d1e55893469d101010efc36c03938f429346fbc80938c15d428be1f9f7"
+}

@@ -60,7 +60,7 @@
         <td><label for="covenant_id">Kovenant</label></td>
         <td>
           <select id="covenant_id" name="covenant_id">
-            <option value="">Inget</option>
+            <option value="">Ingen</option>
             {% for covenant in covenants %}
             <option value="{{ covenant.covenant_id }}">{{ covenant.name }}</option>
             {% endfor %}
@@ -107,13 +107,14 @@
   {% if draft_chars.len() > 0 %}
   <h2>Utkast</h2>
   <table class="character-listing">
-    <tr><th>ID</th><th>Namn</th><th>Ägare</th><th>Klan</th><th>Återstående XP</th><th>Beskrivning</th><th>Öppna</th></tr>
+    <tr><th>ID</th><th>Namn</th><th>Ägare</th><th>Klan</th><th>Kovenant</th><th>Återstående XP</th><th>Beskrivning</th><th>Öppna</th></tr>
     {% for character in draft_chars %}
     <tr>
       <td><a href="{{ character.vampire_id }}/">{{ character.vampire_id }}</a></td>
       <td><a href="{{ character.vampire_id }}/">{{ character.name }}</a></td>
       <td><a href="/admin/user/{{ character.user_id }}/">{{ character.owner_name }}</a></td>
       <td><a href="/wiki/{{ character.clan_name | lower }}/">{{ character.clan_name }}</a></td>
+      <td>{% if character.covenant_slug.len() > 0 %}<a href="/wiki/{{ character.covenant_slug }}/">{{ character.covenant_name }}</a>{% endif %}</td>
       <td>{{ character.remaining_xp }}</td>
       <td>{% if let Some(url) = character.character_description_url %}<a href="{{ url }}">{{ url }}</a>{% endif %}</td>
       <td><a href="{{ character.vampire_id }}/">Öppna</a></td>
@@ -125,13 +126,14 @@
   {% if active_chars.len() > 0 %}
   <h2>Aktiva</h2>
   <table class="character-listing">
-    <tr><th>ID</th><th>Namn</th><th>Ägare</th><th>Klan</th><th>Återstående XP</th><th>Beskrivning</th><th>Öppna</th></tr>
+    <tr><th>ID</th><th>Namn</th><th>Ägare</th><th>Klan</th><th>Kovenant</th><th>Återstående XP</th><th>Beskrivning</th><th>Öppna</th></tr>
     {% for character in active_chars %}
     <tr>
       <td><a href="{{ character.vampire_id }}/">{{ character.vampire_id }}</a></td>
       <td><a href="{{ character.vampire_id }}/">{{ character.name }}</a></td>
       <td><a href="/admin/user/{{ character.user_id }}/">{{ character.owner_name }}</a></td>
       <td><a href="/wiki/{{ character.clan_name | lower }}/">{{ character.clan_name }}</a></td>
+      <td>{% if character.covenant_slug.len() > 0 %}<a href="/wiki/{{ character.covenant_slug }}/">{{ character.covenant_name }}</a>{% endif %}</td>
       <td>{{ character.remaining_xp }}</td>
       <td>{% if let Some(url) = character.character_description_url %}<a href="{{ url }}">{{ url }}</a>{% endif %}</td>
       <td><a href="{{ character.vampire_id }}/">Öppna</a></td>
@@ -143,13 +145,14 @@
   {% if inactive_chars.len() > 0 %}
   <h2>Inaktiva</h2>
   <table class="character-listing">
-    <tr><th>ID</th><th>Namn</th><th>Ägare</th><th>Klan</th><th>Återstående XP</th><th>Beskrivning</th><th>Öppna</th></tr>
+    <tr><th>ID</th><th>Namn</th><th>Ägare</th><th>Klan</th><th>Kovenant</th><th>Återstående XP</th><th>Beskrivning</th><th>Öppna</th></tr>
     {% for character in inactive_chars %}
     <tr class="inactive">
       <td><a href="{{ character.vampire_id }}/">{{ character.vampire_id }}</a></td>
       <td><a href="{{ character.vampire_id }}/">{{ character.name }}</a></td>
       <td><a href="/admin/user/{{ character.user_id }}/">{{ character.owner_name }}</a></td>
       <td><a href="/wiki/{{ character.clan_name | lower }}/">{{ character.clan_name }}</a></td>
+      <td>{% if character.covenant_slug.len() > 0 %}<a href="/wiki/{{ character.covenant_slug }}/">{{ character.covenant_name }}</a>{% endif %}</td>
       <td>{{ character.remaining_xp }}</td>
       <td>{% if let Some(url) = character.character_description_url %}<a href="{{ url }}">{{ url }}</a>{% endif %}</td>
       <td><a href="{{ character.vampire_id }}/">Öppna</a></td>

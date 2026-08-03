@@ -13,6 +13,8 @@ struct CharacterRow {
   status: CharacterStatus,
   name: String,
   clan_name: String,
+  covenant_name: String,
+  covenant_slug: String,
   remaining_xp: i64,
   character_description_url: Option<String>,
 }
@@ -90,11 +92,14 @@ async fn fetch_index_data(state: &'static State) -> Result<(Vec<CharacterRow>, V
       vampire.status AS "status: CharacterStatus",
       vampire.name,
       clan.name AS clan_name,
+      COALESCE(covenant.name, '') AS "covenant_name!",
+      COALESCE(covenant.id, '') AS "covenant_slug!",
       COALESCE(xp_remaining.amount, 0) AS "remaining_xp!",
       vampire.character_description_url AS "character_description_url?"
     FROM vampire
     JOIN app_user USING (user_id)
     JOIN clan USING (clan_id)
+    LEFT JOIN covenant USING (covenant_id)
     LEFT JOIN xp_remaining USING (vampire_id)
     ORDER BY
       CASE vampire.status
