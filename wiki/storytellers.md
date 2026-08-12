@@ -17,12 +17,8 @@ och [Nosferatu](nosferatu.md).
 Spelledare för [Karthiska Rörelsen](carthean-movement.md), [Daeva](daeva.md),
 [Mekhet](mekhet.md) och [Gangrel](gangrel.md).
 
-## Zacharias
-
-Spelledare för [Invictus](invictus.md), [Nosferatu](nosferatu.md) och
-[Ventrue](ventrue.md).
-
 ## Eskil
 
-Spelledare för [Lancea et Sanctum](lancea-et-sanctum.md), [Daeva](daeva.md),
-[Mekhet](mekhet.md) och [Ventrue](ventrue.md).
+Spelledare för [Lancea et Sanctum](lancea-et-sanctum.md),
+[Invictus](invictus.md), [Daeva](daeva.md), [Mekhet](mekhet.md) och
+[Ventrue](ventrue.md).
