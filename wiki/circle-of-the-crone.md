@@ -70,7 +70,7 @@ nästan alla medlemmar sorteras in i någon av arketyperna:
 - Stomma: En äldre akolyt som rådgiver och hjälper andra. Hon håller kulten enad
   och är idealet för yngre akolyter.
 - Stabbe: En äldre akolyt som har i uppgift att se till att andra följer
-  kransen. Han har rätten att införa nya [regler](rules.md) och bedöma vem som
+  kransen. Han har rätten att införa nya regler för kulten och bedöma vem som
   ska straffas.
 - Hagga: Den äldsta akolyten i varje kult. Hon har i uppgift att hålla kransen
   fri från fiender, kättare och idioter. Hur hon gör det varierar mellan olika
