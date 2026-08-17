@@ -1,6 +1,6 @@
 # Auspex
 
-#blood-powers #meta
+#blood-powers
 
 ## 1: Uncanny Perception
 

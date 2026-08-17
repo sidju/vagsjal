@@ -521,12 +521,11 @@ impl Analyzer {
         NodeValue::Link(link) => {
           let url = &link.url;
           if let Some(target) = url.strip_prefix("/wiki/") {
-            let target = target.trim_end_matches('/');
             // Strip any fragment
             let target = match target.find('#') {
               Some(pos) => &target[..pos],
               None => target,
-            };
+            }.trim_end_matches('/');
             if !target.is_empty() {
               self.backlinks
                 .entry(target.to_string())
