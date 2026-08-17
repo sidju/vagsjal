@@ -42,11 +42,158 @@ mod characters;
 mod wiki;
 use wiki::WikiPageTemplate;
 
-const CSS: &'static str = include_str!("assets/styles.css");
-const SEARCH_JS: &str = include_str!("assets/search.js");
+const CSS: &'static str = include_str!("../../assets/styles.css");
+const SEARCH_JS: &str = include_str!("../../assets/search.js");
 const SEARCH_DATA: &str = include_str!(concat!(env!("OUT_DIR"), "/search_data.js"));
-const LOGO: &'static [u8] = include_bytes!("assets/vs-rr.png");
-const FAVICON: &'static [u8] = include_bytes!("assets/favicon.png");
+const AWE_SIGN: &'static [u8] = include_bytes!("../../assets/awe-sign.jpg");
+const BEAST_SIGN: &'static [u8] = include_bytes!("../../assets/beast-sign.jpg");
+const CAMOFLAGE_SIGN: &'static [u8] = include_bytes!("../../assets/camoflage-sign.jpg");
+const CARTHIAN_MOVEMENT: &'static [u8] = include_bytes!("../../assets/carthian-movement.webp");
+const CIRCLE_OF_THE_CRONE: &'static [u8] = include_bytes!("../../assets/circle-of-the-crone.webp");
+const DAEVA: &'static [u8] = include_bytes!("../../assets/daeva.webp");
+const DOMINATE_SIGN: &'static [u8] = include_bytes!("../../assets/dominate-sign.jpg");
+const DREAD_SIGN: &'static [u8] = include_bytes!("../../assets/dread-sign.jpg");
+const FAVICON: &'static [u8] = include_bytes!("../../assets/favicon.png");
+const GANGREL: &'static [u8] = include_bytes!("../../assets/gangrel.webp");
+const INDEPENDENT: &'static [u8] = include_bytes!("../../assets/independent.webp");
+const INVICTUS: &'static [u8] = include_bytes!("../../assets/invictus.webp");
+const LANCEA_ET_SANCTUM: &'static [u8] = include_bytes!("../../assets/lancea-et-sanctum.webp");
+const MEKHET: &'static [u8] = include_bytes!("../../assets/mekhet.webp");
+const NOSFERATU: &'static [u8] = include_bytes!("../../assets/nosferatu.webp");
+const OBFUSCATE_SIGN: &'static [u8] = include_bytes!("../../assets/obfuscate-sign.jpg");
+const OFF_SIGN: &'static [u8] = include_bytes!("../../assets/off-sign.jpg");
+const ORDO_DRACUL: &'static [u8] = include_bytes!("../../assets/ordo-dracul.png");
+const VENTRUE: &'static [u8] = include_bytes!("../../assets/ventrue.webp");
+const VS_RR: &'static [u8] = include_bytes!("../../assets/vs-rr.png");
+
+enum RootAsset {
+  Text {
+    data: &'static str,
+    content_type: &'static str,
+  },
+  Binary {
+    data: &'static [u8],
+    content_type: &'static str,
+  },
+}
+
+fn find_root_asset(filename: &str) -> Option<RootAsset> {
+  match filename {
+    "search.js" => Some(RootAsset::Text {
+      data: SEARCH_JS,
+      content_type: "application/javascript; charset=utf-8",
+    }),
+    "search-data.js" => Some(RootAsset::Text {
+      data: SEARCH_DATA,
+      content_type: "application/javascript; charset=utf-8",
+    }),
+    "styles.css" => Some(RootAsset::Text {
+      data: CSS,
+      content_type: "text/css; charset=utf-8",
+    }),
+    "awe-sign.jpg" => Some(RootAsset::Binary {
+      data: AWE_SIGN,
+      content_type: "image/jpeg",
+    }),
+    "beast-sign.jpg" => Some(RootAsset::Binary {
+      data: BEAST_SIGN,
+      content_type: "image/jpeg",
+    }),
+    "camoflage-sign.jpg" => Some(RootAsset::Binary {
+      data: CAMOFLAGE_SIGN,
+      content_type: "image/jpeg",
+    }),
+    "carthian-movement.webp" => Some(RootAsset::Binary {
+      data: CARTHIAN_MOVEMENT,
+      content_type: "image/webp",
+    }),
+    "circle-of-the-crone.webp" => Some(RootAsset::Binary {
+      data: CIRCLE_OF_THE_CRONE,
+      content_type: "image/webp",
+    }),
+    "daeva.webp" => Some(RootAsset::Binary {
+      data: DAEVA,
+      content_type: "image/webp",
+    }),
+    "dominate-sign.jpg" => Some(RootAsset::Binary {
+      data: DOMINATE_SIGN,
+      content_type: "image/jpeg",
+    }),
+    "dread-sign.jpg" => Some(RootAsset::Binary {
+      data: DREAD_SIGN,
+      content_type: "image/jpeg",
+    }),
+    "favicon.png" => Some(RootAsset::Binary {
+      data: FAVICON,
+      content_type: "image/png",
+    }),
+    "gangrel.webp" => Some(RootAsset::Binary {
+      data: GANGREL,
+      content_type: "image/webp",
+    }),
+    "independent.webp" => Some(RootAsset::Binary {
+      data: INDEPENDENT,
+      content_type: "image/webp",
+    }),
+    "invictus.webp" => Some(RootAsset::Binary {
+      data: INVICTUS,
+      content_type: "image/webp",
+    }),
+    "lancea-et-sanctum.webp" => Some(RootAsset::Binary {
+      data: LANCEA_ET_SANCTUM,
+      content_type: "image/webp",
+    }),
+    "mekhet.webp" => Some(RootAsset::Binary {
+      data: MEKHET,
+      content_type: "image/webp",
+    }),
+    "nosferatu.webp" => Some(RootAsset::Binary {
+      data: NOSFERATU,
+      content_type: "image/webp",
+    }),
+    "obfuscate-sign.jpg" => Some(RootAsset::Binary {
+      data: OBFUSCATE_SIGN,
+      content_type: "image/jpeg",
+    }),
+    "off-sign.jpg" => Some(RootAsset::Binary {
+      data: OFF_SIGN,
+      content_type: "image/jpeg",
+    }),
+    "ordo-dracul.png" => Some(RootAsset::Binary {
+      data: ORDO_DRACUL,
+      content_type: "image/png",
+    }),
+    "ventrue.webp" => Some(RootAsset::Binary {
+      data: VENTRUE,
+      content_type: "image/webp",
+    }),
+    "vs-rr.png" => Some(RootAsset::Binary {
+      data: VS_RR,
+      content_type: "image/png",
+    }),
+    _ => None,
+  }
+}
+
+fn serve_root_asset(asset: RootAsset) -> Result<Response, Error> {
+  let mut response = match asset {
+    RootAsset::Text { data, content_type } => {
+      let mut re = Response::new(data.into());
+      re.headers_mut().insert("Content-Type", HeaderValue::from_static(content_type));
+      re
+    },
+    RootAsset::Binary { data, content_type } => {
+      let mut re = Response::new(data.into());
+      re.headers_mut().insert("Content-Type", HeaderValue::from_static(content_type));
+      re
+    },
+  };
+  response.headers_mut().insert(
+    hyper::header::CACHE_CONTROL,
+    HeaderValue::from_static("public, max-age=86400"),
+  );
+  Ok(response)
+}
 
 #[derive(Template)]
 #[template(path = "index.html")]
@@ -139,32 +286,15 @@ pub async fn route(
       prevent_cache = false;
       add_header(wiki::route(session, req, path_vec).await, hyper::header::CACHE_CONTROL, HeaderValue::from_static("public, max-age=86400"))
     },
-    Some("search.js") => {
-      prevent_cache = false;
-      verify_method_path_end(&path_vec, &req, &Method::GET)?;
-      js(SEARCH_JS)
+    Some(path) => {
+      if let Some(asset) = find_root_asset(path) {
+        prevent_cache = false;
+        verify_method_path_end(&path_vec, &req, &Method::GET)?;
+        serve_root_asset(asset)
+      } else {
+        Err(Error::path_not_found(&req))
+      }
     },
-    Some("search-data.js") => {
-      prevent_cache = false;
-      verify_method_path_end(&path_vec, &req, &Method::GET)?;
-      js(SEARCH_DATA)
-    },
-    Some("styles.css") => {
-      prevent_cache = false;
-      verify_method_path_end(&path_vec, &req, &Method::GET)?;
-      css(CSS)
-    },
-    Some("vs-rr.png") => {
-      prevent_cache = false;
-      verify_method_path_end(&path_vec, &req, &Method::GET)?;
-      add_header(png(LOGO), hyper::header::CACHE_CONTROL, HeaderValue::from_static("public, max-age=86400"))
-    },
-    Some("favicon.png") => {
-      prevent_cache = false;
-      verify_method_path_end(&path_vec, &req, &Method::GET)?;
-      add_header(png(FAVICON), hyper::header::CACHE_CONTROL, HeaderValue::from_static("public, max-age=86400"))
-    },
-    _ => Err(Error::path_not_found(&req)),
   };
   for cookie in set_cookies {
     response = add_header(response, hyper::header::SET_COOKIE, cookie);

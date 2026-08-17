@@ -69,47 +69,6 @@ pub fn see_other(
   );
   Ok(re)
 }
-// Return given string as css
-pub fn css(
-  data: &'static str,
-) -> Result<Response, Error> {
-  let mut re = Response::new(data.into());
-  re.headers_mut().insert(
-    "Content-Type",
-    HeaderValue::from_static("text/css; charset=utf-8")
-  );
-  re.headers_mut().insert(
-    "Cache-Control",
-    HeaderValue::from_static("public, max-age=86400"),
-  );
-  Ok(re)
-}
-// Return given string as javascript
-pub fn js(
-  data: &'static str,
-) -> Result<Response, Error> {
-  let mut re = Response::new(data.into());
-  re.headers_mut().insert(
-    "Content-Type",
-    HeaderValue::from_static("application/javascript; charset=utf-8")
-  );
-  re.headers_mut().insert(
-    "Cache-Control",
-    HeaderValue::from_static("public, max-age=86400"),
-  );
-  Ok(re)
-}
-// Return given bytes as a PNG image
-pub fn png(
-  data: &'static [u8],
-) -> Result<Response, Error> {
-  let mut re = Response::new(data.into());
-  re.headers_mut().insert(
-    "Content-Type",
-    HeaderValue::from_static("image/png")
-  );
-  Ok(re)
-}
 // Serialize given struct into json and return it
 #[allow(dead_code)]
 pub fn json<T: Serialize + ?Sized>(
