@@ -2,7 +2,7 @@
 
 #lore #clans
 
-![Mekhet](/mekhet.webp)
+<img class="side-image" src="/mekhet.webp" alt="Mekhet">
 
 ## Hemligheternas klan
 

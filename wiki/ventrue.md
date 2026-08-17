@@ -2,7 +2,7 @@
 
 #lore #clans
 
-![Ventrue](/ventrue.webp)
+<img class="side-image" src="/ventrue.webp" alt="Ventrue">
 
 ## Härskandets klan
 

@@ -2,7 +2,7 @@
 
 #lore #covenants
 
-![Lancea et Sanctum](/lancea-et-sanctum.webp)
+<img class="side-image" src="/lancea-et-sanctum.webp" alt="Lancea et Sanctum">
 
 ## De Helgade
 

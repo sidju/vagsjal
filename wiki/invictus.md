@@ -2,7 +2,7 @@
 
 #lore #covenants
 
-![Invictus](/invictus.webp)
+<img class="side-image" src="/invictus.webp" alt="Invictus">
 
 ## Etablissemanget
 

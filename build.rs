@@ -367,6 +367,7 @@ fn build_comrak_options() -> Options<'static> {
   options.extension.strikethrough = true;
   options.extension.table = true;
   options.extension.header_id_prefix = Some(String::new());
+  options.render.r#unsafe = true;
   options
 }
 

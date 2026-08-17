@@ -2,7 +2,7 @@
 
 #lore #covenants
 
-![Ordo Dracul](/ordo-dracul.png)
+<img class="side-image" src="/ordo-dracul.png" alt="Ordo Dracul">
 
 Ordo Dracul är lärda och asketer, kovenanteret för dem som vägrar acceptera
 begränsningarna i sitt tillstånd. Där andra [kovenanter](covenants.md) sluter

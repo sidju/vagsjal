@@ -2,7 +2,7 @@
 
 #lore #clans
 
-![Gangrel](/gangrel.webp)
+<img class="side-image" src="/gangrel.webp" alt="Gangrel">
 
 ## Jaktens klan
 

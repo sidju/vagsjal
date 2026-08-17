@@ -2,7 +2,7 @@
 
 #lore #clans
 
-![Daeva](/daeva.webp)
+<img class="side-image" src="/daeva.webp" alt="Daeva">
 
 ## Passionernas klan
 

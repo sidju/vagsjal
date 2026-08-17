@@ -2,7 +2,7 @@
 
 #lore #covenants
 
-![Circle of the Crone](/circle-of-the-crone.webp)
+<img class="side-image" src="/circle-of-the-crone.webp" alt="Circle of the Crone">
 
 ## Akolyterna
 

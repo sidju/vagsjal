@@ -2,7 +2,7 @@
 
 #lore #covenants
 
-![Carthian Movement](/carthian-movement.webp)
+<img class="side-image" src="/carthian-movement.webp" alt="Carthian Movement">
 
 ## Reformisterna
 

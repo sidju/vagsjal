@@ -2,7 +2,7 @@
 
 #lore #clans
 
-![Nosferatu](/nosferatu.webp)
+<img class="side-image" src="/nosferatu.webp" alt="Nosferatu">
 
 ## Skräckens klan
 
