@@ -22,7 +22,7 @@ kraft som alla vampyrer har.
 
 ## Dominate-tecknet
 
-Dominate-tecknet är att peka med pekfingret mot sitt öga och etablera
+Dominate-tecknet är att peka med pekfingret mot sin tinning och etablera
 ögonkontakt.
 
 Det används endast för att aktivera [Dominate](dominate.md). Relevant att veta
