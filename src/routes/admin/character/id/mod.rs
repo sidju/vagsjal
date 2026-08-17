@@ -292,7 +292,7 @@ async fn fetch_pending_usage(state: &'static State, vampire_id: i64) -> Result<V
       'humanity' AS "kind!",
       humanity_change.humanity_change_id AS "usage_id!",
       humanity_change.note AS "name!",
-      ABS(humanity_change.change)::INT AS "increase!",
+      humanity_change.change AS "increase!",
       humanity_change.xp_cost AS "xp_cost!",
       to_char(humanity_change.creation_time, 'YYYY-MM-DD HH24:MI:SS') AS "created_at!"
     FROM humanity_change
