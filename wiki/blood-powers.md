@@ -50,6 +50,10 @@ aspekt de projicerar från följande:
 På andra vampyrer visar detta sig som en knuff i den riktningen; för människor
 yttrar det sig snarare som en tvingande impuls.
 
+> För att signalera kraften gör [Best-tecknet](hand-signs.md#best-tecknet) mot
+> ditt mål. Det har alltid en effekt, men inte alltid tillräcklig för att få
+> det resultat man hade önskat.
+
 ### [Blodsband](blood-bond.md)
 
 Har en [egen sida](blood-bond.md) då det finns lite mer [regler](rules.md).

@@ -5,11 +5,11 @@
 [Mänsklighet](#mansklighet) är ett numeriskt mått på hur väl karaktären lyckats
 hålla sig skild från [Besten](beast.md). Att bli vampyr är att vakna till en
 värld som är grå och blodröd, det som gav glädje och njutning som människa är
-blekare samtidigt som [Besten](beast.md) alltid skriker efter blod. Att
-behålla sin [mänsklighet](#mankslighet) är att klamra sig fast vid det
-mänskliga, vid tron på rättvisa och empati; att förlora den är att sakta röra
-sig mot att bli det ursinningslösa blodsugande monster som
-[Besten](beast.md) lockar till att bli.
+blekare samtidigt som [Besten](beast.md) alltid skriker efter blod. Att behålla
+sin [mänsklighet](#mankslighet) är att klamra sig fast vid det mänskliga, vid
+tron på rättvisa och empati; att förlora den är att sakta röra sig mot att bli
+det ursinningslösa blodsugande monster som [Besten](beast.md) lockar till att
+bli.
 
 ## Nivåer
 
@@ -104,5 +104,5 @@ Här följer exempel för varje nivå:
 
 ### Mänsklighet 0 / Wight
 
-Vid mänsklighet 0 finns inget uns av tanke kvar, endast [besten](beast.md)
-styr efter [sin vilja](beast.md#bestens-vilja).
+Vid mänsklighet 0 finns inget uns av tanke kvar, endast [besten](beast.md) styr
+efter [sin vilja](beast.md#bestens-vilja).
