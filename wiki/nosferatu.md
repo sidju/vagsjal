@@ -2,6 +2,8 @@
 
 #lore #clans
 
+![Nosferatu](/nosferatu.webp)
+
 ## Skräckens klan
 
 Klan Nosferatu kännetecknas av obehaget de väcker i sin omgivning. Fördömda till

@@ -53,12 +53,22 @@ inom din [Blodpotens](blood-potency.md) antal månader räknas din
 detta står i viss mån under ditt befäl; du kan styra dem att attackera ett mål
 eller en grupp. Om du inte gör det slåss de påverkade inbördes.
 
-> För att använda kraften utropas "BP <ditt BP värde> Frenzy". De med lägre
-> [blodspotens](blood-potency.md) förlorar sig genast till [frenzy](frenzy.md)
-> utan möjlighet att motstå, de med samma [blodspotens](blood-potency.md)
-> uppmuntras göra en [frenzy](frenzy.md) check och de med högre motstår.
-> Omedelbart när kraften tagit effekt kan du med en tydligt utropad instruktion
-> rikta de påverkade, t.ex. "Döda sheriffen!".
+> Denna kraft bör inte användas på lajv utan att samordna sig med antingen alla
+> påverkade eller spelledningen då den utlöser ett sådant kaos av både spel och
+> regler att den effektivt avslutar scenen. Om inte BP värdet den aktiveras med
+> är 1 eller 2 går alla off-game för att komma överens om konsekvenserna.
+>
+> För att använda kraften på BP 1 eller 2 utropas antingen "BP X Frenzy". De
+> med lägre [blodspotens](blood-potency.md) förlorar sig genast till
+> [frenzy](frenzy.md) utan möjlighet att motstå, de med samma
+> [blodspotens](blood-potency.md) uppmuntras göra en [frenzy](frenzy.md) check
+> och de med högre motstår. Omedelbart när kraften tagit effekt kan du med en
+> tydligt utropad instruktion rikta de påverkade, t.ex. "Döda sheriffen!".
+>
+> För att använda kraften på högre BP än 2 gör du tydligt
+> [off-tecknet](hand-signs.md#off-tecknet) och tydligt meddelar att spelet är på
+> paus för att hantera det faktum att majoriteten av rummet gått in i Frenzy.
+> Spelledningen tar därefter över och leder hanteringen.
 
 ## 3: Lord of the Land
 

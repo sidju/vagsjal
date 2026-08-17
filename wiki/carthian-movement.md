@@ -2,6 +2,8 @@
 
 #lore #covenants
 
+![Carthian Movement](/carthian-movement.webp)
+
 ## Reformisterna
 
 Den Karthiska Rörelsen är en kovenant som vill förändra [världen](setting.md),

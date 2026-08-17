@@ -2,6 +2,8 @@
 
 #lore #covenants
 
+![Circle of the Crone](/circle-of-the-crone.webp)
+
 ## Akolyterna
 
 Haggans krans är en kovenant som kännetecknas av magi, mystik och harmoni, här

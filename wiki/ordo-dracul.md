@@ -2,6 +2,8 @@
 
 #lore #covenants
 
+![Ordo Dracul](/ordo-dracul.png)
+
 Ordo Dracul är lärda och asketer, kovenanteret för dem som vägrar acceptera
 begränsningarna i sitt tillstånd. Där andra [kovenanter](covenants.md) sluter
 fred med vad det innebär att vara Besläktad — genom religiös inramning, politisk

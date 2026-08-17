@@ -2,6 +2,8 @@
 
 #lore #clans
 
+![Daeva](/daeva.webp)
+
 ## Passionernas klan
 
 Klan Daeva förenas av en främsta egenskap: de är beroende av känslor. Känslor

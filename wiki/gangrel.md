@@ -2,6 +2,8 @@
 
 #lore #clans
 
+![Gangrel](/gangrel.webp)
+
 ## Jaktens klan
 
 Klan Gangrel domineras av impulser, omväxlande instinkter och känslor. De

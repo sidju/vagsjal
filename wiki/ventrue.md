@@ -2,6 +2,8 @@
 
 #lore #clans
 
+![Ventrue](/ventrue.webp)
+
 ## Härskandets klan
 
 Ventrue, vampyrvärldens herrar och mästare, är de besläktades mest ivriga

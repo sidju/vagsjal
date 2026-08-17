@@ -2,6 +2,8 @@
 
 #lore #clans
 
+![Mekhet](/mekhet.webp)
+
 ## Hemligheternas klan
 
 Mekhets natur är av förföljelse, intrång i de mest privata stunderna och

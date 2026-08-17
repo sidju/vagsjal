@@ -2,6 +2,8 @@
 
 #lore #covenants
 
+![Lancea et Sanctum](/lancea-et-sanctum.webp)
+
 ## De Helgade
 
 > _"Ty, jag är ej någon gudlös best som jagar bortom den helgades storhet.Jag är
