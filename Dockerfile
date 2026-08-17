@@ -21,6 +21,7 @@ RUN cp templates/wiki_nav_partial.html /tmp/
 # Step 4: full source
 RUN rm src/main.rs
 COPY src src
+COPY assets assets
 COPY templates templates
 COPY migrations migrations
 COPY .sqlx .sqlx
