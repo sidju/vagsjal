@@ -1,0 +1,30 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\nINSERT INTO app_user(oidc_subject, name, email, role)\nVALUES ($1, $2, $3, 'user')\nON CONFLICT (oidc_subject)\nDO UPDATE SET\n  name = $2,\n  email = $3\nRETURNING user_id, role AS \"role!:Role\"\n    ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "user_id",
+        "type_info": "Int8"
+      },
+      {
+        "ordinal": 1,
+        "name": "role!:Role",
+        "type_info": "Varchar"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Varchar",
+        "Varchar",
+        "Varchar"
+      ]
+    },
+    "nullable": [
+      false,
+      false
+    ]
+  },
+  "hash": "5d1cd17954837bc3070c1a808f6562bb9fc7f22c93fca5287105243434b42843"
+}

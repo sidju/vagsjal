@@ -1,6 +1,6 @@
 # Blodpotens (BP)
 
-#regler
+#rules
 
 Blodpotens är styrkan i det vampyriska blodet. Högre blodpotens tillåter en
 vampyr att ha fler ghouls, använda flera krafter samtidigt, tåla mer skada och
@@ -14,41 +14,44 @@ såsom eld, och ingjuter en trötthet som tvingar dem att sova mer.
 - Du får 6 max-[HP](hp.md) per BP.
 - Din läkningstakt multipliceras med din BP.
 - Din skada från [Banes](banes.md) multipliceras med din BP.
-- Varje BP utöver den första gör att du sover en timme mer per dag (minskar
-  [Organisatorisk förmåga](organizational-ability.md) med 2 för varje BP över
-  1).
+- Varje BP gör att du sover en timme mer per dag och minskar din
+  [Organisatoriska förmåga](organizational-ability.md) med 2.
+- Vid högre blodpotens behöver du dricka potentare blod.
+  - Vid blodpotens 3 ger det inte längre näring att dricka av djur.
+  - Vid blodpotens 6 ger det inte längre näring att dricka av människor.
+  - Vid blodpotens 9 ger det inte ens näring att dricka av andra vampyrer,
+    förutom [amaranth](amaranth.md).
 
 ## Att få blodpotens
 
-Din blodpotens stiger med ett ungefär vart 24:e år av vampyrisk existens. När en
-karaktär är inom 10 år från en sådan punkt får du slå för att höja deras
-blodpotens; sannolikheten för framgång ökar varje år tills den är garanterad.
+Din blodpotens stiger med ett ungefär vart 36:e år av vampyrisk existens.
 
-År tillbringade i torpor räknas mot att höja en karaktärs blodpotens; ett år i
-torpor neutraliserar ett år av vampyrisk existens.
+År tillbringade i [torpor](torpor.md) räknas mot att höja en karaktärs
+blodpotens; ett år i [torpor](torpor.md) neutraliserar ett år av vampyrisk
+existens.
 
 Detta motsvarar följande tabell:
 
-| År av existens - år av torpor | Blodpotens |
-| ----------------------------- | ---------- |
-| 0 -> 14                       | 1          |
-| 14 -> 24                      | 1 eller 2  |
-| 24 -> 38                      | 2          |
-| 38 -> 48                      | 2 eller 3  |
-| 48 -> 62                      | 3          |
-| 62 -> 72                      | 3 eller 4  |
-| 72 -> 86                      | 4          |
-| 86 -> 96                      | 4 eller 5  |
-| 96 -> 110                     | 5          |
-| 110 -> 120                    | 5 eller 6  |
+| År av existens - år av [torpor](torpor.md) | Blodpotens |
+| ------------------------------------------ | ---------- |
+| 0 -> 36                                    | 1          |
+| 37 -> 72                                   | 2          |
+| 73 -> 108                                  | 3          |
+| 109 -> 144                                 | 4          |
+| 145 -> 180                                 | 5          |
+| 181 -> 216                                 | 6          |
+
+Blodpotensen har även en chans att stiga när en vampyr begår
+[Amaranth](amaranth.md).
 
 ## Att sänka sin blodpotens
 
-Då blodpotensens svagheter blir nästan ohanterliga kring 120 års ålder finns det
+Då blodpotensens svagheter blir nästan ohanterliga kring 140 års ålder finns det
 ett givet behov av att kunna minska den igen. Det finns i essens två kända sätt:
-- Om man spenderar fler år i torpor än man har blodpotens har man en god chans att
-  reducera den, men det är inte det enda man förlorar. Minnen och ibland andra
-  egenskaper går ofta förlorade i en längre dvala, utöver att den tenderar att vara
-  fylld av mindre än behagliga drömmar.
-- Ordo Dracul har ritualer som kan sänka blodets potens, men de säljer dem inte
-  billigt.
+
+- Om man spenderar fler år i [torpor](torpor.md) än man har blodpotens har man
+  en god chans att reducera den, men det är inte det enda man förlorar. Minnen
+  och ibland andra egenskaper går ofta förlorade i en längre dvala, utöver att
+  den tenderar att vara fylld av mindre än behagliga drömmar.
+- [Ordo Dracul](ordo-dracul.md) har ritualer som kan sänka blodets potens, men
+  de säljer dem inte billigt.

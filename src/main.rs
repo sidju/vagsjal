@@ -40,6 +40,7 @@ async fn run_server(
 
   // Create whatever background tasks are needed
   tokio::task::spawn(database_cleaner(state));
+  tokio::task::spawn(oidc_key_refresher(state));
 
   // Loop forever, spawning a task for every request we get
   loop {
@@ -84,6 +85,17 @@ async fn database_cleaner(
       Ok(r) => { println!("Cleaned {} old login processes", r.rows_affected()); },
       Err(e) => { eprintln!("Error when cleaning outdated login procedures\n  error: {e}"); },
     }
+  }
+}
+
+// Refreshes Google's OIDC signing keys every 12 hours
+async fn oidc_key_refresher(
+  state: &'static State,
+) {
+  let mut interval = tokio::time::interval(std::time::Duration::from_secs(60 * 60 * 12));
+  loop {
+    interval.tick().await;
+    state.oidc.refresh(&state.http_client).await;
   }
 }
 

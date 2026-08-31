@@ -15,64 +15,36 @@
   </form>
   {% endif %}
 
-  <table class="stat-table">
-    <tr>
-      <th>Namn:</th>
-      <th>{{ character.name }}</th>
-    </tr>
-    <tr>
-      <td>Ägare</td>
-      <td>{{ character.owner_name }}</td>
-    </tr>
-    <tr>
-      <td>Status</td>
-      <td>
-        {% if character.status.is_active() %}Aktiv{% endif %}
-        {% if character.status.is_draft() %}Utkast{% endif %}
-        {% if character.status.is_inactive() %}Inaktiv{% endif %}
-      </td>
-    </tr>
-    <tr>
-      <td>Mänsklig ålder</td>
-      <td>{{ character.apparent_age }}</td>
-    </tr>
-    <tr>
-      <td><a href="/wiki/embrace/">Omfamningsdatum</a></td>
-      <td>{{ character.date_embraced }}</td>
-    </tr>
-    <tr>
-      <td><a href="/wiki/torpor/">Tid i torpor</a></td>
-      <td>{{ character.torpor_display }}</td>
-    </tr>
-    <tr>
-      <td><a href="/wiki/clan/">Klan</a></td>
-      <td><a href="/wiki/{{ character.clan_name | lower }}/">{{ character.clan_name }}</a></td>
-    </tr>
-    {% if let Some(url) = character.character_description_url %}
-    <tr>
-      <td><a href="/wiki/character-description/">Karaktärsbeskrivning</a></td>
-      <td><a href="{{ url }}">{{ url }}</a></td>
-    </tr>
-    {% endif %}
-    {% include "character/_stats_table.html" %}
-  </table>
+  {% include "character/_character_meta_table.html" %}
+  {% include "character/_stats_table.html" %}
   <p><small>* väntar på granskning</small></p>
 
-  <h2>Pågående XP-användningar</h2>
+  <h2 id="pending-xp-changes">Pågående XP-användningar</h2>
   {% if pending.len() == 0 %}
     <p>Inga pågående.</p>
   {% else %}
     <table class="stat-table">
-      <tr><th>Typ</th><th>Namn</th><th>Ökning</th><th>XP-kostnad</th><th>Skapad</th><th>Åtgärd</th></tr>
+      <tr><th>Typ</th><th>Namn</th><th>Ökning</th><th>XP-kostnad</th><th>Skapad</th><th>Anteckning</th><th>Åtgärd</th></tr>
       {% for usage in pending %}
       <tr>
-        <td>{{ usage.kind }}</td>
+        <td>
+          {% if usage.kind == "stat" %}Stat
+          {% elif usage.kind == "power" %}Kraft
+          {% elif usage.kind == "influence" %}Inflytande
+          {% elif usage.kind == "humanity" %}Mänsklighet
+          {% else %}{{ usage.kind }}{% endif %}
+        </td>
         <td>{{ usage.name }}</td>
         <td>{{ usage.increase }}</td>
         <td>{{ usage.xp_cost }}</td>
         <td>{{ usage.created_at }}</td>
         <td>
-          <form method="post" enctype="application/x-www-form-urlencoded">
+          {% if usage.kind == "humanity" %}
+          <input name="review_note" form="review-{{ usage.usage_id }}" maxlength="256" placeholder="Orsak...">
+          {% endif %}
+        </td>
+        <td>
+          <form id="review-{{ usage.usage_id }}" method="post" enctype="application/x-www-form-urlencoded">
             <input type="hidden" name="review_kind" value="{{ usage.kind }}">
             <input type="hidden" name="usage_id" value="{{ usage.usage_id }}">
             <button type="submit" name="decision" value="godkänn">Godkänn</button>
@@ -100,12 +72,38 @@
     </table>
   {% endif %}
 
+  <h2>Mänsklighetsförändringar</h2>
+  {% if humanity_changes.len() == 0 %}
+    <p>Inga registrerade.</p>
+  {% else %}
+    <table class="stat-table">
+      <tr><th>Datum</th><th>Förändring</th><th>Anteckning</th></tr>
+      {% for hc in humanity_changes %}
+      <tr>
+        <td>{{ hc.creation_time }}</td>
+        <td>{{ hc.change }}</td>
+        <td>{{ hc.note }}</td>
+      </tr>
+      {% endfor %}
+    </table>
+  {% endif %}
+
   <details>
     <summary><h3 style="display:inline">Registrera BP-ändring</h3></summary>
     <form method="post" enctype="application/x-www-form-urlencoded">
       <input type="hidden" name="action" value="record_bp">
       <p><label>Förändring <input name="bp_change" type="number" required></label></p>
       <p><label>Anteckning <input name="bp_note" maxlength="256"></label></p>
+      <button type="submit">Registrera</button>
+    </form>
+  </details>
+
+  <details>
+    <summary><h3 style="display:inline">Registrera mänsklighetsförändring</h3></summary>
+
+    <form method="post" enctype="application/x-www-form-urlencoded">
+      <input type="hidden" name="action" value="record_humanity">
+      <p><label>Förändring <input name="humanity_change" type="number" required></label></p>
       <button type="submit">Registrera</button>
     </form>
   </details>

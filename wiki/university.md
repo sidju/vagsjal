@@ -1,5 +1,5 @@
 # Universitet
 
-#influenser
+#influences
 
 Institutionerna själva, studenterna och offentliga bibliotek och arkiv.

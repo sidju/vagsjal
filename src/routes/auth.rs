@@ -39,12 +39,12 @@ pub struct AuthResult {
 
 fn format_cookie(name: &str, value: &str, max_age_seconds: i64) -> Result<HeaderValue, Error> {
   HeaderValue::try_from(format!(
-    "{name}={value}; Path=/; Max-Age={max_age_seconds}; Secure; HttpOnly; SameSite=Strict"
+    "{name}={value}; Path=/; Max-Age={max_age_seconds}; Secure; HttpOnly; SameSite=Lax"
   )).map_err(Into::into)
 }
 fn format_clear_cookie(name: &str) -> Result<HeaderValue, Error> {
   HeaderValue::try_from(format!(
-    "{name}=; Path=/; Max-Age=0; Secure; HttpOnly; SameSite=Strict"
+    "{name}=; Path=/; Max-Age=0; Secure; HttpOnly; SameSite=Lax"
   )).map_err(Into::into)
 }
 pub fn clear_auth_cookies() -> Result<Vec<HeaderValue>, Error> {
@@ -67,7 +67,7 @@ fn verify_id_token_allow_missing_nonce<'a>(
   >,
   ClaimsVerificationError,
 > {
-  id_token.claims(&state.oidc_client.id_token_verifier(), allow_any_nonce)
+  id_token.claims(&state.oidc.client().id_token_verifier(), allow_any_nonce)
 }
 fn display_name_from_claims(
   claims: &openidconnect::IdTokenClaims<
@@ -75,15 +75,22 @@ fn display_name_from_claims(
     openidconnect::core::CoreGenderClaim,
   >,
 ) -> String {
-  claims
+  let name = claims
     .name()
     .and_then(|name| name.get(None))
-    .map(|name| name.as_str().to_owned())
-    .or_else(|| claims.preferred_username().map(|username| username.as_str().to_owned()))
-    .or_else(|| claims.email().map(|email| email.as_str().to_owned()))
+    .map(|name| name.as_str().to_owned());
+  let username = claims.preferred_username().map(|u| u.as_str().to_owned());
+  if name.is_none() {
+    eprintln!("WARNING: OIDC token did not contain 'name' claim. Make sure 'profile' scope is enabled.");
+  }
+  if claims.email().is_none() {
+    eprintln!("WARNING: OIDC token did not contain 'email' claim. Make sure 'email' scope is enabled.");
+  }
+  name
+    .or_else(|| username)
     .unwrap_or_else(|| claims.subject().as_str().to_owned())
 }
-async fn session_for_claims(
+async fn upsert_user_from_claims(
   state: &'static State,
   claims: &openidconnect::IdTokenClaims<
     openidconnect::EmptyAdditionalClaims,
@@ -91,19 +98,45 @@ async fn session_for_claims(
   >,
 ) -> Result<SessionData, Error> {
   let display_name = display_name_from_claims(claims);
+  let email = claims.email().map(|email| email.as_str().to_owned()).unwrap_or_default();
   let row = sqlx::query!(
     "
-INSERT INTO app_user(oidc_subject, name, role)
-VALUES ($1, $2, 'user')
+INSERT INTO app_user(oidc_subject, name, email, role)
+VALUES ($1, $2, $3, 'user')
 ON CONFLICT (oidc_subject)
-DO UPDATE SET name = CASE
-  WHEN app_user.name = '' THEN EXCLUDED.name
-  ELSE app_user.name
-END
+DO UPDATE SET
+  name = $2,
+  email = $3
 RETURNING user_id, role AS \"role!:Role\"
     ",
     claims.subject().as_str(),
     display_name,
+    email,
+  )
+    .fetch_one(&state.db)
+    .await
+    .map_err(Error::from)?
+  ;
+  Ok(SessionData {
+    user_id: row.user_id,
+    role: row.role,
+  })
+}
+
+async fn fetch_session(
+  state: &'static State,
+  claims: &openidconnect::IdTokenClaims<
+    openidconnect::EmptyAdditionalClaims,
+    openidconnect::core::CoreGenderClaim,
+  >,
+) -> Result<SessionData, Error> {
+  let row = sqlx::query!(
+    "
+SELECT user_id, role AS \"role!:Role\"
+FROM app_user
+WHERE oidc_subject = $1
+    ",
+    claims.subject().as_str(),
   )
     .fetch_one(&state.db)
     .await
@@ -118,7 +151,7 @@ async fn refresh_session_from_cookie(
   state: &'static State,
   refresh_token_raw: &str,
 ) -> Result<Option<(SessionData, Vec<HeaderValue>)>, Error> {
-  let token_response: openidconnect::core::CoreTokenResponse = match state.oidc_client
+  let token_response: openidconnect::core::CoreTokenResponse = match state.oidc.client()
     .exchange_refresh_token(&openidconnect::RefreshToken::new(refresh_token_raw.to_owned()))
   {
     Ok(req) => match req.request_async(&state.http_client).await {
@@ -135,7 +168,7 @@ async fn refresh_session_from_cookie(
     Ok(claims) => claims,
     Err(_) => return Ok(None),
   };
-  let session = session_for_claims(state, claims).await?;
+  let session = upsert_user_from_claims(state, claims).await?;
   let refresh_token = token_response
     .refresh_token()
     .map(|t| t.secret().to_owned())
@@ -161,12 +194,14 @@ async fn refresh_session_from_cookie(
 pub async fn start_oidc_login_flow(
   state: &'static State,
 ) -> Result<Response, Error> {
-  let (authorize_url, csrf_state, nonce) = state.oidc_client
+  let (authorize_url, csrf_state, nonce) = state.oidc.client()
     .authorize_url(
       openidconnect::AuthenticationFlow::<openidconnect::core::CoreResponseType>::AuthorizationCode,
       openidconnect::CsrfToken::new_random,
       openidconnect::Nonce::new_random,
     )
+    .add_scope(openidconnect::Scope::new("profile".to_string()))
+    .add_scope(openidconnect::Scope::new("email".to_string()))
     .add_extra_param("access_type", "offline")
     .add_extra_param("prompt", "consent")
     .url()
@@ -194,13 +229,10 @@ pub async fn authenticate_from_cookies(
   let session_cookie = match cookies.get(SESSION_COOKIE_NAME) {
     Some(cookie) => *cookie,
     None => {
-      // Session cookie absent (most likely expired and purged by the browser).
-      // Try the refresh cookie before falling back to the login flow.
       if let Some(refresh_cookie) = cookies.get(REFRESH_COOKIE_NAME) {
         if let Some((session, set_cookies)) = refresh_session_from_cookie(state, refresh_cookie).await? {
           return Ok(AuthResult { session: Some(session), set_cookies });
         }
-        // Refresh present but failed — clear it so the browser doesn't keep sending it.
         return Ok(AuthResult { session: None, set_cookies: clear_auth_cookies()? });
       }
       return Ok(AuthResult { session: None, set_cookies: vec![] });
@@ -235,7 +267,7 @@ pub async fn authenticate_from_cookies(
       });
     },
   };
-  let session = session_for_claims(state, claims).await?;
+  let session = fetch_session(state, claims).await?;
   Ok(AuthResult {
     session: Some(session),
     set_cookies: vec![],
@@ -261,7 +293,7 @@ RETURNING nonce
     .ok_or(ClientError::UnknownOIDCProcess)?
   ;
 
-  let token_response: openidconnect::core::CoreTokenResponse = state.oidc_client
+  let token_response: openidconnect::core::CoreTokenResponse = state.oidc.client()
     .exchange_code(openidconnect::AuthorizationCode::new(oidc_response.code))?
     .request_async(&state.http_client)
     .await
@@ -272,10 +304,10 @@ RETURNING nonce
     .ok_or(ClientError::OIDCGaveNoToken)?
   ;
   let id_token_claims = id_token.claims(
-    &state.oidc_client.id_token_verifier(),
+    &state.oidc.client().id_token_verifier(),
     &openidconnect::Nonce::new(nonce),
   )?;
-  let _session = session_for_claims(state, id_token_claims).await?;
+  let _session = upsert_user_from_claims(state, id_token_claims).await?;
   let refresh_token = token_response
     .refresh_token()
     .ok_or(ClientError::OIDCGaveNoRefreshToken)?
@@ -283,7 +315,7 @@ RETURNING nonce
   ;
 
   let res = add_header(
-    redirect("/"),
+    redirect("/character/"),
     hyper::header::SET_COOKIE,
     format_cookie(
       SESSION_COOKIE_NAME,

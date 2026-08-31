@@ -15,11 +15,17 @@ name VARCHAR(64) PRIMARY KEY
 INSERT INTO app_role (name) VALUES ('user'), ('storyteller');
 
 CREATE TABLE app_user (
-user_id BIGSERIAL PRIMARY KEY,
-oidc_subject VARCHAR(256) NOT NULL UNIQUE,
-role VARCHAR(64) NOT NULL DEFAULT 'user',
+  user_id BIGSERIAL PRIMARY KEY,
+  oidc_subject VARCHAR(256) NOT NULL UNIQUE,
+  name VARCHAR(256) NOT NULL DEFAULT '',
+  email VARCHAR(320) NOT NULL DEFAULT '',
+  role VARCHAR(64) NOT NULL DEFAULT 'user',
+  pictures_ok BOOLEAN NOT NULL DEFAULT FALSE,
+  marketing_ok BOOLEAN NOT NULL DEFAULT FALSE,
+  ice_contact VARCHAR,
 
-FOREIGN KEY (role) REFERENCES app_role
+  FOREIGN KEY (role) REFERENCES app_role,
+  CONSTRAINT ice_contact_format CHECK (ice_contact IS NULL OR ice_contact ~ '.+,([ +-]?\d){6,}')
 );
 
 COMMIT; -- Apply the transaction

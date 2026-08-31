@@ -2,8 +2,9 @@ use std::borrow::Cow;
 use std::collections::{BTreeMap, BTreeSet};
 use std::path::Path;
 
+use comrak::html::collect_text;
 use comrak::nodes::{AstNode, NodeLink, NodeValue};
-use comrak::{Arena, Options, format_html, parse_document};
+use comrak::{Arena, Anchorizer, Options, format_html, parse_document};
 
 fn main() {
   println!("cargo:rerun-if-changed=build.rs");
@@ -35,6 +36,13 @@ fn main() {
 
   entries.sort_by(|a, b| a.0.cmp(&b.0));
 
+  let display_titles: BTreeMap<String, String> = entries.iter()
+    .map(|(name, content)| {
+      let title = extract_title(content).unwrap_or_else(|| name.clone());
+      (name.clone(), title)
+    })
+    .collect();
+
   let options = build_comrak_options();
 
   // FIRST PASS: analyze all files for backlinks and categories
@@ -46,6 +54,32 @@ fn main() {
     translate_links(root);
     analyzer.analyze_ast(root);
   }
+
+  // Generate search index from first-pass analysis
+  let search_data_js = analyzer.search_data_js();
+  let out_dir = std::env::var("OUT_DIR").unwrap();
+  std::fs::write(Path::new(&out_dir).join("search_data.js"), &search_data_js).unwrap();
+
+  // Auto-tag pages that serve as categories with the "categories" meta-category
+  {
+    let page_names: BTreeSet<&str> = entries.iter()
+      .filter(|(n, _)| n != "homepage")
+      .map(|(n, _)| n.as_str())
+      .collect();
+    let cat_pages: Vec<String> = analyzer.categories.keys()
+      .filter(|k| page_names.contains(k.as_str()) && k.as_str() != "index")
+      .cloned()
+      .collect();
+    for cat_page in cat_pages {
+      analyzer.categories
+        .entry("categories".to_string())
+        .or_default()
+        .insert(cat_page);
+    }
+  }
+
+  // Generate wiki nav partial for the nav dropdown
+  write_wiki_nav_partial(&analyzer.categories, &display_titles);
 
   // SECOND PASS: render each page with full analysis data
   let mut pages: Vec<(String, String, String)> = Vec::new();
@@ -63,16 +97,52 @@ fn main() {
     let mut body = String::new();
     body.push_str(&html);
 
-    // Category pages section
-    if let Some(pages_in_cat) = analyzer.categories.get(name) {
-      let mut cat_list: Vec<&str> = pages_in_cat.iter().map(|s| s.as_str()).collect();
-      cat_list.sort();
-      if !cat_list.is_empty() {
-        body.push_str("<hr>\n<section class=\"wiki-section\">\n<h2>Pages in this category:</h2>\n<ul>\n");
-        for page in &cat_list {
-          body.push_str(&format!("<li><a href=\"/wiki/{page}/\">{page}</a></li>\n"));
+    // Category pages section (index uses grouped rendering below)
+    if name != "index" {
+      if let Some(pages_in_cat) = analyzer.categories.get(name) {
+        let mut cat_list: Vec<&str> = pages_in_cat.iter().map(|s| s.as_str()).collect();
+        cat_list.sort();
+        if !cat_list.is_empty() {
+          body.push_str("<hr>\n<section class=\"wiki-section\">\n<h2>Sidor i denna kategori:</h2>\n<ul>\n");
+          for page in &cat_list {
+            let display = display_titles.get(*page).map(|s| s.as_str()).unwrap_or(page);
+            body.push_str(&format!("<li><a href=\"/wiki/{page}/\">{display}</a></li>\n"));
+          }
+          body.push_str("</ul>\n</section>\n");
         }
-        body.push_str("</ul>\n</section>\n");
+      }
+    }
+
+    // Grouped index section
+    if name == "index" {
+      let (groups, ungrouped) = build_index_groups(&analyzer.categories, &display_titles);
+      if !groups.is_empty() || !ungrouped.is_empty() {
+        body.push_str("<hr>\n<section class=\"wiki-section\">\n");
+        for (cat, pages) in &groups {
+          let label = display_titles.get(*cat).map(|s| s.as_str()).unwrap_or(*cat);
+          if display_titles.contains_key(*cat) {
+            body.push_str(&format!("<h2><a href=\"/wiki/{cat}/\">{label}</a></h2>\n"));
+          } else {
+            body.push_str(&format!("<h2>{label}</h2>\n"));
+          }
+          if !pages.is_empty() {
+            body.push_str("<ul>\n");
+            for page in pages {
+              let display = display_titles.get(*page).map(|s| s.as_str()).unwrap_or(*page);
+              body.push_str(&format!("<li><a href=\"/wiki/{page}/\">{display}</a></li>\n"));
+            }
+            body.push_str("</ul>\n");
+          }
+        }
+        if !ungrouped.is_empty() {
+          body.push_str("<h2>Övrigt</h2>\n<ul>\n");
+          for page in &ungrouped {
+            let display = display_titles.get(*page).map(|s| s.as_str()).unwrap_or(*page);
+            body.push_str(&format!("<li><a href=\"/wiki/{page}/\">{display}</a></li>\n"));
+          }
+          body.push_str("</ul>\n");
+        }
+        body.push_str("</section>\n");
       }
     }
 
@@ -81,9 +151,10 @@ fn main() {
       let mut link_list: Vec<&str> = links.iter().map(|s| s.as_str()).collect();
       link_list.sort();
       if !link_list.is_empty() {
-        body.push_str("<hr>\n<section class=\"wiki-section\">\n<h2>Linked from:</h2>\n<ul>\n");
+        body.push_str("<hr>\n<section class=\"wiki-section\">\n<h2>Sidor som länkar hit:</h2>\n<ul>\n");
         for link in &link_list {
-          body.push_str(&format!("<li><a href=\"/wiki/{link}/\">{link}</a></li>\n"));
+          let display = display_titles.get(*link).map(|s| s.as_str()).unwrap_or(link);
+          body.push_str(&format!("<li><a href=\"/wiki/{link}/\">{display}</a></li>\n"));
         }
         body.push_str("</ul>\n</section>\n");
       }
@@ -104,11 +175,12 @@ fn main() {
       continue;
     }
     let mut body = String::from("<h1>") + category + "</h1>\n";
-    body.push_str("<hr>\n<section class=\"wiki-section\">\n<h2>Pages in this category:</h2>\n<ul>\n");
+    body.push_str("<hr>\n<section class=\"wiki-section\">\n<h2>Sidor i denna kategori:</h2>\n<ul>\n");
     let mut member_list: Vec<&str> = members.iter().map(|s| s.as_str()).collect();
     member_list.sort();
     for page in &member_list {
-      body.push_str(&format!("<li><a href=\"/wiki/{page}/\">{page}</a></li>\n"));
+      let display = display_titles.get(*page).map(|s| s.as_str()).unwrap_or(page);
+      body.push_str(&format!("<li><a href=\"/wiki/{page}/\">{display}</a></li>\n"));
     }
     body.push_str("</ul>\n</section>\n");
 
@@ -117,9 +189,10 @@ fn main() {
       let mut link_list: Vec<&str> = links.iter().map(|s| s.as_str()).collect();
       link_list.sort();
       if !link_list.is_empty() {
-        body.push_str("<hr>\n<section class=\"wiki-section\">\n<h2>Linked from:</h2>\n<ul>\n");
+        body.push_str("<hr>\n<section class=\"wiki-section\">\n<h2>Sidor som länkar hit:</h2>\n<ul>\n");
         for link in &link_list {
-          body.push_str(&format!("<li><a href=\"/wiki/{link}/\">{link}</a></li>\n"));
+          let display = display_titles.get(*link).map(|s| s.as_str()).unwrap_or(link);
+          body.push_str(&format!("<li><a href=\"/wiki/{link}/\">{display}</a></li>\n"));
         }
         body.push_str("</ul>\n</section>\n");
       }
@@ -132,6 +205,92 @@ fn main() {
   pages.extend(auto_pages);
 
   write_wiki_pages(&pages, &real_page_names);
+}
+
+fn write_wiki_nav_partial(
+  categories: &BTreeMap<String, BTreeSet<String>>,
+  display_titles: &BTreeMap<String, String>,
+) {
+  let (groups, ungrouped) = build_index_groups(categories, display_titles);
+
+  let mut html = String::new();
+  for (cat, pages) in &groups {
+    let label = display_titles.get(*cat).map(|s| s.as_str()).unwrap_or(*cat);
+    if display_titles.contains_key(*cat) {
+      html.push_str(&format!("<strong><a href=\"/wiki/{cat}/\">{label}</a></strong>\n"));
+    } else {
+      html.push_str(&format!("<strong>{label}</strong>\n"));
+    }
+    if !pages.is_empty() {
+      html.push_str("<ul>\n");
+      for page in pages {
+        let display = display_titles.get(*page).map(|s| s.as_str()).unwrap_or(*page);
+        html.push_str(&format!("<li><a href=\"/wiki/{page}/\">{display}</a></li>\n"));
+      }
+      html.push_str("</ul>\n");
+    }
+  }
+  if !ungrouped.is_empty() {
+    html.push_str("<strong>Övrigt</strong>\n<ul>\n");
+    for page in &ungrouped {
+      let display = display_titles.get(*page).map(|s| s.as_str()).unwrap_or(*page);
+      html.push_str(&format!("<li><a href=\"/wiki/{page}/\">{display}</a></li>\n"));
+    }
+    html.push_str("</ul>\n");
+  }
+
+  std::fs::write(Path::new("templates").join("wiki_nav_partial.html"), &html).unwrap();
+}
+
+fn build_index_groups<'a>(
+  categories: &'a BTreeMap<String, BTreeSet<String>>,
+  display_titles: &'a BTreeMap<String, String>,
+) -> (BTreeMap<&'a str, Vec<&'a str>>, Vec<&'a str>) {
+  let Some(index_pages) = categories.get("index") else {
+    return (BTreeMap::new(), Vec::new());
+  };
+
+  let mut page_cats: BTreeMap<&str, BTreeSet<&str>> = BTreeMap::new();
+  for page in index_pages {
+    page_cats.entry(page.as_str()).or_default();
+  }
+  for (cat, members) in categories {
+    if cat == "index" || cat == "categories" { continue; }
+    for member in members {
+      if let Some(cats) = page_cats.get_mut(member.as_str()) {
+        cats.insert(cat.as_str());
+      }
+    }
+  }
+
+  let mut groups: BTreeMap<&str, Vec<&str>> = BTreeMap::new();
+  let mut ungrouped: Vec<&str> = Vec::new();
+  for (page, cats) in &page_cats {
+    if cats.is_empty() {
+      ungrouped.push(*page);
+    } else {
+      for cat in cats {
+        groups.entry(*cat).or_default().push(*page);
+      }
+    }
+  }
+
+  for (cat, pages) in &mut groups {
+    pages.retain(|p| p != cat);
+    pages.sort_by(|a, b| {
+      let a_title = display_titles.get(*a).map(|s| s.as_str()).unwrap_or(*a);
+      let b_title = display_titles.get(*b).map(|s| s.as_str()).unwrap_or(*b);
+      a_title.cmp(b_title)
+    });
+  }
+  ungrouped.retain(|page| !groups.contains_key(*page));
+  ungrouped.sort_by(|a, b| {
+    let a_title = display_titles.get(*a).map(|s| s.as_str()).unwrap_or(*a);
+    let b_title = display_titles.get(*b).map(|s| s.as_str()).unwrap_or(*b);
+    a_title.cmp(b_title)
+  });
+
+  (groups, ungrouped)
 }
 
 fn write_wiki_pages(pages: &[(String, String, String)], real_pages: &BTreeSet<String>) {
@@ -208,6 +367,7 @@ fn build_comrak_options() -> Options<'static> {
   options.extension.strikethrough = true;
   options.extension.table = true;
   options.extension.header_id_prefix = Some(String::new());
+  options.render.r#unsafe = true;
   options
 }
 
@@ -330,6 +490,8 @@ struct Analyzer {
   backlinks: BTreeMap<String, BTreeSet<String>>,
   categories: BTreeMap<String, BTreeSet<String>>,
   current_file: String,
+  current_headings: Vec<(String, String)>,
+  documents: Vec<(String, Vec<(String, String)>)>,
 }
 
 impl Analyzer {
@@ -338,25 +500,33 @@ impl Analyzer {
       backlinks: BTreeMap::new(),
       categories: BTreeMap::new(),
       current_file: String::new(),
+      current_headings: Vec::new(),
+      documents: Vec::new(),
     }
   }
 
   fn set_current_file(&mut self, filename: String) {
+    if !self.current_file.is_empty() && !self.current_headings.is_empty() {
+      self.documents.push((
+        self.current_file.clone(),
+        std::mem::take(&mut self.current_headings),
+      ));
+    }
     self.current_file = filename;
   }
 
   fn analyze_ast<'a>(&mut self, root: &'a AstNode<'a>) {
+    let mut anchorizer = Anchorizer::new();
     for node in root.descendants() {
       match &node.data().value {
         NodeValue::Link(link) => {
           let url = &link.url;
           if let Some(target) = url.strip_prefix("/wiki/") {
-            let target = target.trim_end_matches('/');
             // Strip any fragment
             let target = match target.find('#') {
               Some(pos) => &target[..pos],
               None => target,
-            };
+            }.trim_end_matches('/');
             if !target.is_empty() {
               self.backlinks
                 .entry(target.to_string())
@@ -373,9 +543,24 @@ impl Analyzer {
               .insert(self.current_file.clone());
           });
         }
+        NodeValue::Heading(_) => {
+          let text = collect_text(node);
+          let id = anchorizer.anchorize(&text);
+          self.current_headings.push((text, id));
+        }
         _ => {}
       }
     }
+  }
+
+  fn search_data_js(&mut self) -> String {
+    if !self.current_file.is_empty() && !self.current_headings.is_empty() {
+      self.documents.push((
+        self.current_file.clone(),
+        std::mem::take(&mut self.current_headings),
+      ));
+    }
+    build_search_index_js(&self.documents)
   }
 }
 
@@ -387,4 +572,50 @@ fn extract_title(content: &str) -> Option<String> {
     }
   }
   None
+}
+
+fn escape_json_str(s: &str) -> String {
+  let mut out = String::with_capacity(s.len() + 2);
+  out.push('"');
+  for ch in s.chars() {
+    match ch {
+      '"' => out.push_str("\\\""),
+      '\\' => out.push_str("\\\\"),
+      '\n' => out.push_str("\\n"),
+      '\r' => out.push_str("\\r"),
+      '\t' => out.push_str("\\t"),
+      c if c.is_control() => {
+        out.push_str(&format!("\\u{:04x}", c as u32));
+      }
+      c => out.push(c),
+    }
+  }
+  out.push('"');
+  out
+}
+
+fn build_search_index_js(docs: &[(String, Vec<(String, String)>)]) -> String {
+  let mut js = String::from("window.SEARCH_INDEX_DATA={\"documents\":[");
+  for (i, (path, headings)) in docs.iter().enumerate() {
+    if i > 0 {
+      js.push(',');
+    }
+    js.push_str(&format!(
+      "{{\"path\":{}, \"headings\":[",
+      escape_json_str(path)
+    ));
+    for (j, (text, id)) in headings.iter().enumerate() {
+      if j > 0 {
+        js.push(',');
+      }
+      js.push_str(&format!(
+        "{{\"text\":{}, \"id\":{}}}",
+        escape_json_str(text),
+        escape_json_str(id)
+      ));
+    }
+    js.push_str("]}");
+  }
+  js.push_str("]};");
+  js
 }

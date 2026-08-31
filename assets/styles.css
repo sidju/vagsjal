@@ -1,0 +1,475 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  background: #f1e4c8;
+  scroll-padding-top: 200px;
+}
+
+body {
+  margin: 0;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: transparent;
+  color: #161010;
+  line-height: 1.5;
+}
+
+.site-shell {
+  min-height: 100vh;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  backdrop-filter: blur(10px);
+  background: #100000;
+  border-bottom: 1px solid rgba(98, 18, 18, 0.45);
+}
+
+/* Navigation */
+.site-nav {
+  padding: 0.9rem 1.5rem;
+}
+.site-nav .nav-inner {
+  max-width: 900px;
+  margin: 0 auto;
+  display: flex;
+  gap: 1.5rem;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.7rem;
+  text-decoration: none;
+}
+.brand-mark {
+  width: 2.75rem;
+  height: 2.75rem;
+  object-fit: contain;
+  flex: 0 0 auto;
+}
+.site-nav .nav-links {
+  display: flex;
+  gap: 1.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.site-nav a {
+  color: #b89088;
+  text-decoration: none;
+}
+.site-nav a:hover {
+  color: #f0b8ae;
+}
+.site-nav .nav-title {
+  color: #b89088;
+  font-weight: bold;
+}
+
+/* Wiki nav dropdown */
+.nav-dropdown {
+  position: relative;
+}
+.nav-dropdown > summary {
+  list-style: none;
+  color: #b89088;
+  cursor: pointer;
+  user-select: none;
+}
+.nav-dropdown > summary::-webkit-details-marker { display: none; }
+.nav-dropdown > summary::after {
+  content: " ▾";
+  font-size: 0.75em;
+}
+.nav-dropdown[open] > summary::after {
+  content: " ▴";
+}
+.nav-dropdown > summary:hover {
+  color: #f0b8ae;
+}
+.nav-dropdown-panel {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 0.5rem);
+  z-index: 100;
+  min-width: 14rem;
+  background: #1a0505;
+  border: 1px solid rgba(98, 18, 18, 0.55);
+  border-radius: 4px;
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.nav-dropdown-panel strong {
+  display: block;
+  color: #c89888;
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+}
+.nav-dropdown-panel strong:first-child {
+  margin-top: 0;
+}
+.nav-dropdown-panel strong a {
+  color: inherit;
+}
+.nav-dropdown-panel strong a:hover {
+  color: #f0b8ae;
+}
+.nav-dropdown-panel ul {
+  margin: 0.15rem 0 0 0.75rem;
+  padding: 0;
+  list-style: none;
+}
+.nav-dropdown-panel li {
+  margin: 0.1rem 0;
+}
+.nav-dropdown-panel a {
+  color: #b89088;
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+.nav-dropdown-panel a:hover {
+  color: #f0b8ae;
+}
+
+.page-paths {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0.5rem 1rem 0;
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  align-items: center;
+  color: #8f5a50;
+  font-size: 0.85rem;
+}
+.page-paths a,
+.page-paths a:visited {
+  color: #b89088;
+  text-decoration: none;
+  padding: 0.3rem 0.5rem;
+}
+.page-paths a:hover {
+  color: #f0b8ae;
+  text-decoration: underline;
+}
+.page-paths span {
+  color: #5a3535;
+}
+
+.metadata-header {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0 0 0.75rem;
+}
+.edit-button,
+.edit-button:visited {
+  display: inline-block;
+  padding: 0.25rem 0.6rem;
+  border: 1px solid rgba(98, 18, 18, 0.3);
+  border-radius: 0.3rem;
+  background: rgba(255, 247, 243, 0.92);
+  color: #2e1111;
+  text-decoration: none;
+}
+.edit-button:hover {
+  background: rgba(255, 237, 231, 0.98);
+}
+
+.character-link,
+.character-link:visited {
+  color: #7a2222;
+  text-decoration: underline;
+  text-decoration-color: rgba(122, 34, 34, 0.55);
+  text-underline-offset: 2px;
+}
+
+main a {
+  color: #7a2222;
+  text-decoration: underline;
+  text-decoration-color: rgba(122, 34, 34, 0.55);
+  text-underline-offset: 2px;
+}
+main a:visited {
+  color: #9d4949;
+  text-decoration-color: rgba(122, 34, 34, 0.44);
+}
+main a:hover {
+  color: #4a1717;
+  text-decoration-color: #4a1717;
+}
+
+/* Main content area */
+main {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  color: #161010;
+}
+main img {
+  max-width: 100%;
+  max-height: 50vh;
+  width: auto;
+  height: auto;
+}
+main img.side-image {
+  float: right;
+  width: min(40vw, 24rem);
+  margin: 0 0 1rem 1.25rem;
+  object-fit: contain;
+}
+@media (max-width: 760px) {
+  main img.side-image {
+    float: none;
+    display: block;
+    width: auto;
+    margin: 1rem auto;
+  }
+}
+main ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+/* Tables */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  background: rgba(255, 250, 247, 0.84);
+}
+table, th, td {
+  border: 1px solid rgba(98, 18, 18, 0.18);
+}
+th, td {
+  padding: 0.3rem 0.6rem;
+  text-align: left;
+}
+tr:nth-child(even) {
+  background-color: rgba(122, 34, 34, 0.07);
+}
+
+tr.inactive,
+table.inactive {
+  color: #7d6a66;
+}
+
+table.inactive a {
+  color: inherit;
+}
+
+/* Stat/power/influence name–value tables: pin the value column to a fixed
+   width so the split aligns across adjacent tables on the same page. */
+table.stat-table td:first-child,
+table.stat-table th:first-child {
+  width: 18em;
+}
+table.stat-table td:last-child,
+table.stat-table th:last-child {
+  width: 4.5em;
+  text-align: center;
+}
+table.stat-table.char-meta td:last-child,
+table.stat-table.char-meta th:last-child {
+  width: auto;
+}
+
+/* Character list spacing and column widths */
+.character-list {
+  list-style: none;
+  padding: 0;
+}
+.character-list li {
+  margin-bottom: 1.5rem;
+}
+.character-list .stat-table td:first-child,
+.character-list .stat-table th:first-child {
+  width: auto;
+  white-space: nowrap;
+}
+.character-list .stat-table td:last-child,
+.character-list .stat-table th:last-child {
+  width: 100%;
+  text-align: left;
+}
+
+/* Admin users table: thin ID column, wider name column */
+table.stat-table.users-table th:first-child,
+table.stat-table.users-table td:first-child {
+  width: auto;
+  white-space: nowrap;
+}
+table.stat-table.users-table th:nth-child(2),
+table.stat-table.users-table td:nth-child(2) {
+  width: 25%;
+}
+
+/* Admin character tables: thin ID column, wider name column */
+table.character-listing th:first-child,
+table.character-listing td:first-child {
+  width: auto;
+  white-space: nowrap;
+}
+table.character-listing th:nth-child(2),
+table.character-listing td:nth-child(2) {
+  width: 25%;
+}
+
+/* Combat value tables */
+.combat-details {
+  margin: 1rem 0;
+}
+.combat-details[open] {
+  margin: 1rem 0;
+}
+
+/* Button column in XP editor tables */
+table.stat-table td:nth-child(4),
+table.stat-table th:nth-child(4) {
+  width: 2.5em;
+  text-align: center;
+}
+
+/* Raise/lower buttons in XP editor */
+.raise-btn, .lower-btn {
+  font-size: 0.7rem;
+  padding: 0 0.35rem;
+  line-height: 1.2;
+  min-width: 1.6em;
+  border: 1px solid rgba(98, 18, 18, 0.25);
+  border-radius: 0.2rem;
+  background: rgba(255, 250, 247, 0.9);
+  color: #2e1111;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+}
+.raise-btn:hover, .lower-btn:hover {
+  background: rgba(255, 237, 231, 0.98);
+}
+.raise-btn:disabled, .lower-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.lower-btn {
+  margin-top: 1px;
+}
+
+/* Wiki content (rendered markdown) */
+.wiki-content ul {
+  list-style: disc;
+  padding-left: 1.5rem;
+  margin: 0.5rem 0;
+}
+.wiki-content li {
+  margin: 0.2rem 0;
+}
+
+/* Wiki styles */
+.wiki-section h2 {
+  font-size: 1.1rem;
+}
+
+.wiki-section ul {
+  margin: 0.5rem 0;
+  padding-left: 1.5rem;
+}
+
+.wiki-section li {
+  margin: 0.2rem 0;
+}
+
+/* Heading permalink anchors (comrak generates empty <a class="anchor"> before heading text) */
+h1, h2, h3, h4, h5, h6 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+}
+.anchor {
+  order: 1;
+  color: inherit;
+  text-decoration: none;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.anchor::after {
+  content: '#';
+  padding-left: 0.35em;
+}
+*:hover > .anchor,
+.anchor:focus-visible {
+  opacity: 0.45;
+}
+
+/* Search styles */
+.search-bar {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 0.75rem 1.5rem 0;
+}
+.search-container {
+  position: relative;
+}
+#search-input {
+  width: 100%;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.85rem;
+  border: 1px solid rgba(98, 18, 18, 0.25);
+  border-radius: 0.3rem;
+  background: rgba(255, 250, 247, 0.88);
+  color: #161010;
+  box-sizing: border-box;
+  outline: none;
+}
+#search-input:focus {
+  border-color: rgba(148, 48, 48, 0.5);
+  box-shadow: 0 0 0 2px rgba(148, 48, 48, 0.12);
+}
+#search-results {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 2px;
+  background: #fff;
+  border: 1px solid rgba(98, 18, 18, 0.2);
+  border-radius: 0.3rem;
+  max-height: 400px;
+  overflow-y: auto;
+  display: none;
+  z-index: 1000;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+#search-results.active {
+  display: block;
+}
+.search-result-item {
+  padding: 0.55rem 0.75rem;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  color: #161010;
+}
+.search-result-item:last-child {
+  border-bottom: none;
+}
+.search-result-item:hover {
+  background: #f5f5f5;
+}
+.search-result-title {
+  font-weight: bold;
+}
+.search-result-heading {
+  color: #7d6a66;
+  font-size: 0.85em;
+  margin-left: 0.4rem;
+}

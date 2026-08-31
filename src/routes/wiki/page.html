@@ -1,5 +1,22 @@
 {% extends "base.html" %}
 
+{% block head %}
+<script src="/search-data.js"></script>
+{% endblock %}
+
 {% block title %}{{ title }}{% endblock %}
 
-{% block body %}{{ content|safe }}{% endblock %}
+{% block header_extra %}
+<div class="search-bar">
+  <div class="search-container">
+    <input type="text" id="search-input" placeholder="Sök i wikin…">
+    <div id="search-results"></div>
+  </div>
+</div>
+{% endblock %}
+
+{% block body %}<div class="wiki-content">{{ content|safe }}</div>{% endblock %}
+
+{% block scripts %}
+<script src="/search.js"></script>
+{% endblock %}

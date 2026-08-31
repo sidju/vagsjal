@@ -1,0 +1,15 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "UPDATE humanity_change SET note = $1 WHERE humanity_change_id = $2",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Varchar",
+        "Int8"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "7c657e922849d487918a67cba31667b00653d77ea4a565af987791c9aa52bf03"
+}

@@ -5,42 +5,7 @@
 {% block body %}
   {% if saved %}<p><b>Utkast sparat som pågående höjningar.</b></p>{% endif %}
 
-  <table class="stat-table char-meta">
-    <tr>
-      <th>Namn:</th>
-      <th>{{ character.name }}</th>
-    </tr>
-    <tr>
-      <td>Ägare</td>
-      <td>{{ character.owner_name }}</td>
-    </tr>
-    <tr>
-      <td>Status</td>
-      <td>Aktiv</td>
-    </tr>
-    <tr>
-      <td>Mänsklig ålder</td>
-      <td>{{ character.apparent_age }}</td>
-    </tr>
-    <tr>
-      <td><a href="/wiki/embrace/">Omfamningsdatum</a></td>
-      <td>{{ character.date_embraced }}</td>
-    </tr>
-    <tr>
-      <td><a href="/wiki/torpor/">Tid i torpor</a></td>
-      <td>{{ character.torpor_display }}</td>
-    </tr>
-    <tr>
-      <td><a href="/wiki/clan/">Klan</a></td>
-      <td><a href="/wiki/{{ character.clan_name | lower }}/">{{ character.clan_name }}</a></td>
-    </tr>
-    {% if let Some(url) = character.character_description_url %}
-    <tr>
-      <td><a href="/wiki/character-description/">Karaktärsbeskrivning</a></td>
-      <td><a href="{{ url }}">{{ url }}</a></td>
-    </tr>
-    {% endif %}
-  </table>
+  {% include "character/_character_meta_table.html" %}
 
   <table class="stat-table">
     <tr>
@@ -59,10 +24,15 @@
       <td>{{ s.value }}</td>
       <td id="proj-stat-{{ loop.index0 }}">{{ s.value }}</td>
       {% endif %}
-      {% if s.id != "blood-potency" %}
+      {% if s.id != "blood-potency" && s.id != "humanity" %}
       <td>
         <button type="button" class="raise-btn" data-kind="stat" data-name="{{ s.id }}">▲</button>
         <button type="button" class="lower-btn" data-kind="stat" data-name="{{ s.id }}">▼</button>
+      </td>
+      {% elif s.id == "humanity" %}
+      <td>
+        <button type="button" class="raise-btn" data-kind="humanity" data-name="humanity">▲</button>
+        <button type="button" class="lower-btn" data-kind="humanity" data-name="humanity">▼</button>
       </td>
       {% else %}
       <td></td>
@@ -117,30 +87,11 @@
       <th>Återstående XP</th><th>{{ character.remaining_xp }}</th><th id="proj-remaining-xp">{{ character.remaining_xp }}</th><th></th>
     </tr>
   </table>
+  {% include "character/_combat_controls.html" %}
   <p><small>* väntar på granskning</small></p>
 
   <h2>Utkast till höjningar</h2>
   <div id="ops-list"></div>
-
-  <fieldset>
-    <legend>Lägg till kraft</legend>
-    <select id="op-power">
-      {% for p in power_options %}
-      <option value="{{ p.id }}">{{ p.name }}</option>
-      {% endfor %}
-    </select>
-    <button type="button" id="op-add-power">Lägg till</button>
-  </fieldset>
-
-  <fieldset>
-    <legend>Lägg till inflytande</legend>
-    <select id="op-influence">
-      {% for i in influence_options %}
-      <option value="{{ i.id }}">{{ i.name }}</option>
-      {% endfor %}
-    </select>
-    <button type="button" id="op-add-influence">Lägg till</button>
-  </fieldset>
 
   <form method="post" enctype="application/x-www-form-urlencoded" id="save-form">
     <input type="hidden" name="ops_json" id="ops-json-input">
@@ -226,15 +177,22 @@
     const limits = { power: 3, influence: 5, humanity: 10 };
 
     function opKey(op) {
-      return op.kind === "stat" ? op.stat : (op.kind === "power" ? op.power : op.influence);
+      return op.kind === "stat" ? op.stat : (op.kind === "power" ? op.power : (op.kind === "influence" ? op.influence : op.note));
     }
     function addOp(op) {
       const key = opKey(op);
       const existing = ops.find(function (o) { return o.kind === op.kind && opKey(o) === key; });
       if (existing) {
-        existing.increase += op.increase;
-        if (existing.increase === 0) {
-          ops.splice(ops.indexOf(existing), 1);
+        if (op.kind === "humanity") {
+          existing.change += op.change;
+          if (existing.change === 0) {
+            ops.splice(ops.indexOf(existing), 1);
+          }
+        } else {
+          existing.increase += op.increase;
+          if (existing.increase === 0) {
+            ops.splice(ops.indexOf(existing), 1);
+          }
         }
         saveDraft();
         render();
@@ -280,6 +238,10 @@
         if (el) el.textContent = projInfluences[i.id] != null ? projInfluences[i.id] : i.value;
       });
 
+      // Build pending-review lookup for powers
+      const pendingPower = {};
+      for (const p of data.powers) pendingPower[p.id] = p.pending_review;
+
       // Update +1/-1 button disabled states
       document.querySelectorAll(".raise-btn, .lower-btn").forEach(function (btn) {
         const kind = btn.dataset.kind;
@@ -288,11 +250,12 @@
         if (kind === "stat") { proj = projStats[name] || 0; base = curStatLevel[name] || 0; }
         else if (kind === "power") { proj = projPowers[name] || 0; base = curPowerLevel[name] || 0; }
         else if (kind === "influence") { proj = projInfluences[name] || 0; base = curInfluenceLevel[name] || 0; }
-        const limit = limits[kind];
+        else if (kind === "humanity") { proj = projStats[name] || 0; base = curStatLevel[name] || 0; }
+        const limit = limits[name] ?? limits[kind];
         if (btn.classList.contains("lower-btn")) {
           btn.disabled = proj <= base;
         } else {
-          btn.disabled = limit !== undefined && proj >= limit;
+          btn.disabled = (kind === "power" && pendingPower[name]) || (limit !== undefined && proj >= limit);
         }
       });
 
@@ -369,6 +332,7 @@
         if (kind === "stat") addOp({ kind: "stat", stat: name, increase: 1 });
         else if (kind === "power") addOp({ kind: "power", power: name, increase: 1 });
         else if (kind === "influence") addOp({ kind: "influence", influence: name, increase: 1 });
+        else if (kind === "humanity") addOp({ kind: "humanity", change: 1, note: "" });
       });
     });
     document.querySelectorAll(".lower-btn").forEach(function (btn) {
@@ -378,17 +342,8 @@
         if (kind === "stat") addOp({ kind: "stat", stat: name, increase: -1 });
         else if (kind === "power") addOp({ kind: "power", power: name, increase: -1 });
         else if (kind === "influence") addOp({ kind: "influence", influence: name, increase: -1 });
+        else if (kind === "humanity") addOp({ kind: "humanity", change: -1, note: "" });
       });
-    });
-
-    // Separate forms for power and influence
-    document.getElementById("op-add-power").addEventListener("click", function () {
-      const name = document.getElementById("op-power").value;
-      if (name) addOp({ kind: "power", power: name, increase: 1 });
-    });
-    document.getElementById("op-add-influence").addEventListener("click", function () {
-      const name = document.getElementById("op-influence").value;
-      if (name) addOp({ kind: "influence", influence: name, increase: 1 });
     });
 
     document.getElementById("clear-btn").addEventListener("click", function () {

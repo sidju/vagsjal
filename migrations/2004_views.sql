@@ -1,5 +1,15 @@
 BEGIN;
 
+CREATE TABLE bp_change (
+	bp_change_id BIGSERIAL PRIMARY KEY NOT NULL,
+	vampire_id BIGINT NOT NULL,
+	change INT NOT NULL CHECK (change != 0),
+	note VARCHAR(256) NOT NULL DEFAULT '',
+	creation_time TIMESTAMPTZ DEFAULT NOW() NOT NULL,
+
+	FOREIGN KEY (vampire_id) REFERENCES vampire ON DELETE CASCADE
+);
+
 CREATE VIEW xp_remaining AS
 	SELECT vampire_id, SUM(amount) AS amount
 	FROM ((
@@ -28,15 +38,17 @@ CREATE VIEW xp_remaining AS
 	)) GROUP BY vampire_id
 ;
 
-CREATE VIEW vampire_stat AS
+CREATE OR REPLACE VIEW vampire_stat AS
 	WITH vampire_bp AS (
 		SELECT
-			vampire_id,
+			v.vampire_id,
 			(FLOOR(
-				EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - date_embraced::TIMESTAMPTZ - torpor_time))
-				/ (86400.0 * 365.25 * 24)
-			) + 1)::INT AS bp
-		FROM vampire
+				EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - v.date_embraced::TIMESTAMPTZ - v.torpor_time))
+				/ (86400.0 * 365.25 * 36)
+			) + 1 + COALESCE(SUM(bpc.change), 0))::INT AS bp
+		FROM vampire v
+		LEFT JOIN bp_change bpc ON bpc.vampire_id = v.vampire_id
+		GROUP BY v.vampire_id, v.date_embraced, v.torpor_time
 	)
 	SELECT vampire_id, id AS "id!", name AS "name!", COALESCE(value, 0) AS "value!", COALESCE(pending_review, false) AS "pending_review!"
 	FROM (
@@ -73,14 +85,14 @@ CREATE VIEW vampire_power AS
 		power_raise.vampire_id,
 		power.id AS "id!",
 		power.name AS "name!",
-		COUNT(*)::INT AS "value!",
+		COALESCE(SUM(power_raise.increase), 0)::INT AS "value!",
 		BOOL_OR(power_raise_review.power_raise_id IS NULL) AS "pending_review!"
 	FROM power_raise
 	LEFT JOIN power_raise_review USING (power_raise_id)
 	JOIN power ON power.id = power_raise.power
 	WHERE power_raise_review.state IS NULL OR power_raise_review.state != 'denied'
 	GROUP BY power_raise.vampire_id, power.id, power.name
-	ORDER BY COUNT(*) DESC
+	ORDER BY SUM(power_raise.increase) DESC
 ;
 
 CREATE VIEW vampire_influence AS
@@ -88,14 +100,14 @@ CREATE VIEW vampire_influence AS
 		influence_raise.vampire_id,
 		influence.id AS "id!",
 		influence.name AS "name!",
-		COUNT(*)::INT AS "value!",
+		COALESCE(SUM(influence_raise.increase), 0)::INT AS "value!",
 		BOOL_OR(influence_raise_review.influence_raise_id IS NULL) AS "pending_review!"
 	FROM influence_raise
 	LEFT JOIN influence_raise_review USING (influence_raise_id)
 	JOIN influence ON influence.id = influence_raise.influence
 	WHERE influence_raise_review.state IS NULL OR influence_raise_review.state != 'denied'
 	GROUP BY influence_raise.vampire_id, influence.id, influence.name
-	ORDER BY COUNT(*) DESC
+	ORDER BY SUM(influence_raise.increase) DESC
 ;
 
 COMMIT;

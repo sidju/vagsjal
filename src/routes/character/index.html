@@ -1,44 +1,46 @@
 {% extends "base.html" %}
 
-{% block title %}Karaktärer{% endblock %}
+{% block title %}Karaktärsblad{% endblock %}
 
 {% block body %}
   {% if saved %}<p><b>Karaktär skapad! Väntar på godkännande från spelledare.</b></p>{% endif %}
 
+  {% if needs_personal_data %}
+    <h2>Personuppgifter</h2>
+    <p>Fyll i följande innan du kan skapa en karaktär.</p>
+    <form method="post" enctype="application/x-www-form-urlencoded">
+      <table class="stat-table">
+        <tr>
+          <td><label>Godkänner publicering av bilder</label></td>
+          <td>
+            <label><input type="radio" name="pictures_ok" value="true" required> Ja</label>
+            <label><input type="radio" name="pictures_ok" value="false" required> Nej</label>
+          </td>
+        </tr>
+        <tr>
+          <td><label>Godkänner marknadsföring</label></td>
+          <td>
+            <label><input type="radio" name="marketing_ok" value="true" required> Ja</label>
+            <label><input type="radio" name="marketing_ok" value="false" required> Nej</label>
+          </td>
+        </tr>
+        <tr>
+          <td><label for="ice_contact">ICE-kontakt (namn, telefon)</label></td>
+          <td><input id="ice_contact" name="ice_contact" placeholder="t.ex. Kalle Nilsson, 070-123 45 67" pattern=".+,([ +-]?\d){6,}" title="Namn följt av kommatecken och telefonnummer (minst 6 siffror)" required></td>
+        </tr>
+      </table>
+      <div style="text-align: center;"><button type="submit" style="font-size: 1.5rem;">Spara</button></div>
+    </form>
+  {% endif %}
+
+  {% if !needs_personal_data %}
   {% if active_chars.len() > 0 %}
     <h2>Aktiva karaktärer</h2>
     <ul>
     {% for (character,stats,powers,influences) in active_chars %}
       <li>
-        <table class="stat-table">
-          <tr>
-            <th>Namn:</th>
-            <th><a class="character-link" href="{{character.vampire_id}}/">{{ character.name }}</a></th>
-          </tr>
-          <tr>
-            <td>Mänsklig ålder (år)</td>
-            <td>{{ character.apparent_age }}</td>
-          </tr>
-          <tr>
-            <td><a href="/wiki/embrace/">Omfamningsdatum</a></td>
-            <td>{{ character.date_embraced }}</td>
-          </tr>
-          <tr>
-            <td><a href="/wiki/torpor/">Tid i torpor</a></td>
-            <td>{{ character.torpor_display }}</td>
-          </tr>
-          <tr>
-            <td><a href="/wiki/clan/">Klan</a></td>
-            <td><a href="/wiki/{{ character.clan_name | lower }}/">{{ character.clan_name }}</a></td>
-          </tr>
-          {% if let Some(url) = character.character_description_url %}
-          <tr>
-            <td><a href="/wiki/character-description/">Karaktärsbeskrivning</a></td>
-            <td><a href="{{ url }}">{{ url }}</a></td>
-          </tr>
-          {% endif %}
-          {% include "character/_stats_table.html" %}
-        </table>
+        {% include "character/_character_meta_table.html" %}
+        {% include "character/_stats_table.html" %}
       </li>
     {% endfor %}
     </ul>
@@ -46,8 +48,14 @@
 
   {% if show_form %}
     <h2>Skapa karaktär</h2>
-    <p>Fyll i grundläggande information för att skapa en ny karaktär. En spelledare kommer att godkänna den innan den blir aktiv.</p>
+    <p>
+      <a href="/wiki/character-creation/">Läs om karaktärsskapande</a> innan du börjar.
+      <br>
+      Fyll i formuläret för att skapa en karaktär.
+      En spelledare kommer behöva godkänna den innan den blir aktiv.</p>
     <form method="post" enctype="application/x-www-form-urlencoded">
+      <h3>Offentliga fält</h3>
+      <p>Visas på <a href="/characters/">/karaktärer/</a> för alla besökare.</p>
       <table class="stat-table">
         <tr>
           <td><label for="name">Namn</label></td>
@@ -56,22 +64,6 @@
         <tr>
           <td><label for="apparent_age">Mänsklig ålder</label></td>
           <td><input id="apparent_age" name="apparent_age" type="number" min="0" required></td>
-        </tr>
-        <tr>
-          <td><label for="date_embraced">Datum för omfamning</label></td>
-          <td><input id="date_embraced" name="date_embraced" type="date" required></td>
-        </tr>
-        <tr>
-          <td><label for="torpor_years">Torpor år</label></td>
-          <td><input id="torpor_years" name="torpor_years" type="number" value="0"></td>
-        </tr>
-        <tr>
-          <td><label for="torpor_months">Torpor månader</label></td>
-          <td><input id="torpor_months" name="torpor_months" type="number" value="0"></td>
-        </tr>
-        <tr>
-          <td><label for="torpor_days">Torpor dagar</label></td>
-          <td><input id="torpor_days" name="torpor_days" type="number" value="0"></td>
         </tr>
         <tr>
           <td><label for="clan_id">Klan</label></td>
@@ -85,8 +77,55 @@
           </td>
         </tr>
         <tr>
-          <td><label for="character_description_url">Länk till karaktärsbeskrivning</label></td>
-          <td><input id="character_description_url" name="character_description_url" type="url" placeholder="https://docs.google.com/..."></td>
+          <td><label for="home_domain">Hemdomän</label></td>
+          <td><input id="home_domain" name="home_domain" placeholder="t.ex. Göteborg, Paris"></td>
+        </tr>
+        <tr>
+          <td><label for="known_age">Känd ålder</label></td>
+          <td><input id="known_age" name="known_age" placeholder="t.ex. omkring 50"></td>
+        </tr>
+        <tr>
+          <td><label for="covenant_id">Kovenant</label></td>
+          <td>
+            <select id="covenant_id" name="covenant_id">
+              <option value="">Inget</option>
+              {% for covenant in covenants %}
+              <option value="{{ covenant.covenant_id }}">{{ covenant.name }}</option>
+              {% endfor %}
+            </select>
+          </td>
+        </tr>
+        <tr>
+          <td><label for="public_knowledge"><a href="/wiki/public-knowledge/">Allmänt känt</a></label></td>
+          <td><textarea id="public_knowledge" name="public_knowledge" rows="3" cols="60"></textarea></td>
+        </tr>
+      </table>
+
+      <h3 style="opacity:0.8">Privata fält</h3>
+      <p style="opacity:0.8">Visas inte på den publika karaktärslistan.</p>
+      <table class="stat-table" style="opacity:0.8">
+        <tr>
+          <td><label for="character_description_url">Länk till <a href="/wiki/character-description/">karaktärsbeskrivning</a></label></td>
+          <td><input id="character_description_url" name="character_description_url" type="url" placeholder="https://docs.google.com/..." required></td>
+        </tr>
+        <tr>
+          <td><label for="date_embraced">Datum för omfamning</label></td>
+          <td><input id="date_embraced" name="date_embraced" type="date" required></td>
+        </tr>
+        <tr>
+          <td colspan="2">Torpor</td>
+        </tr>
+        <tr>
+          <td><label for="torpor_years">år</label></td>
+          <td><input id="torpor_years" name="torpor_years" type="number" value="0"></td>
+        </tr>
+        <tr>
+          <td><label for="torpor_months">månader</label></td>
+          <td><input id="torpor_months" name="torpor_months" type="number" value="0"></td>
+        </tr>
+        <tr>
+          <td><label for="torpor_days">dagar</label></td>
+          <td><input id="torpor_days" name="torpor_days" type="number" value="0"></td>
         </tr>
       </table>
       <br>
@@ -99,36 +138,9 @@
     <h2>Väntar på godkännande</h2>
     {% endif %}
     <ul>
-    {% for (c,stats,powers,influences) in draft_chars %}
+    {% for (character,stats,powers,influences) in draft_chars %}
       <li>
-        <table class="stat-table draft">
-          <tr>
-            <th>Namn:</th>
-            <th><a class="character-link" href="{{c.vampire_id}}/">{{ c.name }}</a></th>
-          </tr>
-          <tr>
-            <td>Mänsklig ålder (år)</td>
-            <td>{{ c.apparent_age }}</td>
-          </tr>
-          <tr>
-            <td><a href="/wiki/embrace/">Omfamningsdatum</a></td>
-            <td>{{ c.date_embraced }}</td>
-          </tr>
-          <tr>
-            <td><a href="/wiki/torpor/">Tid i torpor</a></td>
-            <td>{{ c.torpor_display }}</td>
-          </tr>
-          <tr>
-            <td><a href="/wiki/clan/">Klan</a></td>
-            <td><a href="/wiki/{{ c.clan_name | lower }}/">{{ c.clan_name }}</a></td>
-          </tr>
-          {% if let Some(url) = c.character_description_url %}
-          <tr>
-            <td><a href="/wiki/character-description/">Karaktärsbeskrivning</a></td>
-            <td><a href="{{ url }}">{{ url }}</a></td>
-          </tr>
-          {% endif %}
-        </table>
+        {% include "character/_character_meta_table.html" %}
       </li>
     {% endfor %}
     </ul>
@@ -137,39 +149,19 @@
   {% if inactive_chars.len() > 0 %}
     <h2>Inaktiva karaktärer</h2>
     <ul>
-    {% for (c,stats,powers,influences) in inactive_chars %}
+    {% for (character,stats,powers,influences) in inactive_chars %}
       <li>
-        <table class="stat-table inactive">
-          <tr>
-            <th>Namn:</th>
-            <th><a class="character-link" href="{{c.vampire_id}}/">{{ c.name }}</a></th>
-          </tr>
-          <tr>
-            <td>Mänsklig ålder (år)</td>
-            <td>{{ c.apparent_age }}</td>
-          </tr>
-          <tr>
-            <td><a href="/wiki/embrace/">Omfamningsdatum</a></td>
-            <td>{{ c.date_embraced }}</td>
-          </tr>
-          <tr>
-            <td><a href="/wiki/torpor/">Tid i torpor</a></td>
-            <td>{{ c.torpor_display }}</td>
-          </tr>
-          <tr>
-            <td><a href="/wiki/clan/">Klan</a></td>
-            <td><a href="/wiki/{{ c.clan_name | lower }}/">{{ c.clan_name }}</a></td>
-          </tr>
-          {% if let Some(url) = c.character_description_url %}
-          <tr>
-            <td><a href="/wiki/character-description/">Karaktärsbeskrivning</a></td>
-            <td><a href="{{ url }}">{{ url }}</a></td>
-          </tr>
-          {% endif %}
-        </table>
+        {% include "character/_character_meta_table.html" %}
       </li>
     {% endfor %}
     </ul>
   {% endif %}
+  {% endif %}
 
+<script>
+(function() {
+  const el = document.getElementById("date_embraced");
+  if (el) el.max = new Date().toISOString().split("T")[0];
+})();
+</script>
 {% endblock %}

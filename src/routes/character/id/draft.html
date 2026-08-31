@@ -22,20 +22,42 @@
     </tr>
     <tr>
       <td><a href="/wiki/embrace/">Omfamningsdatum</a></td>
-      <td>{{ character.date_embraced }}</td>
+      <td>{{ character.date_embraced }} ({{ character.embrace_years_ago }} år)</td>
     </tr>
     <tr>
       <td><a href="/wiki/torpor/">Tid i torpor</a></td>
-      <td>{{ character.torpor_display }}</td>
+      <td>{{ character.torpor_display() }}</td>
     </tr>
     <tr>
       <td><a href="/wiki/clan/">Klan</a></td>
       <td><a href="/wiki/{{ character.clan_name | lower }}/">{{ character.clan_name }}</a></td>
     </tr>
+    <tr>
+      <td><a href="/wiki/covenants/">Kovenant</a></td>
+      <td>{% if character.covenant_slug.len() > 0 %}<a href="/wiki/{{ character.covenant_slug }}/">{{ character.covenant_name }}</a>{% endif %}</td>
+    </tr>
+    {% if character.home_domain.len() > 0 %}
+    <tr>
+      <td>Hemdomän</td>
+      <td>{{ character.home_domain }}</td>
+    </tr>
+    {% endif %}
+    {% if character.known_age.len() > 0 %}
+    <tr>
+      <td>Känd ålder</td>
+      <td>{{ character.known_age }}</td>
+    </tr>
+    {% endif %}
+    {% if character.public_knowledge.len() > 0 %}
+    <tr>
+      <td><a href="/wiki/public-knowledge/">Allmänt känt</a></td>
+      <td>{{ character.public_knowledge }}</td>
+    </tr>
+    {% endif %}
     {% if let Some(url) = character.character_description_url %}
     <tr>
       <td><a href="/wiki/character-description/">Karaktärsbeskrivning</a></td>
-      <td><a href="{{ url }}">{{ url }}</a></td>
+      <td><a href="{{ url }}" target="_blank" rel="noopener">{{ url }}</a></td>
     </tr>
     {% endif %}
   </table>

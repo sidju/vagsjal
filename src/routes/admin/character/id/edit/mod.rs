@@ -1,16 +1,23 @@
 use super::*;
 
+#[derive(sqlx::FromRow, Debug)]
+struct CovenantRow {
+  covenant_id: i64,
+  name: String,
+}
+
 #[derive(Template)]
 #[template(path = "admin/character/id/edit/index.html")]
 struct Index {
   character: CharacterRow,
   clans: Vec<ClanRow>,
+  covenants: Vec<CovenantRow>,
   users: Vec<UserRow>,
   show_admin_link: bool,
 }
 
 async fn index_get(state: &'static State, vampire_id: i64) -> Result<Response, Error> {
-  let (character, (clans, users)) = tokio::try_join!(
+  let (character, (clans, covenants, users)) = tokio::try_join!(
     get_character(state, vampire_id),
     fetch_options(state),
   )?;
@@ -18,17 +25,28 @@ async fn index_get(state: &'static State, vampire_id: i64) -> Result<Response, E
   html(Index {
     character,
     clans,
+    covenants,
     users,
     show_admin_link: true,
   }.render()?)
 }
 
-async fn fetch_options(state: &'static State) -> Result<(Vec<ClanRow>, Vec<UserRow>), Error> {
+async fn fetch_options(state: &'static State) -> Result<(Vec<ClanRow>, Vec<CovenantRow>, Vec<UserRow>), Error> {
   let clans = sqlx::query_as!(
     ClanRow,
     r#"
     SELECT clan_id, name
     FROM clan
+    ORDER BY name
+    "#
+  )
+    .fetch_all(&state.db)
+    .await?;
+  let covenants = sqlx::query_as!(
+    CovenantRow,
+    r#"
+    SELECT covenant_id, name
+    FROM covenant
     ORDER BY name
     "#
   )
@@ -44,7 +62,7 @@ async fn fetch_options(state: &'static State) -> Result<(Vec<ClanRow>, Vec<UserR
   )
     .fetch_all(&state.db)
     .await?;
-  Ok((clans, users))
+  Ok((clans, covenants, users))
 }
 
 async fn index_post(

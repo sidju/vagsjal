@@ -1,0 +1,14 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\nINSERT INTO app_user(user_id, oidc_subject, name, email, role) VALUES(0, $1, '', '', 'storyteller')\n  ON CONFLICT (user_id)\n  DO UPDATE SET oidc_subject = $1, name = CASE WHEN app_user.name = '' THEN '' ELSE app_user.name END, email = CASE WHEN app_user.email = '' THEN '' ELSE app_user.email END, role = 'storyteller' WHERE app_user.user_id = 0\n    ",
+  "describe": {
+    "columns": [],
+    "parameters": {
+      "Left": [
+        "Varchar"
+      ]
+    },
+    "nullable": []
+  },
+  "hash": "85aa38525a7728f791f42871db11a299929db7d428e0c5586624f67c881a0c66"
+}

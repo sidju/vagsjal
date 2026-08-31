@@ -6,6 +6,7 @@ mod id;
 struct UserRow {
   user_id: i64,
   name: String,
+  email: String,
   oidc_subject: String,
   role: String,
 }
@@ -21,7 +22,7 @@ async fn index(state: &'static State) -> Result<Response, Error> {
   let users = sqlx::query_as!(
     UserRow,
     r#"
-    SELECT user_id, name, oidc_subject, role
+    SELECT user_id, name, email, oidc_subject, role
     FROM app_user
     ORDER BY user_id
     "#

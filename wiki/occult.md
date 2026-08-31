@@ -1,5 +1,5 @@
 # Ockult
 
-#influenser
+#influences
 
-Hemliga sällskap, ockulta utövare och samlingar av mystisk kunskap.
+Hemliga sällskap, ockulta utövare och samlingar av mystisk [kunskap](lore.md).

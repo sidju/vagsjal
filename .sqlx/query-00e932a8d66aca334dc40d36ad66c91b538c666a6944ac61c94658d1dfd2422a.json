@@ -1,0 +1,34 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n    SELECT\n      change,\n      note,\n      to_char(creation_time, 'YYYY-MM-DD HH24:MI:SS') AS \"creation_time!\"\n    FROM humanity_change\n    JOIN humanity_change_review USING (humanity_change_id)\n    WHERE vampire_id = $1 AND state = 'approved'\n    ORDER BY creation_time\n    ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "change",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 1,
+        "name": "note",
+        "type_info": "Varchar"
+      },
+      {
+        "ordinal": 2,
+        "name": "creation_time!",
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int8"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      null
+    ]
+  },
+  "hash": "00e932a8d66aca334dc40d36ad66c91b538c666a6944ac61c94658d1dfd2422a"
+}

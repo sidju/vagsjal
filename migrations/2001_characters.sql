@@ -8,14 +8,19 @@ status VARCHAR(16) NOT NULL DEFAULT 'draft',
 
 -- Character descriptive --
 name VARCHAR(64) NOT NULL,
-apparent_age INT NOT NULL, --in years--
+apparent_age INT NOT NULL CHECK (apparent_age > 0), --in years--
 date_embraced DATE NOT NULL CHECK (date_embraced <= CURRENT_DATE),
-torpor_time INTERVAL NOT NULL,
+torpor_time INTERVAL NOT NULL CHECK (torpor_time >= INTERVAL '0'),
 clan_id BIGINT NOT NULL,
+covenant_id BIGINT,
 character_description_url TEXT,
+public_knowledge TEXT NOT NULL DEFAULT '',
+home_domain VARCHAR(128) NOT NULL DEFAULT '',
+known_age VARCHAR(64) NOT NULL DEFAULT '',
 
 FOREIGN KEY (user_id) REFERENCES app_user,
 FOREIGN KEY (clan_id) REFERENCES clan,
+FOREIGN KEY (covenant_id) REFERENCES covenant (covenant_id),
 FOREIGN KEY (status) REFERENCES character_status
 );
 

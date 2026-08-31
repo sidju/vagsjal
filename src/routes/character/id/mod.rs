@@ -11,9 +11,20 @@ struct CharacterHeader {
   owner_name: String,
   apparent_age: i32,
   date_embraced: String,
+  embrace_years_ago: i32,
   clan_name: String,
+  covenant_name: String,
+  covenant_slug: String,
   torpor_time: sqlx::postgres::types::PgInterval,
-  torpor_display: String,
+  public_knowledge: String,
+  home_domain: String,
+  known_age: String,
+}
+
+impl CharacterHeader {
+  fn torpor_display(&self) -> String {
+    fmt_torpor(&self.torpor_time)
+  }
 }
 #[derive(Debug, Serialize)]
 struct StatLine {
@@ -85,8 +96,8 @@ struct SavedQuery {
 #[serde(tag = "kind", rename_all = "snake_case")]
 enum DraftOperation {
   Stat { stat: String, increase: i32 },
-  Power { power: String },
-  Influence { influence: String },
+  Power { power: String, increase: i32 },
+  Influence { influence: String, increase: i32 },
   Humanity { change: i32, note: String },
 }
 #[derive(Debug, Serialize)]
@@ -107,8 +118,6 @@ struct Index {
   stats: Vec<StatLine>,
   powers: Vec<StatLine>,
   influences: Vec<StatLine>,
-  power_options: Vec<PowerOption>,
-  influence_options: Vec<InfluenceOption>,
   /// Safe JSON embedded via <script type="application/json"> (</> escaped)
   initial_data_json: String,
   saved: bool,
@@ -144,12 +153,18 @@ SELECT
   app_user.name AS "owner_name!",
   vampire.apparent_age,
   to_char(vampire.date_embraced, 'YYYY-MM-DD') AS "date_embraced!",
+  FLOOR(EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - vampire.date_embraced::TIMESTAMPTZ)) / (86400.0 * 365.25))::INT AS "embrace_years_ago!",
   clan.name AS "clan_name!",
+  COALESCE(covenant.name, '') AS "covenant_name!",
+  COALESCE(covenant.id, '') AS "covenant_slug!",
   vampire.torpor_time,
-  '' AS "torpor_display!"
+  vampire.public_knowledge,
+  vampire.home_domain,
+  vampire.known_age
 FROM vampire
 JOIN app_user USING (user_id)
 JOIN clan USING (clan_id)
+LEFT JOIN covenant USING (covenant_id)
 LEFT JOIN xp_remaining USING (vampire_id)
 WHERE vampire.vampire_id = $1
   AND vampire.user_id = $2
@@ -159,7 +174,6 @@ WHERE vampire.vampire_id = $1
   )
     .fetch_optional(&state.db)
     .await?
-    .map(|mut c| { c.torpor_display = fmt_torpor(&c.torpor_time); c })
     .ok_or_else(|| Error::path_not_found(req))
 }
 /// Fetches computed stats from the view (includes Blood Potency/HP formula rows).
@@ -352,14 +366,12 @@ async fn index_get(
   let (humanity_gain, humanity_loss) = fetch_humanity_xp_costs(state).await?;
 
   let powers: Vec<StatLine> = power_rows.iter()
-    .filter(|r| r.value > 0 || r.pending_review)
     .map(|r| StatLine { id: r.id.clone(), name: r.name.clone(), value: r.value, pending_review: r.pending_review })
     .collect();
   let power_options: Vec<PowerOption> = power_rows.into_iter()
     .map(|r| PowerOption { id: r.id.clone(), name: r.name, in_clan: r.in_clan })
     .collect();
   let influences: Vec<StatLine> = influence_rows.iter()
-    .filter(|r| r.value > 0 || r.pending_review)
     .map(|r| StatLine { id: r.id.clone(), name: r.name.clone(), value: r.value, pending_review: r.pending_review })
     .collect();
   let influence_options: Vec<InfluenceOption> = influence_rows.iter().map(|r| InfluenceOption { id: r.id.clone(), name: r.name.clone() }).collect();
@@ -398,8 +410,6 @@ async fn index_get(
     stats,
     powers,
     influences,
-    power_options,
-    influence_options,
     initial_data_json,
     saved: query.saved == Some(1),
     show_admin_link: session.role.is_storyteller(),
@@ -441,12 +451,17 @@ WHERE stat_xp_cost.stat = $2::VARCHAR
           return Err(Error::invalid_builder_draft(&format!("Missing XP rule for stat '{stat}'")));
         }
       },
-      DraftOperation::Power { power } => {
+      DraftOperation::Power { power, increase } => {
         let result = sqlx::query!(
           "
-INSERT INTO power_raise(vampire_id, power, xp_cost)
-SELECT $1, $2::VARCHAR, power_xp_cost.xp_cost
+INSERT INTO power_raise(vampire_id, power, increase, xp_cost)
+SELECT $1, $2::VARCHAR, $3::INT, SUM(power_xp_cost.xp_cost)::INT
 FROM power_xp_cost
+JOIN generate_series(1, $3::INT) AS g(lev)
+  ON power_xp_cost.level = COALESCE(
+    (SELECT \"value!\"::INT FROM vampire_power WHERE vampire_id = $1 AND \"name!\" = $2::VARCHAR),
+    0
+  ) + g.lev
 WHERE power_xp_cost.in_clan = (
     SELECT EXISTS(
       SELECT 1
@@ -456,32 +471,41 @@ WHERE power_xp_cost.in_clan = (
         AND ($2::VARCHAR = clan.unique_power OR $2::VARCHAR = clan.power_one OR $2::VARCHAR = clan.power_two)
     )
   )
-  AND power_xp_cost.level = (
-    SELECT COALESCE(\"value!\"::INT, 0) + 1
-    FROM vampire_power
-    WHERE vampire_id = $1 AND \"name!\" = $2::VARCHAR
-  )
           ",
           vampire_id,
           power,
+          increase,
         )
           .execute(&mut *tx)
-          .await?
+          .await
+          .map_err(|e| {
+            if let sqlx::Error::Database(ref dbe) = e {
+              if let Some(code) = dbe.code() {
+                if code == "23514" {
+                  return Error::invalid_builder_draft(
+                    "Det finns redan en pågående höjning för denna kraft som väntar på granskning",
+                  );
+                }
+              }
+            }
+            Error::from(e)
+          })?
         ;
         if result.rows_affected() != 1 {
           return Err(Error::invalid_builder_draft(&format!("Missing XP rule for power '{power}'")));
         }
       },
-      DraftOperation::Influence { influence } => {
+      DraftOperation::Influence { influence, increase } => {
         let result = sqlx::query!(
           "
-INSERT INTO influence_raise(vampire_id, influence, xp_cost)
-SELECT $1, $2::VARCHAR, influence_xp_cost.xp_cost
+INSERT INTO influence_raise(vampire_id, influence, increase, xp_cost)
+SELECT $1, $2::VARCHAR, $3::INT, influence_xp_cost.xp_cost * $3::INT
 FROM influence_xp_cost
 WHERE influence_xp_cost.influence = $2::VARCHAR
           ",
           vampire_id,
           influence,
+          increase,
         )
           .execute(&mut *tx)
           .await?

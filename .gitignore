@@ -1,2 +1,4 @@
 /target/
 .env
+/src/routes/wiki_nav_partial.html
+.aider*

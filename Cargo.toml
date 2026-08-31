@@ -39,6 +39,7 @@ time = { version = "0.3", features = ["serde-human-readable"] }
 # Auth library
 # (We'll later custom write the request/response code for this in raw hyper)
 openidconnect = { version = "4.0" } #, default-features = false }
+arc-swap = "1"
 reqwest = "0.12"
 nanoid = "0.5"
 # And a templating library, to render html

@@ -1,29 +1,29 @@
 # Blodets krafter
 
-#index #regler
+#index #rules
 
 ## Medfödda
 
-Dessa är krafterna som alla kindred besitter och instinktivt vet hur de ska
+Dessa är krafterna som alla besläktade besitter och instinktivt vet hur de ska
 använda.
 
 ### Kyssen
 
 Även om det går att bita eller skära en måltavla våldsamt och dricka från såret,
-föredrar de flesta kindred att använda den mer diskreta kyssen. Hur offret
+föredrar de flesta besläktade att använda den mer diskreta kyssen. Hur offret
 reagerar varierar beroende på vampyrens klan, men gemensamt är att upplevelsen
 distraherar offret från vad som sker och såret försluter sig spårlöst efteråt.
-Endast dödliga offer och kindred med lägre [Blood Potency](blood-potency.md)
-än den bitande vampyren blir helt distraherade av upplevelsen, men även starkare
+Endast dödliga offer och besläktade med lägre [Blodpotens](blood-potency.md) än
+den bitande vampyren blir helt distraherade av upplevelsen, men även starkare
 vampyrer känner av den.
 
 ### Livets rodnad
 
-Till en löpande kostnad av vitae kan en vampyr vara fysiskt omöjlig att skilja
-från människor. Under tiden som denna kraft används har kroppen alla naturliga
-funktioner man förväntar sig av en mänsklig kropp; vampyren kan till och med äta
-och dricka som en människa för en kort stund (men allt utom blod stöts _våldsamt_
-ut när Livets rodnad upphör).
+Till en löpande kostnad av [vitae](vitae.md) kan en vampyr vara fysiskt omöjlig
+att skilja från människor. Under tiden som denna kraft används har kroppen alla
+naturliga funktioner man förväntar sig av en mänsklig kropp; vampyren kan till
+och med äta och dricka som en människa för en kort stund (men allt utom blod
+stöts _våldsamt_ ut när Livets rodnad upphör).
 
 ### Blodsmak
 
@@ -36,16 +36,32 @@ En vampyr kan urskilja mycket från en droppe blod:
 
 ### Slå ut med besten
 
-Genom en symboliskt passande handling kan vampyrer pressa sin best på ett offer och
-påverka dess sinne med dess primala drifter. De kan välja vilken bestialisk aspekt
-de projicerar från följande:
+Genom en symboliskt passande handling kan vampyrer pressa sin best på ett offer
+och påverka dess sinne med dess primala drifter. De kan välja vilken bestialisk
+aspekt de projicerar från följande:
 
-- Bestialisk, hota eller utmana dem aggressivt medan besten tvingar dem att
-  tänka i termer av kamp eller flykt.
-- Impulsiv, erbjud eller uppmuntra dem till något medan besten får dem att
-  vilja agera snabbt och tänka mindre på konsekvenser.
-- Tävlingsinriktad, utmana deras skicklighet eller heder medan besten
-  uppmuntrar dem att bevisa sig själva och visa upp sig.
+- Bestialisk, hota eller utmana dem aggressivt medan [besten](beast.md) tvingar
+  dem att tänka i termer av kamp eller flykt.
+- Impulsiv, erbjud eller uppmuntra dem till något medan [besten](beast.md) får
+  dem att vilja agera snabbt och tänka mindre på konsekvenser.
+- Tävlingsinriktad, utmana deras skicklighet eller heder medan
+  [besten](beast.md) uppmuntrar dem att bevisa sig själva och visa upp sig.
 
 På andra vampyrer visar detta sig som en knuff i den riktningen; för människor
 yttrar det sig snarare som en tvingande impuls.
+
+> För att signalera kraften gör [Best-tecknet](hand-signs.md#best-tecknet) mot
+> ditt mål. Det har alltid en effekt, men inte alltid tillräcklig för att få
+> det resultat man hade önskat.
+
+### [Blodsband](blood-bond.md)
+
+Har en [egen sida](blood-bond.md) då det finns lite mer [regler](rules.md).
+
+## Lärda krafter
+
+Dessa är krafterna som besläktade kan lära sig. Varje nivå av en kraft har två
+sidor, när en besläktad lär sig en nivå av en kraft behärskar de båda krafterna
+på den nivån.
+
+Se listan av krafter här efter.

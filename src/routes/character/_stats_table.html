@@ -1,5 +1,6 @@
+<table class="stat-table">
 <tr>
-  <th>Stats</th>
+  <th colspan="2">Stats</th>
 </tr>
 {% for s in stats %}
 <tr>
@@ -12,7 +13,7 @@
 </tr>
 {% endfor %}
 <tr>
-  <th>Krafter</th>
+  <th colspan="2">Krafter</th>
 </tr>
 {% for p in powers %}
 <tr>
@@ -25,7 +26,7 @@
 </tr>
 {% endfor %}
 <tr>
-  <th>Influenser</th>
+  <th colspan="2">Influenser</th>
 </tr>
 {% for i in influences %}
 <tr>
@@ -38,6 +39,8 @@
 </tr>
 {% endfor %}
 <tr>
-  <th><a href="{{ character.vampire_id }}/">Återstående XP</a></th>
-  <th><a href="{{ character.vampire_id }}/">{{ character.remaining_xp }}</a></th>
+  <th>{% if xp_link() %}<a href="{{ character.vampire_id }}/">{% endif %}Återstående XP{% if xp_link() %}</a>{% endif %}</th>
+  <th>{% if xp_link() %}<a href="{{ character.vampire_id }}/">{% endif %}{{ character.remaining_xp }}{% if xp_link() %}</a>{% endif %}</th>
 </tr>
+</table>
+{% include "character/_combat_controls.html" %}

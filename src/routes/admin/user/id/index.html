@@ -6,6 +6,7 @@
   <h1>Användare {{ user.user_id }}</h1>
   <form method="post" enctype="application/x-www-form-urlencoded">
     <p><label>Namn <input name="name" value="{{ user.name }}"></label></p>
+    <p><label>E-post <input name="email" value="{{ user.email }}"></label></p>
     <p><label>OIDC-subjekt <input name="oidc_subject" value="{{ user.oidc_subject }}"></label></p>
     <p>
       <label>Roll

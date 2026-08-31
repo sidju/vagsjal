@@ -1,12 +1,5 @@
 # VägSjäl Wiki
 
-Welcome to the wiki! This is where we try to put all the rules and lore.
+Välkommen till wikin!
 
-Sidor som behöver ses över är:
-
-- [Protean](protean.md)
-- [Strid](combat.md)
-- [Utrustning](equipment.md) ?
-
-
-Not every page is listed on this page, but some good ones to start exploring are:
+Använd sökfunktionen eller utforska via följande utvalda länkar:

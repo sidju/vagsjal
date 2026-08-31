@@ -1,5 +1,6 @@
 # Societet
 
-#influenser
+#influences
 
-De rika och adliga i samhället, samt alla kontakter för att tillgodose deras behov.
+De rika och adliga i samhället, samt alla kontakter för att tillgodose deras
+behov.

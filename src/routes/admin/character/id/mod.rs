@@ -13,12 +13,24 @@ struct CharacterRow {
   name: String,
   apparent_age: i32,
   date_embraced: Date,
+  embrace_years_ago: i32,
   torpor_time: sqlx::postgres::types::PgInterval,
   clan_id: i64,
   clan_name: String,
+  covenant_id: i64,
+  covenant_name: String,
+  covenant_slug: String,
   remaining_xp: i64,
   character_description_url: Option<String>,
-  torpor_display: String,
+  public_knowledge: String,
+  home_domain: String,
+  known_age: String,
+}
+
+impl CharacterRow {
+  fn torpor_display(&self) -> String {
+    fmt_torpor(&self.torpor_time)
+  }
 }
 
 fn fmt_torpor(t: &sqlx::postgres::types::PgInterval) -> String {
@@ -63,7 +75,7 @@ struct SummaryStat {
 }
 
 #[derive(sqlx::FromRow, Debug)]
-struct BpChange {
+struct ChangeRecord {
   change: i32,
   note: String,
   creation_time: String,
@@ -77,8 +89,15 @@ struct Index {
   powers: Vec<SummaryStat>,
   influences: Vec<SummaryStat>,
   pending: Vec<PendingUsageRow>,
-  bp_changes: Vec<BpChange>,
+  bp_changes: Vec<ChangeRecord>,
+  humanity_changes: Vec<ChangeRecord>,
   show_admin_link: bool,
+}
+
+impl Index {
+  fn xp_link(&self) -> bool {
+    false
+  }
 }
 
 fn parse_date(date: &str) -> Result<Date, Error> {
@@ -99,15 +118,22 @@ async fn get_character(state: &'static State, vampire_id: i64) -> Result<Charact
       vampire.name,
       vampire.apparent_age,
       vampire.date_embraced,
+      FLOOR(EXTRACT(EPOCH FROM (CURRENT_TIMESTAMP - vampire.date_embraced::TIMESTAMPTZ)) / (86400.0 * 365.25))::INT AS "embrace_years_ago!",
       vampire.torpor_time,
       vampire.clan_id,
       clan.name AS clan_name,
+      COALESCE(vampire.covenant_id, 0) AS "covenant_id!",
+      COALESCE(covenant.name, '') AS "covenant_name!",
+      COALESCE(covenant.id, '') AS "covenant_slug!",
       COALESCE(xp_remaining.amount, 0) AS "remaining_xp!",
       vampire.character_description_url AS "character_description_url?",
-      '' AS "torpor_display!"
+      vampire.public_knowledge,
+      vampire.home_domain,
+      vampire.known_age
     FROM vampire
     JOIN app_user USING (user_id)
     JOIN clan USING (clan_id)
+    LEFT JOIN covenant USING (covenant_id)
     LEFT JOIN xp_remaining USING (vampire_id)
     WHERE vampire_id = $1
     "#,
@@ -115,7 +141,6 @@ async fn get_character(state: &'static State, vampire_id: i64) -> Result<Charact
   )
     .fetch_one(&state.db)
     .await
-    .map(|mut c| { c.torpor_display = fmt_torpor(&c.torpor_time); c })
     .map_err(Error::from)
 }
 
@@ -164,9 +189,9 @@ async fn fetch_influences(
   }).collect())
 }
 
-async fn fetch_bp_changes(state: &'static State, vampire_id: i64) -> Result<Vec<BpChange>, Error> {
+async fn fetch_bp_changes(state: &'static State, vampire_id: i64) -> Result<Vec<ChangeRecord>, Error> {
   sqlx::query_as!(
-    BpChange,
+    ChangeRecord,
     r#"
     SELECT
       change,
@@ -183,11 +208,31 @@ async fn fetch_bp_changes(state: &'static State, vampire_id: i64) -> Result<Vec<
     .map_err(Error::from)
 }
 
+async fn fetch_humanity_changes(state: &'static State, vampire_id: i64) -> Result<Vec<ChangeRecord>, Error> {
+  sqlx::query_as!(
+    ChangeRecord,
+    r#"
+    SELECT
+      change,
+      note,
+      to_char(creation_time, 'YYYY-MM-DD HH24:MI:SS') AS "creation_time!"
+    FROM humanity_change
+    JOIN humanity_change_review USING (humanity_change_id)
+    WHERE vampire_id = $1 AND state = 'approved'
+    ORDER BY creation_time
+    "#,
+    vampire_id,
+  )
+    .fetch_all(&state.db)
+    .await
+    .map_err(Error::from)
+}
+
 async fn fetch_pending_usage(state: &'static State, vampire_id: i64) -> Result<Vec<PendingUsageRow>, Error> {
   let stat_rows = sqlx::query!(
     r#"
     SELECT
-      'Stat' AS "kind!",
+      'stat' AS "kind!",
       stat_raise.stat_raise_id AS "usage_id!",
       stat.name AS "name!",
       stat_raise.increase AS "increase!",
@@ -206,10 +251,10 @@ async fn fetch_pending_usage(state: &'static State, vampire_id: i64) -> Result<V
   let power_rows = sqlx::query!(
     r#"
     SELECT
-      'Kraft' AS "kind!",
+      'power' AS "kind!",
       power_raise.power_raise_id AS "usage_id!",
       power.name AS "name!",
-      1 AS "increase!",
+      power_raise.increase AS "increase!",
       power_raise.xp_cost AS "xp_cost!",
       to_char(power_raise.creation_time, 'YYYY-MM-DD HH24:MI:SS') AS "created_at!"
     FROM power_raise
@@ -225,10 +270,10 @@ async fn fetch_pending_usage(state: &'static State, vampire_id: i64) -> Result<V
   let influence_rows = sqlx::query!(
     r#"
     SELECT
-      'Inflytande' AS "kind!",
+      'influence' AS "kind!",
       influence_raise.influence_raise_id AS "usage_id!",
       influence.name AS "name!",
-      1 AS "increase!",
+      influence_raise.increase AS "increase!",
       influence_raise.xp_cost AS "xp_cost!",
       to_char(influence_raise.creation_time, 'YYYY-MM-DD HH24:MI:SS') AS "created_at!"
     FROM influence_raise
@@ -244,10 +289,10 @@ async fn fetch_pending_usage(state: &'static State, vampire_id: i64) -> Result<V
   let humanity_rows = sqlx::query!(
     r#"
     SELECT
-      'Mänsklighet' AS "kind!",
+      'humanity' AS "kind!",
       humanity_change.humanity_change_id AS "usage_id!",
       humanity_change.note AS "name!",
-      ABS(humanity_change.change)::INT AS "increase!",
+      humanity_change.change AS "increase!",
       humanity_change.xp_cost AS "xp_cost!",
       to_char(humanity_change.creation_time, 'YYYY-MM-DD HH24:MI:SS') AS "created_at!"
     FROM humanity_change
@@ -268,13 +313,14 @@ async fn fetch_pending_usage(state: &'static State, vampire_id: i64) -> Result<V
 }
 
 async fn index_get(state: &'static State, vampire_id: i64) -> Result<Response, Error> {
-  let (character, stats, powers, influences, pending, bp_changes) = tokio::try_join!(
+  let (character, stats, powers, influences, pending, bp_changes, humanity_changes) = tokio::try_join!(
     get_character(state, vampire_id),
     fetch_stats(state, vampire_id),
     fetch_powers(state, vampire_id),
     fetch_influences(state, vampire_id),
     fetch_pending_usage(state, vampire_id),
     fetch_bp_changes(state, vampire_id),
+    fetch_humanity_changes(state, vampire_id),
   )?;
   html(Index {
     character,
@@ -283,6 +329,7 @@ async fn index_get(state: &'static State, vampire_id: i64) -> Result<Response, E
     influences,
     pending,
     bp_changes,
+    humanity_changes,
     show_admin_link: true,
   }.render()?)
 }
@@ -296,17 +343,22 @@ async fn update_character(
   let name = form.name.ok_or_else(|| Error::invalid_builder_draft("Missing name"))?;
   let apparent_age = form.apparent_age.ok_or_else(|| Error::invalid_builder_draft("Missing apparent_age"))?;
   let date_embraced = parse_date(form.date_embraced.as_deref().ok_or_else(|| Error::invalid_builder_draft("Missing date_embraced"))?)?;
+  let parse_torpor = |s: Option<String>| -> i32 { s.and_then(|s| { let s = s.trim().to_string(); if s.is_empty() { None } else { s.parse().ok() } }).unwrap_or(0) };
   let torpor_time = sqlx::postgres::types::PgInterval {
-    months: form.torpor_years.unwrap_or(0) * 12 + form.torpor_months.unwrap_or(0),
-    days: form.torpor_days.unwrap_or(0),
+    months: parse_torpor(form.torpor_years) * 12 + parse_torpor(form.torpor_months),
+    days: parse_torpor(form.torpor_days),
     microseconds: 0,
   };
   let clan_id = form.clan_id.ok_or_else(|| Error::invalid_builder_draft("Missing clan_id"))?;
+  let covenant_id: Option<i64> = form.covenant_id.and_then(|s| { let s = s.trim(); if s.is_empty() { None } else { s.parse().ok() } });
   let status = form.status.as_deref().unwrap_or("draft");
   let character_description_url = form.character_description_url.map(|u| u.trim().to_string()).filter(|u| !u.is_empty());
   if let Some(ref url) = character_description_url {
     validate_description_url(&state.http_client, url).await?;
   }
+  let public_knowledge = form.public_knowledge.map(|s| s.trim().to_string()).filter(|s| !s.is_empty()).unwrap_or_default();
+  let home_domain = form.home_domain.map(|s| s.trim().to_string()).filter(|s| !s.is_empty()).unwrap_or_default();
+  let known_age = form.known_age.map(|s| s.trim().to_string()).filter(|s| !s.is_empty()).unwrap_or_default();
   sqlx::query!(
     r#"
     UPDATE vampire
@@ -317,7 +369,11 @@ async fn update_character(
         date_embraced = $6,
         torpor_time = $7,
         clan_id = $8,
-        character_description_url = $9
+        covenant_id = $9,
+        character_description_url = $10,
+        public_knowledge = $11,
+        home_domain = $12,
+        known_age = $13
     WHERE vampire_id = $1
     "#,
     vampire_id,
@@ -328,7 +384,11 @@ async fn update_character(
     date_embraced,
     torpor_time,
     clan_id,
+    covenant_id,
     character_description_url,
+    public_knowledge,
+    home_domain,
+    known_age,
   )
     .execute(&state.db)
     .await?;
@@ -350,7 +410,7 @@ async fn review_pending(
     _ => return Err(Error::invalid_builder_draft("Invalid review decision")),
   };
   let rows_affected = match kind.as_str() {
-    "Stat" => sqlx::query!(
+    "stat" => sqlx::query!(
       r#"
       INSERT INTO stat_raise_review (stat_raise_id, state, reviewer_id)
       VALUES ($1, CASE WHEN $2 = 'approved' THEN 'approved' ELSE 'denied' END::approval_state_t, $3)
@@ -363,7 +423,7 @@ async fn review_pending(
       .execute(&state.db)
       .await?
       .rows_affected(),
-    "Kraft" => sqlx::query!(
+    "power" => sqlx::query!(
       r#"
       INSERT INTO power_raise_review (power_raise_id, state, reviewer_id)
       VALUES ($1, CASE WHEN $2 = 'approved' THEN 'approved' ELSE 'denied' END::approval_state_t, $3)
@@ -376,7 +436,7 @@ async fn review_pending(
       .execute(&state.db)
       .await?
       .rows_affected(),
-    "Inflytande" => sqlx::query!(
+    "influence" => sqlx::query!(
       r#"
       INSERT INTO influence_raise_review (influence_raise_id, state, reviewer_id)
       VALUES ($1, CASE WHEN $2 = 'approved' THEN 'approved' ELSE 'denied' END::approval_state_t, $3)
@@ -389,25 +449,38 @@ async fn review_pending(
       .execute(&state.db)
       .await?
       .rows_affected(),
-    "Mänsklighet" => sqlx::query!(
-      r#"
-      INSERT INTO humanity_change_review (humanity_change_id, state, reviewer_id)
-      VALUES ($1, CASE WHEN $2 = 'approved' THEN 'approved' ELSE 'denied' END::approval_state_t, $3)
-      ON CONFLICT DO NOTHING
-      "#,
-      usage_id,
-      approved,
-      session.user_id,
-    )
-      .execute(&state.db)
-      .await?
-      .rows_affected(),
+    "humanity" => {
+      if let Some(ref note) = form.review_note {
+        if !note.is_empty() {
+          sqlx::query!(
+            "UPDATE humanity_change SET note = $1 WHERE humanity_change_id = $2",
+            note,
+            usage_id,
+          )
+            .execute(&state.db)
+            .await?;
+        }
+      }
+      sqlx::query!(
+        r#"
+        INSERT INTO humanity_change_review (humanity_change_id, state, reviewer_id)
+        VALUES ($1, CASE WHEN $2 = 'approved' THEN 'approved' ELSE 'denied' END::approval_state_t, $3)
+        ON CONFLICT DO NOTHING
+        "#,
+        usage_id,
+        approved,
+        session.user_id,
+      )
+        .execute(&state.db)
+        .await?
+        .rows_affected()
+    },
     _ => return Err(Error::invalid_builder_draft("Invalid review kind")),
   };
   if rows_affected != 1 {
     return Err(Error::invalid_builder_draft("That XP usage has already been reviewed"));
   }
-  see_other(&format!("/admin/character/{vampire_id}/"))
+  see_other(&format!("/admin/character/{vampire_id}/#pending-xp-changes"))
 }
 
 async fn approve_draft(
@@ -418,6 +491,30 @@ async fn approve_draft(
   sqlx::query!(
     "UPDATE vampire SET status = 'active' WHERE vampire_id = $1 AND status = 'draft'",
     vampire_id,
+  )
+    .execute(&state.db)
+    .await?;
+  see_other(&format!("/admin/character/{vampire_id}/"))
+}
+
+async fn record_humanity(
+  state: &'static State,
+  vampire_id: i64,
+  form: CharacterForm,
+) -> Result<Response, Error> {
+  let change = form.humanity_change.ok_or_else(|| Error::invalid_builder_draft("Missing humanity_change"))?;
+  if change == 0 {
+    return Err(Error::invalid_builder_draft("Humanity change must be non-zero"));
+  }
+  sqlx::query!(
+    r#"
+    INSERT INTO humanity_change (vampire_id, change, xp_cost, note)
+    SELECT $1, $2::INT, xp_cost * ABS($2::INT), ''
+    FROM humanity_xp_cost
+    WHERE humanity_xp_cost.change_type = CASE WHEN $2::INT > 0 THEN 'gain' ELSE 'loss' END
+    "#,
+    vampire_id,
+    change,
   )
     .execute(&state.db)
     .await?;
@@ -454,6 +551,7 @@ async fn index_post(
     "review" => review_pending(state, &session, vampire_id, form).await,
     "approve" => approve_draft(state, &session, vampire_id).await,
     "record_bp" => record_bp_change(state, vampire_id, form).await,
+    "record_humanity" => record_humanity(state, vampire_id, form).await,
     _ => Err(Error::invalid_builder_draft("Unknown character action")),
   }
 }

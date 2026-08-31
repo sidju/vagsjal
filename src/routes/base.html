@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#ead0c3">
-    <link rel="icon" href="/vs-rr.png" type="image/png">
+    <link rel="icon" href="/favicon.png" type="image/png">
     <title>VägSjäl: {% block title %}platshållartitel{% endblock %}</title>
     {% block head %}{% endblock %}
     <link rel="stylesheet" href="/styles.css">
@@ -20,8 +20,14 @@
             </a>
             <div class="nav-links">
               <a href="/">Hem</a>
+              <a href="/characters/">Karaktärer</a>
               <a href="/character/">Karaktärsblad</a>
-              <a href="/wiki/">Wiki</a>
+              <details class="nav-dropdown">
+                <summary>Wiki</summary>
+                <div class="nav-dropdown-panel">
+                  {% include "wiki_nav_partial.html" %}
+                </div>
+              </details>
               {% if show_admin_link %}
               <a href="/admin/">Admin</a>
               {% endif %}
@@ -30,6 +36,7 @@
         </nav>
         <div class="page-paths" id="page-paths" aria-label="Sökväg"></div>
       </header>
+      {% block header_extra %}{% endblock %}
       <script>
         (() => {
           const container = document.getElementById('page-paths');
@@ -37,6 +44,7 @@
 
           const labels = {
             'character': 'Karaktärsblad',
+            'characters': 'Karaktärer',
             'admin': 'Admin',
             'user': 'Användare',
             'edit': 'Redigera',
@@ -68,5 +76,6 @@
         {% block body %}Innehåll{% endblock %}
       </main>
     </div>
+    {% block scripts %}{% endblock %}
   </body>
 </html>

@@ -5,6 +5,7 @@ use serde::Deserialize;
 struct UserRow {
   user_id: i64,
   name: String,
+  email: String,
   oidc_subject: String,
   role: String,
 }
@@ -12,6 +13,7 @@ struct UserRow {
 #[derive(Deserialize)]
 struct UserForm {
   name: String,
+  email: String,
   oidc_subject: String,
   role: String,
 }
@@ -27,7 +29,7 @@ async fn get_user(state: &'static State, user_id: i64) -> Result<UserRow, Error>
   sqlx::query_as!(
     UserRow,
     r#"
-    SELECT user_id, name, oidc_subject, role
+    SELECT user_id, name, email, oidc_subject, role
     FROM app_user
     WHERE user_id = $1
     "#,
@@ -61,11 +63,12 @@ async fn index_post(
   sqlx::query!(
     r#"
     UPDATE app_user
-    SET name = $2, oidc_subject = $3, role = $4
+    SET name = $2, email = $3, oidc_subject = $4, role = $5
     WHERE user_id = $1
     "#,
     user_id,
     form.name,
+    form.email,
     form.oidc_subject,
     role,
   )
